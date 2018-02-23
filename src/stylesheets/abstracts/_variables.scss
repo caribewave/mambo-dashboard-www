@@ -1,0 +1,27 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+$primary-color: #0277bd !default;
+$primary-dark-color: #004c8c !default;
+$primary-light-color: #58a5f0 !default;
+
+$secondary-color: #ffd180 !default;
+$secondary-dark-color: #caa052 !default;
+$secondary-light-color: #ffffb1 !default;
+
+$white: #ffffff;
+$light-grey: #dddddd;
+
+$text-color-primary: rgba(0,0,0,0.87);
+$text-color-secondary: #333;
+
+
+// SIZES
+$text-size-xl: 1.8em;
+$text-size-l: 1.5em;
+$text-size-md: 1.3em;
+$text-size-sm: 1.1em;
+$text-size-xs: 1em;
+
+$max-width: 1180px; // Max size for .container class block

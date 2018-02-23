@@ -1,0 +1,10 @@
+/**
+ * Basic typography style for copy text
+ */
+body {
+  color: $white;
+  font-size: $text-size-sm;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.46429em;
+}

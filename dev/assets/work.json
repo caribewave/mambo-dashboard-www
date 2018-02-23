@@ -1,0 +1,95 @@
+[
+  {
+    "id": 8,
+    "position": "CTO",
+    "company": "Jawg",
+    "companyDetails": "Disruptive Mapping Platform made in France.  **Main Clients**: SNCF, OVH, OpenDataSoft, Mon Docteur, LibertyRider, RATP...",
+    "startDate": "2016-01",
+    "location": {
+        "name": "Paris, France",
+        "coordinates": {
+          "lat": 48.864716,
+          "lng": 2.349014
+        }
+      },
+    "description": [
+      {"label": "Architect and Developer of the distributed Mapping Platform", "details": "The 'Mapsquare' project codename was released under the brand **Jawg** (Jawg maps). I was the first developer of the platform.  \r\nMy main role was to create a distributed ecosystem of micro services for our Mapping Platform. Storage API (GIS allowing to manipulate and manage datasets), Tile-edge (a highly efficient Map Server), Static Maps API, authentication system, and the administration section."},
+      {"label": "Management of Clustering / Data Import SDK / Geo-Caching", "details": "In order to be highly efficient, GIS need to implement specific features such as multi-threaded Geocaching, Meta-Tile awareness, Server-side clustering, and multi-layer clustering.  \r\nAlso, managing datasets often requires to import heterogeneous Data from different providers. I was in charge to create the API for a Data Import SDK targeting on-premises versions of the platform for some of our customers. This allowed to handle tricky cases such as transaction rollback, data deduplication (both semantical and geographical), and conflict resolution."}
+    ],
+    "skills": [
+      "Node.js", "Java", "Akka", "Netty", "Vert.x", "Spring-Boot", "Go", "Rust", "PostgreSQL",
+      "PostGIS", "Docker", "Ansible", "InfluxDB", "Grafana", "Metalery", "ImpOsm", "Angular.js",
+      "Kapacitor", "Telegraf", "Consul", "React.js", "Redux", "Webpack"
+    ]
+  },
+  {
+    "id": 7,
+    "position": "Tech Lead / Project Lead",
+    "company": "eBiz (eBusiness Information)",
+    "companyDetails": "Java/JEE/Android service company  \r\nSize: ~100 empl.  \r\n&#8680;Main Clients: ETAM, Mirakl, Club Med, JCDecaux, RATP, EDF, Laposte, Lafarge, Orange...",
+    "startDate": "2013-02",
+    "endDate": "2017-07",
+    "location": {
+        "name": "Paris, France",
+        "coordinates": {
+          "lat": 48.864716,
+          "lng": 2.349014
+        }
+      },
+    "description": [
+      {"label":"Architecture and Development of an ecosystem of Android apps for festivals and conferences. Applications target staff, attendees, and Android screens.","details":"Creation of a new offer around festivals and conference centers to add live data, Augmented reality and social features, and city-wide gaming capabilities.\nCheck it out on http://eventri.be"},
+      {"label":"Architecture and Development of a Java/JS/Android/iOS SDK","details":"Design of the DesignMyApp core engine, and common/SDK open source libraries. Check it out on Github: https://github.com/e-biz/designmyapp"},
+      {"label":"Architecture and Development of full web stack public websites","details":"<ul><li>Responsive design, Material design</li>\n<li>Gulp, Bower, AngularJS, Sass, Bootstrap</li>\n<li>http://eventri.be</li>\n<li>http://www.designmyapp.mobi</li></ul>"},
+      {"label":"Development of a conference driving mobile application (Android >= 4.0)","details":"This project had two challenges:\n<ul>\n<li>How can we use the tablets/phones's ergonomy to our advantage to make a conference more dynamic for students?</li>\n<li>What tools can we give the showman/teacher so he could get closer to his audience, communicate further with them, push multimedia contents to the clients and get live feedback from them?</li>\n</ul>"},
+      {"label":"Adaptation of an open data database model (GTFS) for train schedules to be used on an embedded SQLite database","details":"The concept was to identify which info was relevant, and change the original use case scenario; then build a conversion model with a hybrid Java/SQL migration program.\nIn the end, the embedded database is about 1/290 of the original size"},
+      {"label":"Teaching and giving conferences about Java, Java EE, Android, Git, Scrum and eXtreme programming","details":"To this day, here is a list of the universities and schools of engineering (delivering either bachelor,master or phd degrees) I went to:\n<br/>\nEPF Sceaux, ECE Paris, Université de Technologie de Troyes, Université de Rouen, ESAIP Angers, CPE Lyon"}
+    ],
+    "skills": [
+      "Java","Spring","Hibernate","Jackson","Maven",
+      "Android","Gradle","Git","MySQL","MongoDB",
+      "HTML5,CSS3","AngularJs","Grunt","Gulp","Bower","Yeoman"
+    ]
+  },
+  {
+    "id": 6,
+    "position": "Communication consultant",
+    "company": "Ymage Design for ITAnano",
+    "companyDetails": "Exclusive distributor of the ITAnano watch brand in France/Switzerland/Belgium",
+    "startDate": "2012-09",
+    "endDate": "2013-03",
+    "location": {
+        "name": "Lyon, France",
+        "coordinates": {
+          "lat": 45.764043,
+          "lng": 4.835659
+        }
+      },
+    "description": [
+      {"label":"Management of the company's image on social networks","details":"Responsible for building the company's image and presence on social networks. This was a challenging aspect as ITAnano is still a very young brand among today's market"},
+      {"label":"UX advisor for the national website and the e-commerce platform","details":""}
+    ]
+  },
+  {
+    "id": 5,
+    "position": "IT Specialist Intern",
+    "company": "DP Technology corp.",
+    "companyDetails": "World leader in CAM software for industry. Most famous product: ESPRIT  \r\nSize: ~150 empl. worldwide  \r\n<br/>Main Clients: Boeing, HP, Cartier, Gillette...",
+    "startDate": "2011-07",
+    "endDate": "2012-07",
+    "location": {
+        "name": "Los Angeles, CA, United States",
+        "coordinates": {
+          "lat": 34.052235,
+          "lng": -118.243683
+        }
+      },
+    "description": [
+      {"label":"Development of ASP modules for EspritWeb","details":""},
+      {"label":"Management of the Backup system renewal","details":""},
+      {"label":"Network/System administration of the IT infrastructure/datacenter","details":""}
+    ],
+    "skills": [
+      "Windows Server 2008 R2","Cisco/HP routing","Microsoft SQL Server","Symantec BackupExec","PowerShell","ASP"
+    ]
+  }
+]

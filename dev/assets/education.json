@@ -1,0 +1,26 @@
+[
+  {
+    "id": 4,
+    "title": "Oracle Certified Professional Java Programmer 6",
+    "label": "Oracle certification",
+    "type": "CERTIFICATION",
+    "date": "2013-05",
+    "description": [
+      "Official description: This certification is for programmers experienced using the Java programming language. Achieving this certification provides clear evidence that a programmer understands the basic syntax and structure of the Java programming language and can create Java technology applications that run on server and desktop systems using J2SE 6.0",
+      "Score: &gt; 85%"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Degree: CPE Lyon School of engineering",
+    "label": "Master of engineering",
+    "type": "DIPLOMA",
+    "date": "2013-09",
+    "duration": 6,
+    "durationUnit": "YEARS",
+    "description": [
+      "<h4>Computer Science</h4>\n<ul>\n<li>Java/JEE</li>\n<li>Network and protocols</li>\n<li>HTML5/CSS3</li>\n<li>System Administration</li>\n</ul>",
+      "<h4>Project management</h4>\n<ul>\n<li>Accounting</li>\n<li>Marketing</li>\n<li>Change management</li>\n<li>Agile methodology: Scrum</li>\n</ul>"
+    ]
+  }
+]

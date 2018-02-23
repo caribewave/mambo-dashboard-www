@@ -1,0 +1,22 @@
+[
+    {
+      "id": 5,
+      "title": "Travel",
+      "description": "During my first trip to the US, I probably caught a very serious travel fever. Not something you would actually get rid of easily.\n<br/>Since 2009, I have been traveling to more than 30 different states or countries, having a chance to experience and share with many different\nand amazing cultures. <br/>Since I started working, I set myself one goal: Travel <b>each month</b> to a foreign country. So far, this has been going great!"
+    },
+    {
+      "id": 3,
+      "title": "Acting/Music",
+      "description": "Since I was a kid, I was fascinated by all those drama shows, and promised myself I would become as good as they would. I practiced <b>acting</b> for 7 years,\ntwo among them as a director for a group of young teenagers. I also played the piano, singing, and the guitar for years, and was in a few <b>music bands</b> between 2007 and 2012 (50+ concerts, Lyon Area)."
+    },
+    {
+      "id": 2,
+      "title": "Erasmus",
+      "description": "In 2012, I became <b>lead</b> of the music and concert division of the <b>international student exchange organization</b> Erasmus in both Lyon and Paris.\nNot only this allows me to stay in touch with live bands and enjoy nice jam sessions, it also enables me to make new friends all around the world."
+    },
+    {
+      "id": 1,
+      "title": "Sports",
+      "description": "I played <b>rugby</b> for a couple years during college and in California. If it wasn't for my knee, I would still be involved with this amazing and challenging sport.\nI also played a few years of <b>badminton</b>, and I cannot spend a winter without riding my <b>skis</b> around the slopes."
+    }
+]

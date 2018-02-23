@@ -1,0 +1,23 @@
+{
+  "email": "contact@loicortola.com",
+  "firstName": "Loïc",
+  "lastName": "Ortola",
+  "catchline": "What you think, you become",
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/loicortola",
+    "twitter": "https://www.linkedin.com/in/loicortola",
+    "github": "https://github.com/loicortola",
+    "instagram": "https://instagr.am/loicortola"
+  },
+  "location": {
+    "name": "Paris, France",
+    "coordinates": {
+      "lat": 48.864716,
+      "lng": 2.349014
+    }
+  },
+  "media": [
+    {"id": 1, "type": "VIDEO", "thumbnail": "v1.png", "link": "https://www.youtube.com"},
+    {"id": 2, "type": "VIDEO", "thumbnail": "v2.png", "link": "https://www.youtube.com"}
+  ]
+}

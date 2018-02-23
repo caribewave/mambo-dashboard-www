@@ -1,0 +1,23 @@
+version: '2.1'
+
+networks:
+  websitenet:
+    external:
+      name: websitenet
+
+services:
+  website:
+    container_name: website
+    image: website:dev
+    networks:
+      - websitenet
+    volumes:
+      - ../:/usr/src/app/
+      - ./run.sh:/run.sh:ro
+    ports:
+      - "3000:80"
+    logging:
+      options:
+        max-size: 4m
+        max-file: "10"
+    restart: unless-stopped

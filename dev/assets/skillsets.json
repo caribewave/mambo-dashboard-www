@@ -1,0 +1,112 @@
+[
+  { "id": 1, "label": "Java", "skills": [
+    {
+      "label": "Java/JEE",
+      "level": 4
+    },
+    {
+      "label": "Spring",
+      "level": 3
+    },
+    {
+      "label": "MyBatis",
+      "level": 3
+    },
+    {
+      "label": "Hibernate",
+      "level": 2
+    },
+    {
+      "label": "Maven",
+      "level": 2
+    },
+    {
+      "label": "Jackson",
+      "level": 2
+    }]
+  },
+  {"id": 2, "label": "Android", "skills": [
+    {
+      "label": "OKHttp",
+      "level": 2
+    },
+    {
+      "label": "Jackson",
+      "level": 4
+    },
+    {
+      "label": "EventBus",
+      "level": 3
+    },
+    {
+      "label": "MVP",
+      "level": 3
+    },
+    {
+      "label": "Material Design",
+      "level": 3
+    },
+    {
+      "label": "Gradle",
+      "level": 2
+    }]
+  },
+  {"id": 3, "label": "IT", "skills": [
+    {
+      "label": "Linux",
+      "level": 4
+    },
+    {
+      "label": "AWS / OpenStack",
+      "level": 3
+    },
+    {
+      "label": "Wireshark",
+      "level": 2
+    },
+    {
+      "label": "DevOps / HA",
+      "level": 4
+    }]
+  },
+  {"id": 4, "label": "Web", "skills": [
+    {
+      "label": "HTML5,CSS3",
+      "level": 4
+    },
+    {
+      "label": "Angular.js",
+      "level": 3
+    },
+    {
+      "label": "React.js",
+      "level": 3
+    },
+    {
+      "label": "Gulp",
+      "level": 3
+    },
+    {
+      "label": "Node.js",
+      "level": 4
+    }]
+  },
+  {"id": 5, "label": "Other", "skills": [
+    {
+      "label": "Git",
+      "level": 5
+    },
+    {
+      "label": "SQL",
+      "level": 3
+    },
+    {
+      "label": "MongoDB",
+      "level": 3
+    },
+    {
+      "label": "Scrum, XP",
+      "level": 3
+    }]
+  }
+]

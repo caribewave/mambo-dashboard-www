@@ -1,0 +1,89 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+@mixin on-event($self: false) {
+  @if $self {
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  } @else {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+  #{$context} & {
+    @content;
+  }
+}
+
+/// Make a linear gradient
+@mixin linear-gradient($base-color, $factor : 10) {
+  @if ($factor < 0) {
+    $other-gradient: darken($base-color, -$factor);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($other-gradient), to($base-color));
+    background-image: -moz-linear-gradient($other-gradient, $base-color);
+    background-image: -ms-linear-gradient($other-gradient, $base-color);
+    background-image: -o-linear-gradient($other-gradient, $base-color);
+    background-image: linear-gradient($other-gradient, $base-color);
+  } @else {
+    $other-gradient: lighten($base-color, $factor);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from($other-gradient), to($base-color));
+    background-image: -moz-linear-gradient($other-gradient, $base-color);
+    background-image: -ms-linear-gradient($other-gradient, $base-color);
+    background-image: -o-linear-gradient($other-gradient, $base-color);
+    background-image: linear-gradient($other-gradient, $base-color);
+  }
+}
+
+/// Make a border-shadow
+@mixin border-shadow($color : #868686) {
+  -moz-box-shadow: 1px 1px 4px 1px $color;
+  -webkit-box-shadow: 1px 1px 4px 1px $color;
+  -o-box-shadow: 1px 1px 4px 1px $color;
+  box-shadow: 1px 1px 4px 1px $color;
+  filter:progid:DXImageTransform.Microsoft.Shadow(color=$color, Direction=134, Strength=4);
+}
+
+@mixin border-radius($size : 5px) {
+  -webkit-border-radius: $size;
+  -moz-border-radius: $size;
+  border-radius: $size;
+}
+
+@mixin border-radius-important($size : 5px) {
+  -webkit-border-radius: $size !important;
+  -moz-border-radius: $size !important;
+  border-radius: $size !important;
+}
+
+
+@mixin border-radius($top-left: 5px, $top-right: 5px, $bottom-right: 5px, $bottom-left: 5px) {
+  -webkit-border-top-left-radius: $top-left;
+  -webkit-border-top-right-radius: $top-right;
+  -webkit-border-bottom-right-radius: $bottom-right;
+  -webkit-border-bottom-left-radius: $bottom-left;
+  -moz-border-radius-topleft: $top-left;
+  -moz-border-radius-topright: $top-right;
+  -moz-border-radius-bottomright: $bottom-right;
+  -moz-border-radius-bottomleft: $bottom-left;
+  border-top-left-radius: $top-left;
+  border-top-right-radius: $top-right;
+  border-bottom-right-radius: $bottom-right;
+  border-bottom-left-radius: $bottom-left;
+}
