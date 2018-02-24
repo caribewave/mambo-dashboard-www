@@ -5,7 +5,7 @@ import {FormattedMessage, defineMessages, injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
 
 
-const Map = ReactMapboxGl({
+const MapboxGL = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoibG91aXNjdXJyaWUiLCJhIjoiY3MwR3B3QSJ9._5UXyjEIY0YisuAz9c_tJA'
 });
 
@@ -23,19 +23,19 @@ const messages = defineMessages({
   }
 });
 
-class AboutMe extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <Map
+      <MapboxGL
         style="mapbox://styles/mapbox/streets-v8"
         zoom={zoom}
         containerStyle={{
           height: "500px",
-          width: "500px"
+          width: "100%"
         }}>
         <Layer
           type="symbol"
@@ -43,17 +43,17 @@ class AboutMe extends Component {
           layout={{"icon-image": "marker-15"}}>
           <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
         </Layer>
-      </Map>
+      </MapboxGL>
     );
   }
 }
 
 // TypeChecking for properties
-AboutMe.propTypes = {
+Map.propTypes = {
   text: PropTypes.string
 };
 
-export default injectIntl(AboutMe);
+export default injectIntl(Map);
 
 
 

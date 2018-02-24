@@ -1,8 +1,0 @@
-@import "../../../../stylesheets/abstracts/_mixins";
-@import "../../../../stylesheets/abstracts/_media";
-
-@media #{$handheld} {
-  .aboutme-container {
-    @include border-radius-important(0);
-  }
-}
