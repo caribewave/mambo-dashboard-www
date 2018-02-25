@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router';
 import Map from '../components/Map';
-import StylePicker from '../components/StylePicker';
+import StylePicker from '../containers/StylePicker';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import {loadHome} from '../actions';

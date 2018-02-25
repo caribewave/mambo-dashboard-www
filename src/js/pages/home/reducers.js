@@ -6,7 +6,11 @@ const profile = (state = {}, action) => {
   switch (type) {
     case ActionTypes.LOAD_ABOUTME_SUCCESS:
       return merge({}, state, {text: action.result});
-    }
+    case ActionTypes.CHANGE_MAP_STYLE :
+      console.log("but");
+      return merge({}, state, {style: action.style});
+  }
+
   return state;
 };
 

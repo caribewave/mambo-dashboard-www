@@ -17,3 +17,11 @@ const loadAboutMeAsync = () => ({
 export const loadHome = () => (dispatch) => {
   return dispatch(loadAboutMeAsync());
 };
+
+
+export const CHANGE_MAP_STYLE = 'CHANGE_MAP_STYLE';
+
+export const changeMapStyle = (style) => ({
+  type: CHANGE_MAP_STYLE,
+  style: style
+});
