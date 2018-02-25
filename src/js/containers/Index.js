@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {HeaderPartial, FooterPartial} from '../partials/containers/index';
+import {HeaderPartial} from '../partials/containers/index';
 import {connect} from 'react-redux';
 import '../../stylesheets/main.scss';
-import Paper from 'material-ui/Paper';
 
 
 class Index extends Component {
@@ -15,10 +14,9 @@ class Index extends Component {
     return (
       <div>
       <HeaderPartial/>
-      <Paper id="main" className="main-container" elevation={4}>
+      <div id="main" className="main-container">
         {this.props.children}
-      </Paper>
-      <FooterPartial/>
+      </div>
     </div>
     )
   }

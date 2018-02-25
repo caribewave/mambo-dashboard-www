@@ -4,8 +4,7 @@ import {IntlProvider} from 'react-intl-redux';
 import {Redirect, Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
 // Page Components
-import Index from '../containers/Index';
-import aboutme from '../pages/aboutme';
+import aboutme from '../pages/home';
 
 const Root = ({store}) => (
     <Provider store={store}>
@@ -13,8 +12,8 @@ const Root = ({store}) => (
         <IntlProvider>
           <div>
             <Switch>
-              <Redirect path="*" to="/aboutme" />
-              <Route path="/aboutme" component={aboutme.components.AboutMePage} />
+              <Redirect path="*" to="/home" />
+              <Route path="/home" component={aboutme.components.HomePage} />
             </Switch>
           </div>
         </IntlProvider>

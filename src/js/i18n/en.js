@@ -1,7 +1,6 @@
 export default {
   "locale": "en",
   "messages": {
-    "lbl.contact": "Contact",
     "lbl.education": "Education",
     "lbl.home": "Home",
     "lbl.projects": "Projects",

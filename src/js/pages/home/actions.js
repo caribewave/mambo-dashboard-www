@@ -14,6 +14,6 @@ const loadAboutMeAsync = () => ({
   }
 });
 
-export const loadAboutMe = () => (dispatch) => {
+export const loadHome = () => (dispatch) => {
   return dispatch(loadAboutMeAsync());
 };

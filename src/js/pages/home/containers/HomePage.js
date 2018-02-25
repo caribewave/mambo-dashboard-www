@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router';
-import Home from '../components/Home';
+import Map from '../components/Map';
+import StylePicker from '../components/StylePicker';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import {loadHome} from '../actions';
 import './HomePage.scss';
 import {Redirect, Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 
-<Router basename="/aboutme"/>
+<Router basename="/home"/>
 
 class HomePage extends Component {
   constructor(props) {
@@ -20,7 +21,10 @@ class HomePage extends Component {
 
   render() {
     return this.props.aboutme ? (
-        <Home text={this.props.aboutme.text}/>
+      <div>
+        <Map style={this.props.style}/>
+        <StylePicker style={this.props.style}/>
+      </div>
     ) : (
       <div id='aboutme-container'>
       Loading // FIXME
@@ -30,7 +34,8 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  aboutme: state.aboutme
+  aboutme: state.aboutme,
+  style: state.style
 });
 
 export default withRouter(connect(mapStateToProps, {loadAboutMe: loadHome})(HomePage))

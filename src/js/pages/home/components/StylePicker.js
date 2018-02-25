@@ -1,60 +1,31 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
-import {FormattedMessage, defineMessages, injectIntl} from 'react-intl';
-import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
+import { injectIntl} from 'react-intl';
+import {STYLE} from "../constants";
 
 
-const MapboxGL = ReactMapboxGl({
-  accessToken: 'pk.eyJ1IjoibG91aXNjdXJyaWUiLCJhIjoiY3MwR3B3QSJ9._5UXyjEIY0YisuAz9c_tJA'
-});
+const Style = ({style}) => {
+  return (<a href="#" className="style" >{style.text}</a>);
+};
 
-const mapStyle = 'mapbox://styles/louiscurrie/cizcq06l600292so15ydwjckr';
-const zoom = [8];
+const StyleList = ({styles}) => {
+  // Map through the todos
+  const styleElement = styles.map((style) => {
+    return (<Style style={style} />)
+  });
+  return (<div className="list-group" style={{marginTop:'30px'}}>{styleElement}</div>);
+};
 
-const messages = defineMessages({
-  lblWelcome: {
-    id: 'lbl.welcome',
-    defaultMessage: 'Welcome'
-  },
-  lblIntroduction: {
-    id: 'lbl.introduction',
-    defaultMessage: 'Introduction'
-  }
-});
-
-class Map extends Component {
+class StylePicker extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
-      <MapboxGL
-        style="mapbox://styles/mapbox/streets-v8"
-        zoom={zoom}
-        containerStyle={{
-          height: "500px",
-          width: "100%"
-        }}>
-        <Layer
-          type="symbol"
-          id="marker"
-          layout={{"icon-image": "marker-15"}}>
-          <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
-        </Layer>
-      </MapboxGL>
+      <StyleList
+        styles={STYLE}
+      />
     );
   }
 }
 
-// TypeChecking for properties
-Map.propTypes = {
-  text: PropTypes.string
-};
-
-export default injectIntl(Map);
-
-
-
-
+export default injectIntl(StylePicker);

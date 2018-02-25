@@ -1,5 +1,5 @@
-import AboutMePage from './AboutMePage';
+import HomePage from './HomePage';
 
 export {
-  AboutMePage
+  HomePage
 };

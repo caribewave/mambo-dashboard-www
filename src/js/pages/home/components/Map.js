@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
-import {FormattedMessage, defineMessages, injectIntl} from 'react-intl';
+import { defineMessages, injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
 
 
-const Map = ReactMapboxGl({
+const MapboxGL = ReactMapboxGl({
   accessToken: 'pk.eyJ1IjoibG91aXNjdXJyaWUiLCJhIjoiY3MwR3B3QSJ9._5UXyjEIY0YisuAz9c_tJA'
 });
 
@@ -23,14 +22,14 @@ const messages = defineMessages({
   }
 });
 
-class Home extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <Map
+      <MapboxGL
         style="mapbox://styles/mapbox/streets-v8"
         zoom={zoom}
         containerStyle={{
@@ -43,17 +42,17 @@ class Home extends Component {
           layout={{"icon-image": "marker-15"}}>
           <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
         </Layer>
-      </Map>
+      </MapboxGL>
     );
   }
 }
 
 // TypeChecking for properties
-Home.propTypes = {
+Map.propTypes = {
   text: PropTypes.string
 };
 
-export default injectIntl(Home);
+export default injectIntl(Map);
 
 
 

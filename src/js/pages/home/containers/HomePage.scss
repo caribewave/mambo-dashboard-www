@@ -3,6 +3,6 @@
 
 @media #{$handheld} {
   .aboutme-container {
-    @include border-radius-important(0);
+    //@include border-radius-important(0);
   }
 }

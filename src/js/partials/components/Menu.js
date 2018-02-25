@@ -41,51 +41,10 @@ class Menu extends Component {
                       <ListItemIcon>
                         <AccountCircleIcon/>
                       </ListItemIcon>
-                      <Link to={"aboutme"}><ListItemText primary={<FormattedMessage id="lbl.home"/>}/></Link>
+                      <Link to={"home"}><ListItemText primary={<FormattedMessage id="lbl.home"/>}/></Link>
                     </ListItem>
                   </List>
                    <Divider/>
-                   <List>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <WorkIcon/>
-                      </ListItemIcon>
-                      <Link to={"work"}><ListItemText primary={<FormattedMessage id="lbl.work"/>}/></Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <ExtensionIcon/>
-                      </ListItemIcon>
-                      <Link to={"projects"}><ListItemText primary={<FormattedMessage id="lbl.projects"/>}/></Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <PollIcon/>
-                      </ListItemIcon>
-                      <Link to={"skills"}><ListItemText primary={<FormattedMessage id="lbl.skills"/>}/></Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <SchoolIcon/>
-                      </ListItemIcon>
-                      <Link to={"education"}><ListItemText primary={<FormattedMessage id="lbl.education"/>}/></Link>
-                    </ListItem>
-                   </List>
-                   <Divider/>
-                   <List>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <StarIcon/>
-                      </ListItemIcon>
-                      <Link to={"hobbies"}><ListItemText primary={<FormattedMessage id="lbl.hobbies"/>}/></Link>
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <DraftsIcon/>
-                      </ListItemIcon>
-                      <Link to={"contact"}><ListItemText primary={<FormattedMessage id="lbl.contact"/>}/></Link>
-                    </ListItem>
-                  </List>
                  </div>
               </span>
           </Drawer>
