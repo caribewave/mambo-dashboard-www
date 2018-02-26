@@ -1,31 +1,33 @@
-import {changeMapStyle} from '../actions';
+import {changeMapStyle} from '../../../actions/style.actions';
 import React, {Component} from 'react';
 import StylePickerComponent from '../components/StylePickerComponent';
 import {connect} from 'react-redux';
+import {PROPS_TYPE_STYLE} from "../constants";
 
 class StylePicker extends Component {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-  }
 
-  onClick(style) {
-    changeMapStyle(style)
-  }
+  //todo call to get styles when they are in server
+
+  onClick = (style) => {
+    this.props.changeMapStyle(style)
+  };
 
   render() {
     return (
       <StylePickerComponent
-        styleSelected={this.style}
-        onStyleSelected={this.onClick}/>
+        styles={this.props.styles}
+        selectedStyle={this.props.selectedStyle}
+        onStyleSelected={this.props.changeMapStyle}
+      />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  style: state.style,
-  onStyleSelected: ownProps.onStyleSelected
+  styles: state.style.styles,
+  selectedStyle: state.style.selectedStyle,
 });
 
+const actions = {changeMapStyle};
 
-export default connect(mapStateToProps, {changeMapStyle})(StylePicker)
+export default connect(mapStateToProps, actions)(StylePicker)

@@ -7,7 +7,7 @@ import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import DevTools from './DevTools';
 
 // Page Components
-import aboutme from '../pages/home';
+import home from '../pages/home';
 import Index from './Index';
 
 const theme = createMuiTheme({
@@ -41,8 +41,8 @@ class Root extends Component {
               <IntlProvider locale="en">
                 <Index>
                   <Switch>
-                    <Route exact path="/" component={aboutme.components.HomePage}/>
-                    <Route path="/home" component={aboutme.components.HomePage}/>
+                    <Route exact path="/" component={home.components.HomePage}/>
+                    <Route path="/home" component={home.components.HomePage}/>
                   </Switch>
                   <DevTools/>
                 </Index>

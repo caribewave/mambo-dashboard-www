@@ -1,7 +1,7 @@
-import {CALL_API} from '../../client/api';
+import {CALL_API} from '../client/api';
 
 /*------------------------------------------------------------------------------------------
- * Loads ABOUTME
+ * Home ABOUTME
  *-----------------------------------------------------------------------------------------*/
 export const LOAD_ABOUTME_REQUEST = 'LOAD_ABOUTME_REQUEST';
 export const LOAD_ABOUTME_SUCCESS = 'LOAD_ABOUTME_SUCCESS';
@@ -17,7 +17,6 @@ const loadAboutMeAsync = () => ({
 export const loadHome = () => (dispatch) => {
   return dispatch(loadAboutMeAsync());
 };
-
 
 export const CHANGE_MAP_STYLE = 'CHANGE_MAP_STYLE';
 

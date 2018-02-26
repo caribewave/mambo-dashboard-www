@@ -3,13 +3,13 @@ import { combineReducers } from 'redux';
 // FIXME when development is finished for router 4.0 import { routerReducer as routing } from 'react-router-redux';
 import { intlReducer as intl } from 'react-intl-redux';
 // Own Reducers
-import aboutme from '../pages/home';
+import style from './style.reducer';
 import metadata from '../partials';
 
 const reducers = combineReducers({
   // FIXME when development for router 4.0 is done routing: routing,
-  intl: intl,
-  [aboutme.constants.NAME]: aboutme.reducer,
+  intl,
+  style,
   [metadata.constants.NAME]: metadata.reducer
 });
 

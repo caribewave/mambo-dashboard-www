@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { defineMessages, injectIntl} from 'react-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
+import {PROPS_TYPE_STYLE} from "../constants";
 
 
 const MapboxGL = ReactMapboxGl({
@@ -23,14 +24,16 @@ const messages = defineMessages({
 });
 
 class Map extends Component {
-  constructor(props) {
-    super(props);
-  }
+
+  static propTypes = {
+    style: PROPS_TYPE_STYLE
+  };
+
 
   render() {
     return (
       <MapboxGL
-        style="mapbox://styles/mapbox/streets-v8"
+        style={this.props.style || "mapbox://styles/mapbox/streets-v8"}
         zoom={zoom}
         containerStyle={{
           height: "500px",
@@ -47,10 +50,6 @@ class Map extends Component {
   }
 }
 
-// TypeChecking for properties
-Map.propTypes = {
-  text: PropTypes.string
-};
 
 export default injectIntl(Map);
 

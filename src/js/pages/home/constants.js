@@ -1,2 +1,3 @@
-export const NAME = 'aboutme';
-export const STYLE = [{text:"Satelite"}, {text:"normal"}];
+import PropTypes from 'prop-types';
+
+export const PROPS_TYPE_STYLE = PropTypes.shape({text: PropTypes.string});
