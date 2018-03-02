@@ -10,7 +10,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <Map style={this.props.selectedStyle && this.props.selectedStyle.url}/>
+        <Map style_url={this.props.selectedStyle && this.props.selectedStyle.url}/>
         <StylePicker/>
       </div>
     );

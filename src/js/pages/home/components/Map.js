@@ -6,10 +6,9 @@ import {PROPS_TYPE_STYLE} from "../constants";
 
 
 const MapboxGL = ReactMapboxGl({
-  accessToken: 'pk.eyJ1IjoibG91aXNjdXJyaWUiLCJhIjoiY3MwR3B3QSJ9._5UXyjEIY0YisuAz9c_tJA'
+  accessToken: 'pk.eyJ1Ijoibmljb2ZhdiIsImEiOiJjaXNkNW0yNHYwMDB0MnVwZmFnYjRjaXpyIn0.uPzQVfOXDwEHHYQwV_RUgA'
 });
 
-const mapStyle = 'mapbox://styles/louiscurrie/cizcq06l600292so15ydwjckr';
 const zoom = [8];
 
 const messages = defineMessages({
@@ -26,14 +25,14 @@ const messages = defineMessages({
 class Map extends Component {
 
   static propTypes = {
-    style: PROPS_TYPE_STYLE
+    style_url: PropTypes.string
   };
 
 
   render() {
     return (
       <MapboxGL
-        style={this.props.style || "mapbox://styles/mapbox/streets-v8"}
+        style={this.props.style_url || "mapbox://styles/mapbox/streets-v8"}
         zoom={zoom}
         containerStyle={{
           height: "500px",

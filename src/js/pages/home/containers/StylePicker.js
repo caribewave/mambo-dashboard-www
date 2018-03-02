@@ -8,9 +8,6 @@ class StylePicker extends Component {
 
   //todo call to get styles when they are in server
 
-  onClick = (style) => {
-    this.props.changeMapStyle(style)
-  };
 
   render() {
     return (

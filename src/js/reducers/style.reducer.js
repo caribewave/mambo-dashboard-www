@@ -2,8 +2,11 @@ import * as ActionTypes from '../actions/style.actions';
 import merge from 'lodash.merge';
 
 const profile = (state = {
-  styles: [{text: "Normal"}, {text: "Satelite"}],
-  selectedStyle: {text: "Normal"}
+  styles: [
+    {text: "Normal", url:"mapbox://styles/nicofav/cjeaacnkq1n9g2so207wgyab6"},
+    {text: "Satelite", url:"mapbox://styles/nicofav/cjeaadjf8jvzo2snupevgtn5j"}
+    ],
+  selectedStyle: {text: "Normal", url:"mapbox://styles/nicofav/cjeaacnkq1n9g2so207wgyab6"}
 }, action) => {
   const {type} = action;
 
