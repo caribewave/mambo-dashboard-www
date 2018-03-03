@@ -1,0 +1,25 @@
+sudo: required
+
+language: node_js
+node_js:
+  - "node"
+
+cache:
+  directories:
+    - "node_modules"
+
+services:
+  - docker
+
+install:
+  - npm install
+
+script:
+  - npm test
+  - docker build -t handmambo/dashboard-www .
+  
+deploy:
+  provider: script
+  script: bash bin/docker_push.sh
+  on:
+    branch: develop
