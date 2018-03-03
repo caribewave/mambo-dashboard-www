@@ -1,4 +1,4 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
-docker build -t website:dev .
+docker build -t handmambo/dashboard-www:dev .

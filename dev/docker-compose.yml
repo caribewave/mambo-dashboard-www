@@ -1,21 +1,19 @@
-version: '2.1'
+version: '3'
 
 networks:
-  websitenet:
-    external:
-      name: websitenet
+  bridged:
+    driver: bridge
 
 services:
   website:
-    container_name: website
-    image: website:dev
+    container_name: dashboard-www
+    image: handmambo/dashboard-www:dev
     networks:
-      - websitenet
+      - bridged
     volumes:
-      - ../:/usr/src/app/
-      - ./run.sh:/run.sh:ro
+      - ../:/usr/src/app
     ports:
-      - "3000:80"
+      - "3000:3000"
     logging:
       options:
         max-size: 4m

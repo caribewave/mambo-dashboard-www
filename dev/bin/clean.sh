@@ -1,3 +1,3 @@
 #!/bin/bash
-docker stop website
-docker rm website
+docker stop dashboard-www
+docker rm dashboard-www
