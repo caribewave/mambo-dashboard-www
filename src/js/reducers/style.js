@@ -13,6 +13,9 @@ const profile = (state = {
   switch (type) {
     case ActionTypes.CHANGE_MAP_STYLE :
       return merge({}, state, {selectedStyle: action.style});
+
+    case ActionTypes.LOAD_LAYERS_SUCCESS:
+      return merge({}, state, {layers: action.result});
   }
 
   return state;

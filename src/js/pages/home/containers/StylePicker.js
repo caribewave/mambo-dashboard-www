@@ -1,14 +1,15 @@
 import {changeMapStyle} from '../../../actions/style';
+import {loadLayers} from '../../../actions/style';
 
 import React, {Component} from 'react';
 import StylePickerComponent from '../components/StylePickerComponent';
 import {connect} from 'react-redux';
-import {PROPS_TYPE_STYLE} from "../constants";
 
 class StylePicker extends Component {
 
-  //todo call to get styles when they are in server
-
+  componentDidMount() {
+    this.props.loadLayers();
+  }
 
   render() {
     return (
@@ -26,6 +27,6 @@ const mapStateToProps = (state, ownProps) => ({
   selectedStyle: state.style.selectedStyle,
 });
 
-const actions = {changeMapStyle};
+const actions = {changeMapStyle, loadLayers};
 
 export default connect(mapStateToProps, actions)(StylePicker)
