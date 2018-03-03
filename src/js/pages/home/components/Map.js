@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {defineMessages, injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
-import {PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_COORDINATE} from "../constants";
 
 
 const MapboxGL = ReactMapboxGl({
@@ -11,25 +11,35 @@ const MapboxGL = ReactMapboxGl({
 
 const zoom = [8];
 
-const messages = defineMessages({
-  lblWelcome: {
-    id: 'lbl.welcome',
-    defaultMessage: 'Welcome'
-  },
-  lblIntroduction: {
-    id: 'lbl.introduction',
-    defaultMessage: 'Introduction'
-  }
-});
+
+const lineLayout = {
+  'line-cap': 'round',
+  'line-join': 'round'
+};
+
+const linePaint = {
+  'line-color': '#4790E5',
+  'line-width': 12
+};
 
 class Map extends Component {
 
   static propTypes = {
-    style_url: PropTypes.string
+    style_url: PropTypes.string,
+    points: PropTypes.arrayOf(PROPS_COORDINATE)
   };
 
 
   render() {
+
+    const layersinfo = [{type: "line", layout: lineLayout, paint: linePaint}];
+
+    const mappedRoute = this.props.points.map(point => [point.lat, point.lng]);
+
+    const layers = layersinfo.map((l, i) => (
+      <Layer type={l.type} layout={l.layout} paint={l.paint} key={i}><Feature coordinates={mappedRoute}/></Layer>));
+
+
     return (
       <MapboxGL
         style={this.props.style_url || "mapbox://styles/mapbox/streets-v8"}
@@ -38,12 +48,7 @@ class Map extends Component {
           height: "500px",
           width: "100%"
         }}>
-        <Layer
-          type="symbol"
-          id="marker"
-          layout={{"icon-image": "marker-15"}}>
-          <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
-        </Layer>
+        {layers}
       </MapboxGL>
     );
   }
