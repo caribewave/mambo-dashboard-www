@@ -1,20 +1,33 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import rootReducers from '../reducers';
-import thunk from 'redux-thunk';
+import {applyMiddleware, compose, createStore} from 'redux';
+
 import api from '../client/api';
-import {addLocaleData} from 'react-intl';
-import merge from 'lodash.merge';
-import en from 'react-intl/locale-data/en';
-import enLocaleData from '../i18n/en';
-// i18n
-addLocaleData([...en]);
+import reducers from '../reducers';
+import history from '../store/history';
+import i18n from '../i18n/index';
+import thunk from 'redux-thunk';
 
-const reducers = rootReducers;
 
-const configureStore = preloadedState => createStore(
-    reducers,
-    merge(preloadedState, {intl: enLocaleData}),
-    applyMiddleware(thunk, api)
-);
+const configureStore = preloadedState => {
+
+    const initialState = Object.assign({}, preloadedState, i18n);
+
+    const store = createStore(
+        reducers,
+        initialState,
+        compose(
+            applyMiddleware(thunk, api, history.middleware)
+        )
+    );
+
+    if (module.hot) {
+        // Enable Webpack hot module replacement for reducers
+        module.hot.accept('../reducers', () => {
+            const nextRootReducer = require('../reducers/reducers').default;
+            store.replaceReducer(nextRootReducer)
+        })
+    }
+
+    return store;
+};
 
 export default configureStore;

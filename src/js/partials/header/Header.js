@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { injectIntl} from 'react-intl';
-import Menu from './Menu';
+import Menu from '../menu/Menu';
 
 class Header extends Component {
   constructor(props) {

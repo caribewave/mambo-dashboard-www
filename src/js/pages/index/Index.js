@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {HeaderPartial} from '../partials/containers/index';
+import {Header} from '../../partials/components';
 import {connect} from 'react-redux';
-import '../../stylesheets/main.scss';
+import '../../../stylesheets/main.scss';
 
 
 class Index extends Component {
@@ -13,7 +13,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-      <HeaderPartial/>
+      <Header/>
       <div id="main" className="main-container">
         {this.props.children}
       </div>
@@ -24,7 +24,8 @@ class Index extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    errorMessage: state.profile,
+    location: state.router.location,
+    errorMessage: state.profile
   };
 };
 

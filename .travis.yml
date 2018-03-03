@@ -1,26 +1,24 @@
 sudo: required
-
 language: node_js
 node_js:
-  - "node"
-
+- node
 cache:
   directories:
-    - "node_modules"
-
+  - node_modules
 services:
-  - docker
-
+- docker
 install:
-  - npm install
-
+- npm install
 script:
-  - npm test
-  - npm run-script build
-  - docker build -t handmambo/dashboard-www .
-  
+- npm test
+- npm run-script build
+- docker build -t handmambo/dashboard-www .
 deploy:
   provider: script
   script: bash bin/docker_push.sh
   on:
     branch: develop
+env:
+  global:
+  - secure: wPGWQ3CL8IgcRloOu3OiFbN44uWZb+tI/TeecWPPS5BgfZwjNeC7HQ9yqIBX1pygaEujlacQJZtO3lucFf4xOVs+vh9Ezcol3OIxuVbHIcFBEm4FtzbXcCdWATbP7HZdcIZ8ROQYSBJw3zO1H4mm/2IPqb2A7Zfu3HxtgPW8gZZvqlj5ZERFbUh5NtrEoAhenSLY3Egnxe3MVih1E8tZJHaHbzPPVydkBQ/zsS69FoZtyXp6+N+9zCyIoLs+umdcde63NePn1e46lKh5wLXTup78eo5brmJud2upxyCGgB2RYRTZf1umzFkPv+KSA+WuwIpOdTpLd6bTyEEu48LNqHhQ1A1nLow2JlqWGjoe2PKzsX15KQ130JWIVxrhzY+IwOU0N9jVNlA+j8ew8YgONVZRGENCoDOPYTYEDA7Egi4Ry8ospd5k7pmoDXuj5etLyRnLGlq+2GU0BV2WBlHx863JjX3KylOhD2GQFV2gyiESfS6TNzakf27HYO0tNU5QqdAKagS/RNb6xh9nxsIugzUMjlU1ibgaUqS51its0UiZlV2Qnmx0gFh3AtEfGbxP+lktEHiUpdxTDfbaV9qWSe7b9tMz9yVJqzQs87B345pneuvQvosI3R3EvveMM+gjNDxa9HTsjIqm3nVc0No6xYztDLza2zXU432W09/EAXA=
+  - secure: C8CeC4LbyzFrxdDWh8QMRrRiiECN8yhyK4NTvLe9S/AuuqURxYiq93fPVlIhPe6KdW7C2SgSNXsEzhpgPVCNH8p9P+tDxZMqrK7DWeyBtjIHDL3z2nLe+0rtkY4YTJEP97DxDFdBwcIcBVfyH+kN1ro/kC418vz9cUN0KsNyMigA7769Ei/+4MFOdXc8I8vsCaOgJnaHxCy1lOGKpgrw8QpHvjdExzjWOXK4+IlXGkWw8THBbm5oWh/cnEe4WqwyTmGS8+q+hBJ43SCMNpYR67po0dRnGbwlk4VGTdSUgIPk/gPYGAqD0rnoI+aadfwhXCS7qisSNbF2mQw6E4B12AkIFDE/l5umFSeDu7y6Hh2S0qr2oGGTrCMFk/nsPj5SWWUq0sBW5Ch6vM/Ja6YifsgU+Yr/oXzSTtfdnsLvYrTSBQUTUfvJ9f1Q/VLd4vg9NrV7BLBmEe4xW78P15JDfmnBQAsj4ViVE2A2hFWll8L00P0WX5GqtA629q2Iyd2cEfU7xD9iCPaWn3B2XPrhzR6drNWf0k1QkthK8jwXF2J3Qur46hsC0R9SK3FHR49DZXW0igtk0uE/yot2EUoVTEs2SgwJQLwdDzz8KnGP86rneaqhxVS6HRi49EbScJENPI++Ms39pHAEm3rFVpvrDDo2s69AjorXzUcI5VhylwE=

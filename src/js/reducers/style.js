@@ -1,4 +1,4 @@
-import * as ActionTypes from '../actions/style.actions';
+import * as ActionTypes from '../actions/style';
 import merge from 'lodash.merge';
 
 const profile = (state = {

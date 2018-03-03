@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router';
-import Header from '../components/Header';
+import Header from './Header';
 import {connect} from 'react-redux';
 import { withRouter } from 'react-router-dom'
 

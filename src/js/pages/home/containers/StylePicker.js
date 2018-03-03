@@ -1,4 +1,5 @@
-import {changeMapStyle} from '../../../actions/style.actions';
+import {changeMapStyle} from '../../../actions/style';
+
 import React, {Component} from 'react';
 import StylePickerComponent from '../components/StylePickerComponent';
 import {connect} from 'react-redux';
