@@ -28,3 +28,23 @@ const loadLayersAsync = () => ({
 export const loadLayers = () => (dispatch) => {
   return dispatch(loadLayersAsync());
 };
+
+/*------------------------------------------------------------------------------------------
+ * Create style
+ *-----------------------------------------------------------------------------------------*/
+export const CREATE_STYLE_REQUEST = 'CREATE_STYLE_REQUEST';
+export const CREATE_STYLE_SUCCESS = 'CREATE_STYLE_SUCCESS';
+export const CREATE_STYLE_FAILURE = 'CREATE_STYLE_FAILURE';
+
+const createStyleAsync = () => ({
+  [CALL_API]: {
+    types: [ CREATE_STYLE_REQUEST, CREATE_STYLE_SUCCESS, CREATE_STYLE_FAILURE ],
+    endpoint: `http://localhost:3001/layers`,
+    method: 'Post'
+  }
+});
+
+export const createStyle = (style) => (dispatch) => {
+  console.log(style);
+  return dispatch(createStyleAsync());
+};
