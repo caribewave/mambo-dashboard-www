@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {defineMessages, injectIntl} from 'react-intl';
+import {injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
-import {PROPS_COORDINATE} from "../constants";
+import {PROPS_TRAJECTORY} from "../constants";
 
 
 const MapboxGL = ReactMapboxGl({
@@ -26,37 +26,41 @@ class Map extends Component {
 
   static propTypes = {
     style_url: PropTypes.string,
-    points: PropTypes.arrayOf(PROPS_COORDINATE)
+    points: PropTypes.arrayOf(PROPS_TRAJECTORY)
   };
-
-  displayPoints() {
-    if (this.props.points) {
-      return this.props.points.map((object, i) =>
-          <Feature key={i} coordinates={[object.lat, object.lng]}/>
-      )
-    }
-  }
 
   render() {
 
-    const layersinfo = [{type: "line", layout: lineLayout, paint: linePaint}];
+    let layers;
+    let mappedRoute;
+    const layersinfo = [{type: "line", layout: lineLayout, paint: linePaint}, {
+      type: "line",
+      layout: lineLayout,
+      paint: linePaint
+    }];
 
-    const mappedRoute = this.props.points.map(point => [point.lat, point.lng]);
+    if (this.props.points) {
+      mappedRoute = this.props.points.map(list => list.map(point => [point.lat, point.lng]));
+    }
 
-    const layers = layersinfo.map((l, i) => (
-      <Layer type={l.type} layout={l.layout} paint={l.paint} key={i}><Feature coordinates={mappedRoute}/></Layer>));
+
+    if (mappedRoute) {
+      layers = layersinfo.map((l, i) => (
+          <Layer type={l.type} layout={l.layout} paint={l.paint} key={i}><Feature
+              coordinates={mappedRoute[i]}/></Layer>));
+    }
 
 
     return (
-      <MapboxGL
-        style={this.props.style_url || "mapbox://styles/mapbox/streets-v8"}
-        zoom={zoom}
-        containerStyle={{
-          height: "500px",
-          width: "100%"
-        }}>
-        {layers}
-      </MapboxGL>
+        <MapboxGL
+            style={this.props.style_url || "mapbox://styles/mapbox/streets-v8"}
+            zoom={zoom}
+            containerStyle={{
+              height: "500px",
+              width: "100%"
+            }}>
+          {layers}
+        </MapboxGL>
     );
   }
 }

@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 // Own Reducers
 import styleReducer from './style';
+import pointReducer from './point';
 
 // i18n
 import { intlReducer as intl } from 'react-intl-redux';
@@ -10,7 +11,7 @@ import { intlReducer as intl } from 'react-intl-redux';
 const reducers = combineReducers({
     intl: intl,
     router: routerReducer,
-  addPoint:addpoint,
+    point:pointReducer,
     style: styleReducer
 });
 

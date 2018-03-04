@@ -6,7 +6,7 @@ const profile = (state = {
   const {type} = action;
   switch (type) {
     case ActionTypes.LOAD_POINT_SUCCESS :
-      return merge({}, state, {points: action.result});
+      return merge({}, state, {point: action.result});
   }
 
   return state;
