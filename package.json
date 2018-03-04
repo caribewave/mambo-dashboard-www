@@ -4,10 +4,11 @@
   "description": "A personal Website template using React",
   "main": "index.js",
   "dependencies": {
+    "ajv": "^6.2.1",
     "axios": "^0.17.1",
     "lodash.isplainobject": "^4.0.6",
     "lodash.merge": "^4.6.1",
-    "mapbox-gl": "^0.44.1",
+    "mapbox-gl": "^0.44.0",
     "material-ui": "^1.0.0-beta.34",
     "material-ui-icons": "^1.0.0-beta.17",
     "normalizr": "^2.2.1",
