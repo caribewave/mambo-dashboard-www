@@ -21,7 +21,15 @@ class AddStyleComponent extends Component {
   };
 
   handleSubmit = (event) => {
-    this.props.onStyleCreated(this.state);
+      let style = {
+          "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
+          "label": this.state.name,
+          "type": "proxy", // TODO support more formats!
+          "source": this.state.source,
+          "retina": this.state.retina,
+          "vector": this.state.vector
+      };
+    this.props.onStyleCreated(style);
     event.preventDefault();
   };
 

@@ -9,7 +9,7 @@ const profile = (state = {
 
   switch (type) {
     case ActionTypes.CHANGE_MAP_STYLE :
-      return merge({}, state, {selectedStyle: action.style});
+      return merge({}, state, {selectedStyle: null}, {selectedStyle: action.style});
 
     case ActionTypes.LOAD_LAYERS_SUCCESS:
       let styles = [];
@@ -21,7 +21,7 @@ const profile = (state = {
           defaultStyle = s; 
         }
       });
-      return merge({}, state, {layers: styles, selectedStyle: defaultStyle});
+      return merge({}, state, {styles: styles, selectedStyle: defaultStyle});
   }
 
   return state;

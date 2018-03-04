@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
-import {PROPS_TRAJECTORY} from "../constants";
+import {PROPS_TRAJECTORY, PROPS_TYPE_STYLE} from "../constants";
 
 
 const MapboxGL = ReactMapboxGl({
@@ -25,7 +25,7 @@ const linePaint = {
 class Map extends Component {
 
     static propTypes = {
-        styleUrl: PropTypes.string,
+        style: PROPS_TYPE_STYLE,
         points: PropTypes.arrayOf(PROPS_TRAJECTORY)
     };
 
@@ -49,19 +49,42 @@ class Map extends Component {
                 <Layer type={l.type} layout={l.layout} paint={l.paint} key={i}><Feature
                     coordinates={mappedRoute[i]}/></Layer>));
         }
-
-
-        return this.props.styleUrl ? (
-            <MapboxGL
-                style={this.props.styleUrl}
-                zoom={zoom}
-                containerStyle={{
-                    height: "500px",
-                    width: "100%"
-                }}>
-                {layers}
-            </MapboxGL>
-        ) : (
+        
+        if (this.props.style) {
+            let style = this.props.style.source;
+            if (!this.props.style.vector) {
+                
+                style = {
+                    "version": 8,
+                        "sources": {
+                        "raster-tiles": {
+                            "type": "raster",
+                                "tiles": [this.props.style.source],
+                                "tileSize": this.props.style.retina ? 512 : 256
+                        }
+                    },
+                    "layers": [{
+                        "id": this.props.style.name,
+                        "type": "raster",
+                        "source": "raster-tiles",
+                        "minzoom": 0,
+                        "maxzoom": 21
+                    }]
+                }
+            }
+            return (
+                <MapboxGL
+                    style={style}
+                    zoom={zoom}
+                    containerStyle={{
+                        height: "500px",
+                        width: "100%"
+                    }}>
+                    {layers}
+                </MapboxGL>
+            );
+        }
+        return (
             <div>Loading Map</div>
         );
     }
