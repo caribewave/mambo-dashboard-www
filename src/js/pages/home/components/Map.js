@@ -29,6 +29,13 @@ class Map extends Component {
     points: PropTypes.arrayOf(PROPS_COORDINATE)
   };
 
+  displayPoints() {
+    if (this.props.points) {
+      return this.props.points.map((object, i) =>
+          <Feature key={i} coordinates={[object.lat, object.lng]}/>
+      )
+    }
+  }
 
   render() {
 

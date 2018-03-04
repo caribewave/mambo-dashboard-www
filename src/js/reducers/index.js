@@ -10,6 +10,7 @@ import { intlReducer as intl } from 'react-intl-redux';
 const reducers = combineReducers({
     intl: intl,
     router: routerReducer,
+  addPoint:addpoint,
     style: styleReducer
 });
 
