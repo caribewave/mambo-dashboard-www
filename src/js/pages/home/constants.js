@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 
 export const PROPS_TYPE_STYLE = PropTypes.shape({
-  text: PropTypes.string,
-  url: PropTypes.string
+  name: PropTypes.string.isRequired,
+  source: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  retina: PropTypes.bool,
+  vector: PropTypes.bool,
 });
 
 export const PROPS_COORDINATE = PropTypes.shape({

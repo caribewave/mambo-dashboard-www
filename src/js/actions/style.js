@@ -1,4 +1,4 @@
-import {CALL_API} from '../client/api';
+import {CALL_API, API_TILE, API_GIS} from '../client/api';
 
 /*------------------------------------------------------------------------------------------
  * Style actions
@@ -20,7 +20,8 @@ export const LOAD_LAYERS_FAILURE = 'LOAD_LAYERS_FAILURE';
 const loadLayersAsync = () => ({
   [CALL_API]: {
     types: [ LOAD_LAYERS_REQUEST, LOAD_LAYERS_SUCCESS, LOAD_LAYERS_FAILURE ],
-    endpoint: `http://localhost:3001/layers`,
+    endpoint: `layers`,
+    api: API_TILE,
     method: 'GET'
   }
 });
@@ -36,15 +37,17 @@ export const CREATE_STYLE_REQUEST = 'CREATE_STYLE_REQUEST';
 export const CREATE_STYLE_SUCCESS = 'CREATE_STYLE_SUCCESS';
 export const CREATE_STYLE_FAILURE = 'CREATE_STYLE_FAILURE';
 
-const createStyleAsync = () => ({
+const createStyleAsync = (style) => ({
   [CALL_API]: {
     types: [ CREATE_STYLE_REQUEST, CREATE_STYLE_SUCCESS, CREATE_STYLE_FAILURE ],
-    endpoint: `http://localhost:3001/layers`,
-    method: 'Post'
+    endpoint: `layers`,
+    api: API_TILE,
+    method: 'POST',
+    body: style
   }
 });
 
 export const createStyle = (style) => (dispatch) => {
   console.log(style);
-  return dispatch(createStyleAsync());
+  return dispatch(createStyleAsync(style));
 };

@@ -1,3 +1,4 @@
 var Config = {
-  apiBaseUrl: 'http://localhost:3000'
+  tileApiBaseUrl: 'http://localhost:8081',
+  gisApiBaseUrl: 'http://localhost:3000'
 };

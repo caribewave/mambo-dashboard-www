@@ -26,7 +26,7 @@ class StylePickerComponent extends Component {
              onClick={() => {
                this.btnTapped(style);
              }}
-        >{this.props.selectedStyle && this.props.selectedStyle.text === style.text ? style.text + "x" : style.text} </div>)
+        >{this.props.selectedStyle && this.props.selectedStyle.name === style.name ? style.name + "x" : style.text} </div>)
     );
 
     return (

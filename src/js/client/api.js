@@ -1,9 +1,25 @@
 import axios from 'axios';
 
-const callApi = (endpoint, method, schema, store, headers, body) => {
+const callApi = (api, endpoint, method, schema, store, headers, body) => {
   console.log('Will call api with endpoint', endpoint, 'and method', method);
+  let fullUrl;
   // Create Url
-  const fullUrl = (endpoint.indexOf(Config.apiBaseUrl) === -1) ? Config.apiBaseUrl + '/' + endpoint : endpoint;
+  if (endpoint.indexOf('http') === -1) {
+    let baseUrl;
+    switch (api) {
+        case API_TILE:
+          baseUrl = Config.tileApiBaseUrl;
+          break;
+        case API_GIS:
+          baseUrl = Config.gisApiBaseUrl;
+          break;
+    }
+    fullUrl = baseUrl + ((endpoint.indexOf('/') === 0) ? endpoint : '/' + endpoint);
+  } else {
+    // User provided a specific endpoint (third-party?
+    fullUrl = endpoint;
+  }
+  console.log(fullUrl);
   // Return Promise
   return axios({
     url: fullUrl,
@@ -15,6 +31,10 @@ const callApi = (endpoint, method, schema, store, headers, body) => {
 
 // Action key that carries API call info interpreted by this Redux middleware.
 export const CALL_API = Symbol('Call API');
+
+export const API_TILE = Symbol('Tile API');
+export const API_GIS = Symbol('GIS API');
+
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
@@ -28,7 +48,7 @@ export default store => next => action => {
 
   // A CALL_API action has an endpoint, a method, 3 action types, a schema (optional), a body (optional)
   let {endpoint} = callAPI;
-  const {schema, method, body, types, headers} = callAPI;
+  const {schema, method, body, types, headers, api} = callAPI;
 
   // Some endpoints can require state to replace path variables and params
   if (typeof endpoint === 'function') {
@@ -59,7 +79,7 @@ export default store => next => action => {
   next(actionWith({type: requestType}));
 
   // Calls API and will forward the type success or failure after completion
-  return callApi(endpoint, method, schema, store, headers, body)
+  return callApi(api, endpoint, method, schema, store, headers, body)
   .then(res => {
     // Success
     let result = null;

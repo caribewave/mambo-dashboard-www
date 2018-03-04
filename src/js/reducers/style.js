@@ -2,11 +2,8 @@ import * as ActionTypes from '../actions/style';
 import merge from 'lodash.merge';
 
 const profile = (state = {
-  styles: [
-    {text: "Normal", url:"mapbox://styles/nicofav/cjeaacnkq1n9g2so207wgyab6"},
-    {text: "Satelite", url:"mapbox://styles/nicofav/cjeaadjf8jvzo2snupevgtn5j"}
-    ],
-  selectedStyle: {text: "Normal", url:"mapbox://styles/nicofav/cjeaacnkq1n9g2so207wgyab6"}
+  styles: [],
+  selectedStyle: null
 }, action) => {
   const {type} = action;
 
@@ -15,7 +12,16 @@ const profile = (state = {
       return merge({}, state, {selectedStyle: action.style});
 
     case ActionTypes.LOAD_LAYERS_SUCCESS:
-      return merge({}, state, {layers: action.result});
+      let styles = [];
+      let defaultStyle = null;
+      Object.keys(action.result).forEach((k) => {
+        let s = Object.assign({id: k}, action.result[k]);
+        styles.push(s);
+        if (s.default) {
+          defaultStyle = s; 
+        }
+      });
+      return merge({}, state, {layers: styles, selectedStyle: defaultStyle});
   }
 
   return state;
