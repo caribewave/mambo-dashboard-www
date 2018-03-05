@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import ReactMapboxGl, {Feature, Layer} from 'react-mapbox-gl';
 import {PROPS_TRAJECTORY, PROPS_TYPE_STYLE} from "../constants";
-
+import './Map.scss';
 
 const MapboxGL = ReactMapboxGl({
-    accessToken: 'pk.eyJ1Ijoibmljb2ZhdiIsImEiOiJjaXNkNW0yNHYwMDB0MnVwZmFnYjRjaXpyIn0.uPzQVfOXDwEHHYQwV_RUgA'
+    accessToken: 'pk.tup'
 });
 
 const zoom = [8];
@@ -73,15 +73,12 @@ class Map extends Component {
                 }
             }
             return (
-                <MapboxGL
+              <MapboxGL
                     style={style}
                     zoom={zoom}
-                    containerStyle={{
-                        height: "500px",
-                        width: "100%"
-                    }}>
+                    containerStyle={{ width: '100%', height: '100%' }}>
                     {layers}
-                </MapboxGL>
+            </MapboxGL>
             );
         }
         return (

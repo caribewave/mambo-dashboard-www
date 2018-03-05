@@ -16,6 +16,9 @@ $light-grey: #dddddd;
 $text-color-primary: rgba(0,0,0,0.87);
 $text-color-secondary: #333;
 
+$header-height: 56px;
+$body-remaining-height: calc(100vh - 56px);
+
 
 // SIZES
 $text-size-xl: 1.8em;

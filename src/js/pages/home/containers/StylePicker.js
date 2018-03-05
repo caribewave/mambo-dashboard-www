@@ -15,7 +15,7 @@ class StylePicker extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{background: "#fff"}}>
         <StylePickerComponent
           styles={this.props.styles}
           selectedStyle={this.props.selectedStyle}

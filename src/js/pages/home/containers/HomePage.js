@@ -8,18 +8,21 @@ import './HomePage.scss';
 import {loadPointAsync} from "../../../actions/point.actions";
 
 
-
 class HomePage extends Component {
 
-  componentDidMount(){
-      this.props.loadPointAsync();
+  componentDidMount() {
+    // this.props.loadPointAsync();
   }
 
   render() {
     return (
-      <div>
-        <Map style={this.props.selectedStyle} points={this.props.points.point}/>
-        <StylePicker/>
+      <div id="home-container">
+        <div id="map-container">
+          <Map style={this.props.selectedStyle} points={this.props.points.point}/>
+        </div>
+        <div id="overlay-container">
+          <StylePicker/>
+        </div>
       </div>
     );
   }
@@ -28,7 +31,7 @@ class HomePage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return ({
     selectedStyle: state.style.selectedStyle,
-    points : state.point
+    points: state.point
   });
 };
 

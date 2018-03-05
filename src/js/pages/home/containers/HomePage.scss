@@ -1,8 +1,14 @@
-@import "../../../../stylesheets/abstracts/_mixins";
+@import "../../../../stylesheets/abstracts/_variables";
 @import "../../../../stylesheets/abstracts/_media";
 
-@media #{$handheld} {
-  .aboutme-container {
-    //@include border-radius-important(0);
-  }
+#map-container {
+  width: 100vw;
+  height: $body-remaining-height;
+  position: absolute;
+}
+
+#overlay-container {
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
 }
