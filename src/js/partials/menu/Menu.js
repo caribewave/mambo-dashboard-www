@@ -5,6 +5,8 @@ import IconButton from 'material-ui/IconButton';
 import MaterialMenu, {MenuItem} from 'material-ui/Menu';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import {ListItemText} from 'material-ui/List';
+import {connect} from "react-redux";
+import {toggleMapStyle} from '../../actions/style';
 
 
 const options = [
@@ -29,8 +31,9 @@ class Menu extends Component {
     this.setState({anchorEl: event.currentTarget});
   };
 
-  handleClose = () => {
+  openItem = event => {
     this.setState({anchorEl: null});
+    this.props.toggleMapStyle(true);
   };
 
   render() {
@@ -59,7 +62,7 @@ class Menu extends Component {
           }}
         >
           {options.map((option, i) => (
-            <MenuItem key={i} onClick={this.handleClose}>
+            <MenuItem key={i} onClick={this.openItem}>
               <ListItemText primary={<FormattedMessage id={option.label}/>}/>
             </MenuItem>
           ))}
@@ -69,5 +72,9 @@ class Menu extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => ({
+});
 
-export default injectIntl(Menu);
+const actions = {toggleMapStyle};
+
+export default connect(mapStateToProps, actions)(Menu)

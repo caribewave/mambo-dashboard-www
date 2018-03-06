@@ -3,7 +3,8 @@ import merge from 'lodash.merge';
 
 const profile = (state = {
   styles: [],
-  selectedStyle: null
+  selectedStyle: null,
+  popupOpen: false
 }, action) => {
   const {type} = action;
 
@@ -22,6 +23,10 @@ const profile = (state = {
         }
       });
       return merge({}, state, {styles: styles, selectedStyle: defaultStyle});
+
+    case ActionTypes.TOGGLE_MAP_STYLE:
+      return merge({}, state, {popupOpen: false}, {popupOpen: action.open});
+
   }
 
   return state;

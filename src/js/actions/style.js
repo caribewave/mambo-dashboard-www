@@ -51,3 +51,13 @@ export const createStyle = (style) => (dispatch) => {
   console.log(style);
   return dispatch(createStyleAsync(style));
 };
+
+/*------------------------------------------------------------------------------------------
+ * Edit style
+ *-----------------------------------------------------------------------------------------*/
+export const TOGGLE_MAP_STYLE = 'TOGGLE_MAP_STYLE';
+
+export const toggleMapStyle = (open) => ({
+  type: TOGGLE_MAP_STYLE,
+  open: open
+});
