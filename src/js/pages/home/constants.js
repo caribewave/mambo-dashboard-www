@@ -27,4 +27,4 @@ export const PROPS_POI = PropTypes.shape({
   time: PropTypes.instanceOf(Date),
 });
 
-export const PROPS_TRAJECTORY = PropTypes.arrayOf(PROPS_POI);
+export const PROPS_PLANES = PropTypes.arrayOf(PROPS_POI);

@@ -3,15 +3,15 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 // Own Reducers
 import styleReducer from './style';
-import pointReducer from './map';
+import mapDataReducer from './mapData';
 
 // i18n
 import { intlReducer as intl } from 'react-intl-redux';
 
 const reducers = combineReducers({
-    intl: intl,
-    router: routerReducer,
-    point:pointReducer,
+    intl : intl,
+    router : routerReducer,
+    mapData : mapDataReducer,
     style: styleReducer
 });
 

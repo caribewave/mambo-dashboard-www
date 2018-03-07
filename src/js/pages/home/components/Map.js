@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import mapboxgl from 'mapbox-gl';
-import {PROPS_TRAJECTORY, PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_PLANES, PROPS_TYPE_STYLE} from "../constants";
 import './Map.scss';
 import 'mapbox-gl-css';
 
@@ -11,7 +11,7 @@ class Map extends Component {
 
   static propTypes = {
     style: PROPS_TYPE_STYLE,
-    points: PROPS_TRAJECTORY,
+    planes: PROPS_PLANES,
     onMapPositionChanged: PropTypes.func
   };
 
@@ -33,10 +33,9 @@ class Map extends Component {
   };
 
   computeEstimatedPosition = (angle) => {
-    console.log(this.props.points);
     return {
       type: "FeatureCollection",
-      features: this.props.points.map((plane) =>
+      features: this.props.planes.map((plane) =>
         this.computeSinglePoint(plane, angle)
       )
     }
@@ -116,10 +115,6 @@ class Map extends Component {
 
       this.map.setStyle(mapstyle);
     }
-
-    if (newProps.points !== this.props.points) {
-    }
-
   }
 
   render() {
