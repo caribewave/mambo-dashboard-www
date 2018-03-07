@@ -1,6 +1,11 @@
 # mambo-dashboard-www
 H.A.N.D. (Hackers Against Natural Disasters) tactical humanitarian dashboard website
 
+Develop Branch: 
+![Build status on develop](https://travis-ci.org/caribewave/mambo-dashboard-www.svg?branch=develop)  
+Master Branch:
+![Build status on master](https://travis-ci.org/caribewave/mambo-dashboard-www.svg?branch=master)
+
 
 ## 1. Development Environment
 
