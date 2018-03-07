@@ -1,4 +1,4 @@
-import * as ActionTypes from '../actions/point.actions';
+import * as ActionTypes from '../actions/point';
 import merge from 'lodash.merge';
 
 const profile = (state = {
@@ -6,7 +6,7 @@ const profile = (state = {
   const {type} = action;
   switch (type) {
     case ActionTypes.LOAD_POINT_SUCCESS :
-      return merge({}, state, {point: action.result});
+      return merge({}, state, {points: action.result});
   }
 
   return state;

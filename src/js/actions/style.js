@@ -1,4 +1,4 @@
-import {CALL_API, API_TILE, API_GIS} from '../client/api';
+import {CALL_API, API_TILE, API_SENSOR} from '../client/api';
 
 /*------------------------------------------------------------------------------------------
  * Style actions

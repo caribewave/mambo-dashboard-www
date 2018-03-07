@@ -10,8 +10,8 @@ const callApi = (api, endpoint, method, schema, store, headers, body) => {
         case API_TILE:
           baseUrl = Config.tileApiBaseUrl;
           break;
-        case API_GIS:
-          baseUrl = Config.gisApiBaseUrl;
+        case API_SENSOR:
+          baseUrl = Config.sensorApiBaseUrl;
           break;
     }
     fullUrl = baseUrl + ((endpoint.indexOf('/') === 0) ? endpoint : '/' + endpoint);
@@ -33,7 +33,7 @@ const callApi = (api, endpoint, method, schema, store, headers, body) => {
 export const CALL_API = Symbol('Call API');
 
 export const API_TILE = Symbol('Tile API');
-export const API_GIS = Symbol('GIS API');
+export const API_SENSOR = Symbol('GIS API');
 
 
 // A Redux middleware that interprets actions with CALL_API info specified.

@@ -15,10 +15,16 @@ export const PROPS_COORDINATE = PropTypes.shape({
   lng: PropTypes.number
 });
 
+export const PROPS_LOCATION = PropTypes.shape({
+  coordinates: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+});
+
 export const PROPS_POI = PropTypes.shape({
-  position: PROPS_COORDINATE,
+  location: PROPS_LOCATION,
+  altitude: PropTypes.number,
+  hex: PropTypes.string,
   heading: PropTypes.number,
   time: PropTypes.instanceOf(Date),
 });
 
-export const PROPS_TRAJECTORY = PropTypes.arrayOf(PROPS_COORDINATE);
+export const PROPS_TRAJECTORY = PropTypes.arrayOf(PROPS_POI);

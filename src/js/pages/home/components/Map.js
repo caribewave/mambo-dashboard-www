@@ -11,14 +11,14 @@ class Map extends Component {
 
   static propTypes = {
     style: PROPS_TYPE_STYLE,
-    points: PropTypes.arrayOf(PROPS_TRAJECTORY),
+    points: PROPS_TRAJECTORY,
     onMapPositionChanged: PropTypes.func
   };
 
 
-  computeSinglePoint = (point, angle) => {
-    const lat = point.lat + Math.cos(angle) * 20;
-    const lng = point.lng + Math.cos(angle) * 20;
+  computeSinglePoint = (plane, angle) => {
+    const lat = plane.location.coordinates[0][0]  + Math.cos(angle) * 20;
+    const lng = plane.location.coordinates[0][1]  + Math.cos(angle) * 20;
 
     return {
       "type": "Feature",
@@ -33,10 +33,11 @@ class Map extends Component {
   };
 
   computeEstimatedPosition = (angle) => {
+    console.log(this.props.points);
     return {
       type: "FeatureCollection",
-      features: this.props.points.map((point) =>
-        this.computeSinglePoint(point, angle)
+      features: this.props.points.map((plane) =>
+        this.computeSinglePoint(plane, angle)
       )
     }
   };
