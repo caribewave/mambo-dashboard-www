@@ -55,9 +55,9 @@ export const createStyle = (style) => (dispatch) => {
 /*------------------------------------------------------------------------------------------
  * Edit style
  *-----------------------------------------------------------------------------------------*/
-export const TOGGLE_MAP_STYLE = 'TOGGLE_MAP_STYLE';
+export const OPEN_MAP_STYLE_POPUP = 'OPEN_MAP_STYLE_POPUP';
 
-export const toggleMapStyle = (open) => ({
-  type: TOGGLE_MAP_STYLE,
+export const openMapStylePopup = (open) => ({
+  type: OPEN_MAP_STYLE_POPUP,
   open: open
 });

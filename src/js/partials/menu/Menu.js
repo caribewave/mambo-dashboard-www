@@ -6,11 +6,11 @@ import MaterialMenu, {MenuItem} from 'material-ui/Menu';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import {ListItemText} from 'material-ui/List';
 import {connect} from "react-redux";
-import {toggleMapStyle} from '../../actions/style';
+import {openMapStylePopup} from '../../actions/style';
 
 
 const options = [
-  {label: "lbl.home"},
+  {label: "lbl.map"},
   {label: "lbl.sensors"}
 ];
 
@@ -31,9 +31,14 @@ class Menu extends Component {
     this.setState({anchorEl: event.currentTarget});
   };
 
-  openItem = event => {
+  handleClose = () => {
     this.setState({anchorEl: null});
+  };
+
+  openItem = event => {
+    console.log("toto");
     this.props.toggleMapStyle(true);
+    this.setState({anchorEl: null});
   };
 
   render() {
@@ -75,6 +80,6 @@ class Menu extends Component {
 const mapStateToProps = (state, ownProps) => ({
 });
 
-const actions = {toggleMapStyle};
+const actions = {toggleMapStyle: openMapStylePopup};
 
 export default connect(mapStateToProps, actions)(Menu)

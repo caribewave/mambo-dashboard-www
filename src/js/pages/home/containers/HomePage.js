@@ -14,11 +14,16 @@ class HomePage extends Component {
     // this.props.loadPointAsync();
   }
 
+  onMapPositionChanged = (newPosition) => {
+    console.log(newPosition);
+  };
+
   render() {
     return (
       <div id="home-container">
         <div id="map-container">
-          <Map style={this.props.selectedStyle} points={this.props.points.point}/>
+          <Map style={this.props.selectedStyle} points={this.props.points.point}
+               onMapPositionChanged={this.onMapPositionChanged}/>
         </div>
         <div id="overlay-container">
           <StylePicker/>

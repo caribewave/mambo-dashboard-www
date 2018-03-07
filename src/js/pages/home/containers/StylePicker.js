@@ -1,7 +1,7 @@
 import {changeMapStyle} from '../../../actions/style';
 import {loadLayers} from '../../../actions/style';
 import {createStyle} from '../../../actions/style';
-import {toggleMapStyle} from '../../../actions/style';
+import {openMapStylePopup} from '../../../actions/style';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 
 import React, {Component} from 'react';
@@ -43,6 +43,6 @@ const mapStateToProps = (state, ownProps) => ({
   selectedStyle: state.style.selectedStyle,
 });
 
-const actions = {changeMapStyle, loadLayers, createStyle, toggleMapStyle};
+const actions = {changeMapStyle, loadLayers, createStyle, toggleMapStyle: openMapStylePopup};
 
 export default connect(mapStateToProps, actions)(StylePicker)

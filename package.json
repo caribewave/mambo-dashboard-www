@@ -55,7 +55,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "rm -rf dist && webpack --config webpack.prod.js"
+    "build": "rm -rf dist && webpack --config webpack.prod.js",
+    "prettier": "./node_modules/prettier/bin/prettier.js --write \"src/**/*.{js,jsx}\""
   },
   "repository": {
     "type": "git",

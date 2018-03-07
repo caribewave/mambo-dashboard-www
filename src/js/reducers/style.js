@@ -24,7 +24,7 @@ const profile = (state = {
       });
       return merge({}, state, {styles: styles, selectedStyle: defaultStyle});
 
-    case ActionTypes.TOGGLE_MAP_STYLE:
+    case ActionTypes.OPEN_MAP_STYLE_POPUP:
       return merge({}, state, {popupOpen: false}, {popupOpen: action.open});
 
   }

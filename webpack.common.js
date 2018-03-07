@@ -34,8 +34,8 @@ module.exports = {
         include: sourcePath
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
+        test: /\.(scss|css)$/,
+        exclude: /node_modules\/(?!(mapbox-gl)\/).*/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
@@ -83,5 +83,10 @@ module.exports = {
       template: path.resolve(staticSourcePath, 'index.html'),
       favicon: path.resolve(staticSourcePath, 'favicon.ico'),
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      "mapbox-gl-css": path.join(process.cwd(), "/node_modules/mapbox-gl/dist/mapbox-gl.css" )
+    }
+  }
 };

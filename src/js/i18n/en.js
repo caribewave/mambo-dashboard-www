@@ -5,7 +5,7 @@ export default {
     "lbl.home": "Home",
     "lbl.projects": "Projects",
     "lbl.hobbies": "Hobbies",
-    "lbl.map": "Map",
+    "lbl.map": "Map style",
     "lbl.sensors": "Senors"
   }
 }
