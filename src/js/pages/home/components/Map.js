@@ -15,6 +15,41 @@ class Map extends Component {
     onMapPositionChanged: PropTypes.func
   };
 
+
+  computeSinglePoint = (point, angle) => {
+    const lat = point.lat + Math.cos(angle) * 20;
+    const lng = point.lng + Math.cos(angle) * 20;
+
+    return {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          lat,
+          lng
+        ]
+      }
+    }
+  };
+
+  computeEstimatedPosition = (angle) => {
+    return {
+      type: "FeatureCollection",
+      features: this.props.points.map((point) =>
+        this.computeSinglePoint(point, angle)
+      )
+    }
+  };
+
+  animateMarker = (timestamp) => {
+    // Update the data to a new position based on the animation timestamp. The
+    // divisor in the expression `timestamp / 1000` controls the animation speed.
+    this.map.getSource('point').setData(this.computeEstimatedPosition(timestamp / 1000));
+
+    // Request the next frame of the animation.
+    requestAnimationFrame(this.animateMarker);
+  };
+
   componentDidMount() {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
@@ -30,6 +65,29 @@ class Map extends Component {
         zoom: this.map.getZoom().toFixed(2)
       });
     });
+
+
+    this.map.on('load', () => {
+      // Add a source and layer displaying a point which will be animated in a circle.
+      this.map.addSource('point', {
+        "type": "geojson",
+        "data": this.computeEstimatedPosition(0)
+      });
+
+      this.map.addLayer({
+        "id": "point",
+        "source": "point",
+        "type": "circle",
+        "paint": {
+          "circle-radius": 10,
+          "circle-color": "#007cbf"
+        }
+      });
+
+      // Start the animation.
+      this.animateMarker();
+    });
+
   }
 
   componentWillReceiveProps(newProps) {
@@ -57,6 +115,10 @@ class Map extends Component {
 
       this.map.setStyle(mapstyle);
     }
+
+    if (newProps.points !== this.props.points) {
+    }
+
   }
 
   render() {

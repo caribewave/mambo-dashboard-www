@@ -15,4 +15,10 @@ export const PROPS_COORDINATE = PropTypes.shape({
   lng: PropTypes.number
 });
 
+export const PROPS_POI = PropTypes.shape({
+  position: PROPS_COORDINATE,
+  heading: PropTypes.number,
+  time: PropTypes.instanceOf(Date),
+});
+
 export const PROPS_TRAJECTORY = PropTypes.arrayOf(PROPS_COORDINATE);

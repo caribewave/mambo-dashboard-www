@@ -11,7 +11,7 @@ import {loadPointAsync} from "../../../actions/point.actions";
 class HomePage extends Component {
 
   componentDidMount() {
-    // this.props.loadPointAsync();
+    this.props.loadPointAsync();
   }
 
   onMapPositionChanged = (newPosition) => {
