@@ -53,7 +53,7 @@ export const createStyle = (style) => (dispatch) => {
 };
 
 /*------------------------------------------------------------------------------------------
- * Edit style
+ * Navigation
  *-----------------------------------------------------------------------------------------*/
 export const OPEN_MAP_STYLE_POPUP = 'OPEN_MAP_STYLE_POPUP';
 

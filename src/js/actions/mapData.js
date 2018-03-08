@@ -1,16 +1,15 @@
-import {CALL_API, API_SENSOR, API_TILE} from '../client/api';
-import {CREATE_STYLE_FAILURE, CREATE_STYLE_REQUEST, CREATE_STYLE_SUCCESS} from "./style";
+import {CALL_API, API_SENSOR} from '../client/api';
 
 /*------------------------------------------------------------------------------------------
- * Home ABOUTME
+ * Plane DATA
  *-----------------------------------------------------------------------------------------*/
 export const LOAD_PLANE_REQUEST = 'LOAD_PLANE_REQUEST';
 export const LOAD_PLANE_SUCCESS = 'LOAD_PLANE_SUCCESS';
 export const LOAD_PLANE_FAILURE = 'LOAD_PLANE_FAILURE';
 
- const callLoadPlanesAsync = () => ({
+const callLoadPlanesAsync = () => ({
   [CALL_API]: {
-    types: [ LOAD_PLANE_REQUEST, LOAD_PLANE_SUCCESS, LOAD_PLANE_FAILURE ],
+    types: [LOAD_PLANE_REQUEST, LOAD_PLANE_SUCCESS, LOAD_PLANE_FAILURE],
     endpoint: `planes/loc`,
     api: API_SENSOR,
     method: 'GET'
@@ -20,3 +19,13 @@ export const LOAD_PLANE_FAILURE = 'LOAD_PLANE_FAILURE';
 export const loadPlanesAsync = () => (dispatch) => {
   return dispatch(callLoadPlanesAsync());
 };
+
+/*------------------------------------------------------------------------------------------
+ * Navigation
+ *-----------------------------------------------------------------------------------------*/
+export const PLANE_SELECTED = 'PLANE_SELECTED';
+
+export const selectPlane = (plane) => ({
+  type: PLANE_SELECTED,
+  plane: plane
+});

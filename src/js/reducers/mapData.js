@@ -7,6 +7,9 @@ const profile = (state = {
   switch (type) {
     case ActionTypes.LOAD_PLANE_SUCCESS :
       return merge({}, state, {planes: action.result});
+
+      case ActionTypes.PLANE_SELECTED :
+      return merge({}, state, {selectedPlane: action.plane});
   }
 
   return state;

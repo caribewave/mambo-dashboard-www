@@ -12,23 +12,25 @@ class Map extends Component {
   static propTypes = {
     style: PROPS_TYPE_STYLE,
     planes: PROPS_PLANES,
-    onMapPositionChanged: PropTypes.func
+    onMapPositionChanged: PropTypes.func,
+    onPlaneSelected: PropTypes.func
   };
 
 
   computeSinglePoint = (plane, angle) => {
-    const lat = plane.location.coordinates[0][0]  + Math.cos(angle) * 20;
-    const lng = plane.location.coordinates[0][1]  + Math.cos(angle) * 20;
+    const lat = plane.location.coordinates[0][0] + Math.cos(angle) * 20;
+    const lng = plane.location.coordinates[0][1] + Math.cos(angle) * 20;
 
     return {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [
           lat,
           lng
         ]
-      }
+      },
+      properties: {plane: plane}
     }
   };
 
@@ -44,7 +46,7 @@ class Map extends Component {
   animateMarker = (timestamp) => {
     // Update the data to a new position based on the animation timestamp. The
     // divisor in the expression `timestamp / 1000` controls the animation speed.
-    this.map.getSource('point').setData(this.computeEstimatedPosition(timestamp / 1000));
+    this.map.getSource('plane').setData(this.computeEstimatedPosition(0));
 
     // Request the next frame of the animation.
     requestAnimationFrame(this.animateMarker);
@@ -69,16 +71,16 @@ class Map extends Component {
 
     this.map.on('load', () => {
       // Add a source and layer displaying a point which will be animated in a circle.
-      this.map.addSource('point', {
-        "type": "geojson",
-        "data": this.computeEstimatedPosition(0)
+      this.map.addSource('plane', {
+        type: "geojson",
+        data: this.computeEstimatedPosition(0)
       });
 
       this.map.addLayer({
-        "id": "point",
-        "source": "point",
-        "type": "circle",
-        "paint": {
+        id: "plane",
+        source: "plane",
+        type: "circle",
+        paint: {
           "circle-radius": 10,
           "circle-color": "#007cbf"
         }
@@ -86,6 +88,14 @@ class Map extends Component {
 
       // Start the animation.
       this.animateMarker();
+    });
+
+    this.map.on('click', (event) => {
+      const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane']});
+      if (selectedLayers[0] !== 'undefined') {
+        console.log(selectedLayers[0].properties.plane);
+        this.props.onPlaneSelected(selectedLayers[0].properties.plane)
+      }
     });
 
   }
