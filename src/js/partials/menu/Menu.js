@@ -35,9 +35,10 @@ class Menu extends Component {
     this.setState({anchorEl: null});
   };
 
-  openItem = event => {
+  openItem = (option) => {
     console.log("toto");
-    this.props.toggleMapStyle(true);
+    console.log(option);
+    this.props.openMapStylePopup(true);
     this.setState({anchorEl: null});
   };
 
@@ -53,7 +54,9 @@ class Menu extends Component {
           onClick={this.handleClick}
         >
           <MoreVertIcon/>
+
         </IconButton>
+
         <MaterialMenu
           id="long-menu"
           anchorEl={this.state.anchorEl}
@@ -67,7 +70,7 @@ class Menu extends Component {
           }}
         >
           {options.map((option, i) => (
-            <MenuItem key={i} onClick={this.openItem}>
+            <MenuItem key={i} onClick={() => this.openItem(option)}>
               <ListItemText primary={<FormattedMessage id={option.label}/>}/>
             </MenuItem>
           ))}
@@ -77,9 +80,8 @@ class Menu extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-});
+const mapStateToProps = (state, ownProps) => ({});
 
-const actions = {toggleMapStyle: openMapStylePopup};
+const actions = {openMapStylePopup};
 
 export default connect(mapStateToProps, actions)(Menu)

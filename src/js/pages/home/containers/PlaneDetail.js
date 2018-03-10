@@ -16,15 +16,17 @@ class PlaneDetail extends Component {
     return (
       this.props.selectedPlane
         ?
-        <div id="plane-detail-container">
-          <Card>
+        <div className="plane-detail-panel">
+          <Card className="plane-detail-container">
             <CardContent>
-              <IconButton aria-label="Delete">
-                <ClearIcon onClick={
-                  this.onPlaneDeselect
-                }/>
-              </IconButton>
-              So much whaooo for POI : {this.props.selectedPlane && this.props.selectedPlane._id}
+              <div className="close-detail">
+                <IconButton aria-label="Delete" className="close-detail">
+                  <ClearIcon onClick={
+                    this.onPlaneDeselect
+                  }/>
+                </IconButton>
+              </div>
+              detail POI : {this.props.selectedPlane && this.props.selectedPlane._id}
             </CardContent>
           </Card>
         </div>
