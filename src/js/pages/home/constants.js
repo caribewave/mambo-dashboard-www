@@ -21,7 +21,7 @@ export const PROPS_LOCATION = PropTypes.shape({
 
 export const PROPS_POI = PropTypes.shape({
   _id: PropTypes.string,
-  location: PROPS_LOCATION,
+  coordinates: PROPS_LOCATION,
   altitude: PropTypes.number,
   hex: PropTypes.string,
   heading: PropTypes.number,

@@ -18,16 +18,16 @@ class Map extends Component {
 
 
   computeSinglePoint = (plane, angle) => {
-    const lat = plane.location.coordinates[0][0] + Math.cos(angle) * 20;
-    const lng = plane.location.coordinates[0][1] + Math.cos(angle) * 20;
+    const lat = plane.coordinates[0][0];
+    const lng = plane.coordinates[0][1];
 
     return {
       type: "Feature",
       geometry: {
         type: "Point",
         coordinates: [
-          lat,
-          lng
+          lng,
+          lat
         ]
       },
       properties: {plane: plane}
