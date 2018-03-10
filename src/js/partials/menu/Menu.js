@@ -3,7 +3,7 @@ import './Menu.scss';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import IconButton from 'material-ui/IconButton';
 import MaterialMenu, {MenuItem} from 'material-ui/Menu';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
+import SettingsIcon from 'material-ui-icons/Settings';
 import {ListItemText} from 'material-ui/List';
 import {connect} from "react-redux";
 import {openMapStylePopup} from '../../actions/style';
@@ -48,12 +48,13 @@ class Menu extends Component {
     return (
       <div>
         <IconButton
+          id="menu-btn"
           aria-label="More"
           aria-owns={anchorEl ? 'long-menu' : null}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <MoreVertIcon/>
+          <SettingsIcon/>
 
         </IconButton>
 

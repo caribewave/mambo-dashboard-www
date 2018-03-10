@@ -7,16 +7,20 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import './HomePage.scss';
 import {loadPlanesAsync, selectPlane} from "../../../actions/mapData";
-
+import {contain, enlarge} from './utils/boxUtils'
 
 class HomePage extends Component {
 
   componentDidMount() {
-    this.props.loadPlanesAsync();
   }
 
   onMapPositionChanged = (newPosition) => {
-    // console.log(newPosition);
+
+    const currentBoundingBox = newPosition.bounds;
+    //if not all the current map is contained in the trigger box we reload data
+    if (!contain(this.props.loadedBox, currentBoundingBox)) {
+      this.props.loadPlanesAsync(enlarge(currentBoundingBox, 2));
+    }
   };
 
   onPlaneSelected = (plane) => {
@@ -40,7 +44,8 @@ class HomePage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return ({
     selectedStyle: state.style.selectedStyle,
-    planes: state.mapData.planes
+    planes: state.mapData.planes,
+    loadedBox : state.mapData.loadedBox
   });
 };
 

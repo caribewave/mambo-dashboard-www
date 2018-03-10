@@ -3,7 +3,7 @@ import {injectIntl} from 'react-intl';
 import {PROPS_TYPE_STYLE} from "../constants";
 import PropTypes from 'prop-types';
 import './StylePickerComponent.scss';
-import Card, {CardContent} from 'material-ui/Card';
+import Card, {CardContent, CardMedia} from 'material-ui/Card';
 
 
 class StylePickerComponent extends Component {

@@ -37,8 +37,8 @@ class Map extends Component {
   computeEstimatedPosition = (angle) => {
     return {
       type: "FeatureCollection",
-      features: this.props.planes.map((plane) =>
-        this.computeSinglePoint(plane, angle)
+      features: (this.props.planes ? this.props.planes.map((plane) =>
+          this.computeSinglePoint(plane, angle)) : []
       )
     }
   };
@@ -60,10 +60,9 @@ class Map extends Component {
     });
 
     this.map.on('move', () => {
-      const center = this.map.getCenter();
+      this.map.getBounds();
       this.props.onMapPositionChanged({
-        lng: center.lng.toFixed(4),
-        lat: center.lat.toFixed(4),
+        bounds: this.map.getBounds(),
         zoom: this.map.getZoom().toFixed(2)
       });
     });
@@ -92,8 +91,7 @@ class Map extends Component {
 
     this.map.on('click', (event) => {
       const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane']});
-      if (selectedLayers[0] !== 'undefined') {
-        console.log(selectedLayers[0].properties.plane);
+      if (selectedLayers[0] && selectedLayers[0].properties) {
         this.props.onPlaneSelected(selectedLayers[0].properties.plane)
       }
     });
