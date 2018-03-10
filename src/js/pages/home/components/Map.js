@@ -44,12 +44,45 @@ class Map extends Component {
   };
 
   animateMarker = (timestamp) => {
-    // Update the data to a new position based on the animation timestamp. The
-    // divisor in the expression `timestamp / 1000` controls the animation speed.
-    this.map.getSource('plane').setData(this.computeEstimatedPosition(0));
-
+    // Update the data to a new position based on the animation timestamp.
+    this.map.getSource('plane_source_id').setData(this.computeEstimatedPosition(timestamp));
     // Request the next frame of the animation.
     requestAnimationFrame(this.animateMarker);
+  };
+
+  sendMapCoordinates = () => {
+    this.props.onMapPositionChanged({
+      bounds: this.map.getBounds(),
+      zoom: this.map.getZoom().toFixed(2)
+    });
+  };
+
+  loadMap = () => {
+    // Add a source and layer displaying a point which will be animated in a circle.
+    this.map.addSource('plane_source_id', {
+      type: "geojson",
+      data: this.computeEstimatedPosition(0)
+    });
+
+    this.map.addLayer({
+      id: "plane_layer_id",
+      source: "plane_source_id",
+      type: "circle",
+      paint: {
+        "circle-radius": 10,
+        "circle-color": "#007cbf"
+      }
+    });
+
+    // Start the animation.
+    this.animateMarker();
+  };
+
+  mapClick = (event) => {
+    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_layer_id']});
+    if (selectedLayers[0] && selectedLayers[0].properties) {
+      this.props.onPlaneSelected(selectedLayers[0].properties.plane)
+    }
   };
 
   componentDidMount() {
@@ -59,43 +92,11 @@ class Map extends Component {
       zoom: 5
     });
 
-    this.map.on('move', () => {
-      this.map.getBounds();
-      this.props.onMapPositionChanged({
-        bounds: this.map.getBounds(),
-        zoom: this.map.getZoom().toFixed(2)
-      });
-    });
+    this.map.on('move', this.sendMapCoordinates);
+    this.map.on('load', this.loadMap);
+    this.map.on('click', this.mapClick);
 
-
-    this.map.on('load', () => {
-      // Add a source and layer displaying a point which will be animated in a circle.
-      this.map.addSource('plane', {
-        type: "geojson",
-        data: this.computeEstimatedPosition(0)
-      });
-
-      this.map.addLayer({
-        id: "plane",
-        source: "plane",
-        type: "circle",
-        paint: {
-          "circle-radius": 10,
-          "circle-color": "#007cbf"
-        }
-      });
-
-      // Start the animation.
-      this.animateMarker();
-    });
-
-    this.map.on('click', (event) => {
-      const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane']});
-      if (selectedLayers[0] && selectedLayers[0].properties) {
-        this.props.onPlaneSelected(selectedLayers[0].properties.plane)
-      }
-    });
-
+    this.sendMapCoordinates();
   }
 
   componentWillReceiveProps(newProps) {
@@ -122,6 +123,14 @@ class Map extends Component {
       }
 
       this.map.setStyle(mapstyle);
+    }
+  }
+
+  componentWillUpdate() {
+    if (this.props.planes && this.map && this.map.getSource('plane_source_id')) {
+      this.map.getSource('plane_source_id').setData(
+        this.computeEstimatedPosition(0)
+      );
     }
   }
 

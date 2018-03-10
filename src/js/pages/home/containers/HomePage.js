@@ -15,7 +15,6 @@ class HomePage extends Component {
   }
 
   onMapPositionChanged = (newPosition) => {
-
     const currentBoundingBox = newPosition.bounds;
     //if not all the current map is contained in the trigger box we reload data
     if (!contain(this.props.loadedBox, currentBoundingBox)) {
