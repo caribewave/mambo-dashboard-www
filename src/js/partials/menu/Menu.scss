@@ -5,5 +5,15 @@
   button {
     color: $white;
   }
+}
+
+.menu-wrapper {
+  position: relative;
   height: $header-height;
+  width: 100%;
+}
+
+.menu-btn {
+  position: absolute;
+  right: 0;
 }

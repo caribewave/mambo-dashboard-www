@@ -81,7 +81,7 @@ class Map extends Component {
   mapClick = (event) => {
     const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_layer_id']});
     if (selectedLayers[0] && selectedLayers[0].properties) {
-      this.props.onPlaneSelected(selectedLayers[0].properties.plane)
+      this.props.onPlaneSelected(JSON.parse(selectedLayers[0].properties.plane))
     }
   };
 

@@ -46,7 +46,8 @@ class Menu extends Component {
     const {anchorEl} = this.state;
 
     return (
-      <div>
+      <div className="menu-wrapper">
+        <div className="menu-btn">
         <IconButton
           id="menu-btn"
           aria-label="More"
@@ -55,7 +56,6 @@ class Menu extends Component {
           onClick={this.handleClick}
         >
           <SettingsIcon/>
-
         </IconButton>
 
         <MaterialMenu
@@ -76,6 +76,7 @@ class Menu extends Component {
             </MenuItem>
           ))}
         </MaterialMenu>
+        </div>
       </div>
     );
   }
