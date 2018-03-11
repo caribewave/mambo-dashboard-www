@@ -17,28 +17,35 @@ class Map extends Component {
   };
 
 
-  computeSinglePoint = (plane, angle) => {
-    const lat = plane.coordinates[0][0];
-    const lng = plane.coordinates[0][1];
-
-    return {
+  computeSinglePlane = (plane, angle) => {
+    let point = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [
-          lng,
-          lat
-        ]
+        coordinates: plane.coordinates[0]
       },
       properties: {plane: plane}
-    }
+    };
+
+    let way = {
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: plane.coordinates
+      },
+      properties: {plane: plane}
+    };
+
+    return [point, way];
   };
 
   computeEstimatedPosition = (angle) => {
+    let planeData = [];
+    this.props.planes.forEach((plane) =>
+      planeData.push(...this.computeSinglePlane(plane, angle)));
     return {
       type: "FeatureCollection",
-      features: (this.props.planes ? this.props.planes.map((plane) =>
-          this.computeSinglePoint(plane, angle)) : []
+      features: (this.props.planes ? planeData : []
       )
     }
   };
@@ -69,8 +76,23 @@ class Map extends Component {
       source: "plane_source_id",
       type: "circle",
       paint: {
-        "circle-radius": 10,
+        "circle-radius": 5,
         "circle-color": "#007cbf"
+      }
+    });
+
+    this.map.addLayer({
+      id: "plane_way_layer_id",
+      source: "plane_source_id",
+      type: "line",
+      paint: {
+        "line-color": '#ed6498',
+        "line-width": 5,
+        "line-opacity": .8
+      },
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round'
       }
     });
 
@@ -79,7 +101,7 @@ class Map extends Component {
   };
 
   mapClick = (event) => {
-    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_layer_id']});
+    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_source_id']});
     if (selectedLayers[0] && selectedLayers[0].properties) {
       this.props.onPlaneSelected(JSON.parse(selectedLayers[0].properties.plane))
     }
