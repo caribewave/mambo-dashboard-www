@@ -2,8 +2,6 @@ import mapboxgl from 'mapbox-gl';
 
 
 export function contain(bigBox, smallBox) {
-  console.log(bigBox);
-  console.log(smallBox);
   if (!bigBox || !smallBox) {
     return false;
   }

@@ -52,7 +52,10 @@ class Map extends Component {
 
   animateMarker = (timestamp) => {
     // Update the data to a new position based on the animation timestamp.
-    this.map.getSource('plane_source_id').setData(this.computeEstimatedPosition(timestamp));
+    let planeSource = this.map.getSource('plane_source_id');
+    if (planeSource) {
+      planeSource.setData(this.computeEstimatedPosition(timestamp));
+    }
     // Request the next frame of the animation.
     requestAnimationFrame(this.animateMarker);
   };
@@ -101,7 +104,7 @@ class Map extends Component {
   };
 
   mapClick = (event) => {
-    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_source_id']});
+    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_layer_id']});
     if (selectedLayers[0] && selectedLayers[0].properties) {
       this.props.onPlaneSelected(JSON.parse(selectedLayers[0].properties.plane))
     }

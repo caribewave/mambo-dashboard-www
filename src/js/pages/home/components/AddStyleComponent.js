@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
-import {PROPS_TYPE_STYLE} from "../constants";
 import PropTypes from 'prop-types';
 import './AddStyleComponent.scss';
+import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
+import DoneIcon from 'material-ui-icons/Done';
+import Input, {InputLabel} from 'material-ui/Input';
+import {FormControl, FormControlLabel, FormGroup} from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
 
 class AddStyleComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        "name": "My Layer",
-        "type": "proxy",
-        "source": "http://your.tile.server/{z}/{x}/{y}.png",
-        "retina": false,
-        "vector": false
+      name: "My Layer",
+      type: "proxy",
+      source: "http://your.tile.server/{z}/{x}/{y}.png",
+      retina: false,
+      vector: false
     };
   }
 
@@ -21,14 +28,14 @@ class AddStyleComponent extends Component {
   };
 
   handleSubmit = (event) => {
-      let style = {
-          "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
-          "label": this.state.name,
-          "type": "proxy", // TODO support more formats!
-          "source": this.state.source,
-          "retina": this.state.retina,
-          "vector": this.state.vector
-      };
+    let style = {
+      "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
+      "label": this.state.name,
+      "type": "proxy", // TODO support more formats!
+      "source": this.state.source,
+      "retina": this.state.retina,
+      "vector": this.state.vector
+    };
     this.props.onStyleCreated(style);
     event.preventDefault();
   };
@@ -38,56 +45,65 @@ class AddStyleComponent extends Component {
   };
 
   handleOptionChange = (event) => {
-    switch (event.target.value) {
-      case "vector":
+    console.log("handlechange");
+    if (event.target.name === "isVector") {
+      if (event.target.value) {
         this.setState({vector: true, retina: false});
-        break;
-      case "raster":
-        this.setState({vector: false});
-        break;
-      case "retina":
-          this.setState({retina: true});
-          break;
+      } else {
+        this.setState({vector: false });
+      }
+      return;
+    }
+    if (event.target.name === "isRetina") {
+      console.log(event.target);
+      this.setState({retina: event.target.checked});
     }
   };
 
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Add Layer:
-          <input type="text" value={this.state.source} onChange={this.handleUrlChange}/>
-        </label>
-        <div className="layer-type-container">
-          <div className="layer-type">
-              <label>
-                  <input type="radio" value="vector"
-                         checked={this.state.vector}
-                         onChange={this.handleOptionChange}/>
-                  Vector
-              </label>
-          </div>
-            <div className="layer-type">
-                <label>
-                    <input type="radio" value="raster"
-                           checked={!this.state.vector}
-                           onChange={this.handleOptionChange}/>
-                    Raster
-                </label>
-            </div>
-            <div className="layer-type">
-                <label>
-                    <input type="checkbox"
-                           value="retina"
-                           checked={this.state.retina}
-                           disabled={this.state.vector}
-                           onChange={this.handleOptionChange}/>
-                    Retina
-                </label>
-            </div>
-        </div>
-        <input type="submit" value="Submit"/>
+      <form className={"addLayer"}>
+        <TextField
+          id="source"
+          label="Layer source"
+          value={this.state.source}
+          onChange={this.handleUrlChange}
+          margin="normal"
+        />
+
+        <FormControl>
+          <InputLabel htmlFor="vector-picker">Source type</InputLabel>
+          <Select
+            value={this.state.vector}
+            onChange={this.handleOptionChange}
+            inputProps={{
+              id: 'vector-picker',
+              name: 'isVector',
+            }}
+          >
+            <MenuItem value={true}>Vector</MenuItem>
+            <MenuItem value={false}>Raster</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.retina}
+                disabled={this.state.vector}
+                onChange={this.handleOptionChange}
+                name="isRetina"
+              />
+            }
+            label="Retina"
+          />
+        </FormGroup>
+
+        <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
+          <DoneIcon/>
+        </Button>
       </form>
     );
   }

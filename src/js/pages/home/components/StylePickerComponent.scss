@@ -10,12 +10,8 @@
 
 .style-card {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 250px;
   margin: 6px;
-  //.MuiCardContentà {
-  //  padding: 0;
-  //}
 }
 
 .style-image {
@@ -40,8 +36,7 @@
 }
 
 .style-data {
-  width: 100%;
-  text-align: center;
+  padding: 16px 24px;
 }
 
 .style-selected {

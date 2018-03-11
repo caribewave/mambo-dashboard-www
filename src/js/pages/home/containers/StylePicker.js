@@ -1,4 +1,4 @@
-import {changeMapStyle} from '../../../actions/style';
+import {changeMapStyle, editMapStyle, deleteMapStyle} from '../../../actions/style';
 import {loadLayers} from '../../../actions/style';
 import {createStyle} from '../../../actions/style';
 import {openMapStylePopup} from '../../../actions/style';
@@ -8,18 +8,33 @@ import React, {Component} from 'react';
 import StylePickerComponent from '../components/StylePickerComponent';
 import AddStyleComponent from '../components/AddStyleComponent';
 import {connect} from 'react-redux';
-import Button from 'material-ui/Button';
-import AddIcon from 'material-ui-icons/Add';
 import {FormattedMessage, injectIntl} from 'react-intl';
 
 class StylePicker extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEdition: false,
+      styleEdit: null,
+      showForm: false
+    };
+  }
 
   componentDidMount() {
     this.props.loadLayers();
   }
 
   handleClose = () => {
-    this.props.opneMapStyle(false);
+    this.props.openMapStylePopup(false);
+  };
+
+  changeForEdition = (style) => {
+    this.setState({isEdition: true, styleEdit: style, showForm: true});
+  };
+
+  changeForCreation = () => {
+    this.setState({isEdition: false, styleEdit: null, showForm: true});
   };
 
 
@@ -34,13 +49,13 @@ class StylePicker extends Component {
             styles={this.props.styles}
             selectedStyle={this.props.selectedStyle}
             onStyleSelected={this.props.changeMapStyle}
+            onStyleEdit={this.changeForEdition}
+            onStyleCreate={this.changeForCreation}
+            onStyleDelete={this.props.deleteMapStyle}
           />
-          <Button aria-label="Add" color="primary" variant="fab">
-            <AddIcon onClick={
-              this.onPlaneDeselect
-            }/>
-          </Button>
-          <AddStyleComponent onStyleCreated={this.props.createStyle}/>
+          {
+            this.state.showForm ? <AddStyleComponent onStyleCreated={this.props.createStyle}/> : null
+          }
         </div>
       </Dialog>
     )
@@ -53,6 +68,13 @@ const mapStateToProps = (state, ownProps) => ({
   selectedStyle: state.style.selectedStyle,
 });
 
-const actions = {changeMapStyle, loadLayers, createStyle, opneMapStyle: openMapStylePopup};
+const actions = {
+  changeMapStyle,
+  editMapStyle,
+  deleteMapStyle,
+  loadLayers,
+  createStyle,
+  openMapStylePopup
+};
 
 export default connect(mapStateToProps, actions)(StylePicker)
