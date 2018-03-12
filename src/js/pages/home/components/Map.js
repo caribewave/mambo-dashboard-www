@@ -22,7 +22,7 @@ class Map extends Component {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: plane.coordinates[0]
+        coordinates: plane.coordinates[0].value[0]
       },
       properties: {plane: plane}
     };
@@ -31,7 +31,7 @@ class Map extends Component {
       type: "Feature",
       geometry: {
         type: "LineString",
-        coordinates: plane.coordinates
+        coordinates: plane.coordinates[0].value
       },
       properties: {plane: plane}
     };

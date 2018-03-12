@@ -21,16 +21,19 @@ export const PROPS_COORDINATE = PropTypes.shape({
 });
 
 export const PROPS_LOCATION = PropTypes.shape({
-  coordinates: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+  value: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  time: PropTypes.string
 });
 
 export const PROPS_POI = PropTypes.shape({
   _id: PropTypes.string,
-  coordinates: PROPS_LOCATION,
+  coordinates: PropTypes.arrayOf(PROPS_LOCATION),
   altitude: PropTypes.number,
   hex: PropTypes.string,
   heading: PropTypes.number,
   time: PropTypes.instanceOf(Date),
+  lastSpeed: PropTypes.number,
+  direction: PropTypes.number
 });
 
 export const PROPS_PLANES = PropTypes.arrayOf(PROPS_POI);
