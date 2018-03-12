@@ -32,7 +32,7 @@ class StylePickerComponent extends Component {
           this.btnTapped(style);
         }}>
           <CardContent
-            className={"style-card-container " + (this.props.selectedStyle && this.props.selectedStyle.name === style.name ? "style-selected" : "style-unselected")}>
+            className={"style-card-container " + (this.props.selectedStyle && this.props.selectedStyle.meta.name === style.meta.name ? "style-selected" : "style-unselected")}>
             <div className="style-image">
               <div className="image-wrapper">
                 <img src="http://localhost:8081/maps/osm/6/33/22.png"/>
@@ -41,13 +41,13 @@ class StylePickerComponent extends Component {
             </div>
             <div className="style-data">
               <Typography variant="headline" component="h3">
-                {style.label}
+                {style.meta.label}
               </Typography>
               <Typography component="span">
-                Source : {"" + style.source}<br/>
-                Type   : {"" + style.type}<br/>
-                Proxy  : {"" + style.proxy}<br/>
-                Vector : {"" + style.vector}
+                Source : {"" + style.meta.source}<br/>
+                Type : {"" + style.meta.type}<br/>
+                Proxy : {"" + style.meta.proxy}<br/>
+                Vector : {"" + style.meta.vector}
               </Typography>
             </div>
           </CardContent>

@@ -138,7 +138,7 @@ class Map extends Component {
             }
           },
           "layers": [{
-            "id": newProps.style.name,
+            "id": newProps.style.meta.name,
             "type": "raster",
             "source": "raster-tiles",
             "minzoom": 0,
