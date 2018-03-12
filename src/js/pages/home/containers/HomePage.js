@@ -34,7 +34,7 @@ class HomePage extends Component {
                onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
         </div>
         <StylePicker/>
-        <PlaneDetail/>
+        {this.props.selectedPlane ? <PlaneDetail/> : null}
       </div>
     );
   }
@@ -44,7 +44,8 @@ const mapStateToProps = (state, ownProps) => {
   return ({
     selectedStyle: state.style.selectedStyle,
     planes: state.mapData.planes,
-    loadedBox : state.mapData.loadedBox
+    selectedPlane: state.mapData.selectedPlane,
+    loadedBox: state.mapData.loadedBox
   });
 };
 
