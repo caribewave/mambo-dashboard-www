@@ -27,6 +27,9 @@ const profile = (state = {
     case ActionTypes.OPEN_MAP_STYLE_POPUP:
       return merge({}, state, {popupOpen: false}, {popupOpen: action.open});
 
+    // case ActionTypes.CREATE_STYLE_SUCCESS:
+    //   return merge({}, state, {popupOpen: false}, {popupOpen: action.open});
+
   }
 
   return state;

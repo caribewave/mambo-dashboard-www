@@ -30,12 +30,14 @@ class AddStyleComponent extends Component {
 
   handleSubmit = (event) => {
     let style = {
-      "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
-      "label": this.state.name,
-      "type": "proxy", // TODO support more formats!
-      "source": this.state.source,
-      "retina": this.state.retina,
-      "vector": this.state.vector
+      meta: {
+        "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
+        "label": this.state.name,
+        "type": "proxy", // TODO support more formats!
+        "source": this.state.source,
+        "retina": this.state.retina,
+        "vector": this.state.vector
+      }
     };
     this.props.onStyleCreated(style);
     event.preventDefault();
@@ -46,11 +48,10 @@ class AddStyleComponent extends Component {
   };
 
   handleNameChange = (event) => {
-    this.setState({source: event.target.name});
+    this.setState({name: event.target.value});
   };
 
   handleOptionChange = (event) => {
-    console.log("handlechange");
     if (event.target.name === "isVector") {
       if (event.target.value) {
         this.setState({vector: true, retina: false});
@@ -60,7 +61,6 @@ class AddStyleComponent extends Component {
       return;
     }
     if (event.target.name === "isRetina") {
-      console.log(event.target);
       this.setState({retina: event.target.checked});
     }
   };

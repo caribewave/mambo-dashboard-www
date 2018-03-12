@@ -40,7 +40,7 @@ class StylePicker extends Component {
 
   render() {
     return (
-      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.open}>
+      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.open} maxWidth={false}>
         <DialogTitle id="simple-dialog-title">
           <FormattedMessage id="lbl.stylePickerTitle"/>
         </DialogTitle>
