@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
 import './AddStyleComponent.scss';
-import LineChart from "react-chartjs";
 
 
 class SpeedChartComponent extends Component {

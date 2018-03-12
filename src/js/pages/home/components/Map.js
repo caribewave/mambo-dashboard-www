@@ -16,22 +16,58 @@ class Map extends Component {
     onPlaneSelected: PropTypes.func
   };
 
+  computeNewPosition = (plane) => {
+    //if there is only one point we can't predict its position,
+    if (!plane.coordinates[1]) {
+      return plane.coordinates[0].value;
+    }
 
-  computeSinglePlane = (plane, angle) => {
+    const now = new Date();
+
+    // point 0 is the newest point
+    const point0 = plane.coordinates[0];
+    const point1 = plane.coordinates[1];
+
+    const deltaTime = now - Date.parse(point0.time);
+    const lastDeltaTime = Date.parse(point1.time) - Date.parse(point0.time);
+
+    const lngSpeed = (point0.value[0] - point1.value[0]) / lastDeltaTime;
+    const latSpeed = (point0.value[1] - point1.value[1]) / lastDeltaTime;
+    const newLng = point0.value[0] + deltaTime * lngSpeed;
+    const newLat = point0.value[1] + deltaTime * latSpeed;
+
+    return [newLng, newLat];
+  };
+
+
+  computeSinglePlane = (plane) => {
+    let newPosition = this.computeNewPosition(plane);
+
+    let line = [];
+
+    const planito = plane.coordinates.slice(1, 10);
+    planito.forEach((point) =>
+      line.push(...point.value)
+    );
+
+    line.unshift(newPosition);
+    console.log(newPosition);
+
+
     let point = {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: plane.coordinates[0].value[0]
+        coordinates: newPosition
       },
-      properties: {plane: plane}
+      properties: {plane: plane._id}
     };
 
     let way = {
       type: "Feature",
       geometry: {
         type: "LineString",
-        coordinates: plane.coordinates[0].value
+        coordinates: line
       },
       properties: {plane: plane}
     };
@@ -39,10 +75,13 @@ class Map extends Component {
     return [point, way];
   };
 
-  computeEstimatedPosition = (angle) => {
+  computeEstimatedPosition = () => {
     let planeData = [];
-    this.props.planes.forEach((plane) =>
-      planeData.push(...this.computeSinglePlane(plane, angle)));
+    if (this.props.planes) {
+      this.props.planes.forEach((plane) =>
+        planeData.push(...this.computeSinglePlane(plane)));
+    }
+
     return {
       type: "FeatureCollection",
       features: (this.props.planes ? planeData : []
@@ -50,11 +89,11 @@ class Map extends Component {
     }
   };
 
-  animateMarker = (timestamp) => {
+  animateMarker = () => {
     // Update the data to a new position based on the animation timestamp.
     let planeSource = this.map.getSource('plane_source_id');
     if (planeSource) {
-      planeSource.setData(this.computeEstimatedPosition(timestamp));
+      planeSource.setData(this.computeEstimatedPosition());
     }
     // Request the next frame of the animation.
     requestAnimationFrame(this.animateMarker);
@@ -117,7 +156,7 @@ class Map extends Component {
       zoom: 5
     });
 
-    this.map.on('move', this.sendMapCoordinates);
+    this.map.on('dragend', this.sendMapCoordinates);
     this.map.on('load', this.loadMap);
     this.map.on('click', this.mapClick);
 

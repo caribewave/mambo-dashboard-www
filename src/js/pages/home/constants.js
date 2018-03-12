@@ -21,7 +21,7 @@ export const PROPS_COORDINATE = PropTypes.shape({
 });
 
 export const PROPS_LOCATION = PropTypes.shape({
-  value: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  value: PropTypes.arrayOf(PropTypes.number),
   time: PropTypes.string
 });
 
