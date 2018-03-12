@@ -9,7 +9,8 @@ import Input, {InputLabel} from 'material-ui/Input';
 import {FormControl, FormControlLabel, FormGroup} from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
+import {MenuItem} from 'material-ui/Menu';
+import Typography from 'material-ui/Typography';
 
 class AddStyleComponent extends Component {
   constructor(props) {
@@ -44,13 +45,17 @@ class AddStyleComponent extends Component {
     this.setState({source: event.target.value});
   };
 
+  handleNameChange = (event) => {
+    this.setState({source: event.target.name});
+  };
+
   handleOptionChange = (event) => {
     console.log("handlechange");
     if (event.target.name === "isVector") {
       if (event.target.value) {
         this.setState({vector: true, retina: false});
       } else {
-        this.setState({vector: false });
+        this.setState({vector: false});
       }
       return;
     }
@@ -64,46 +69,68 @@ class AddStyleComponent extends Component {
   render() {
     return (
       <form className={"addLayer"}>
-        <TextField
-          id="source"
-          label="Layer source"
-          value={this.state.source}
-          onChange={this.handleUrlChange}
-          margin="normal"
-        />
+        <Typography variant="headline" component="h2">
+          Create a layer
+        </Typography>
+        <div className={"style-row"}>
+          <div className={"style-name"}>
+            <TextField
+              id="name"
+              label="Name"
+              value={this.state.name}
+              onChange={this.handleNameChange}
+              margin="normal"
+            />
+          </div>
 
-        <FormControl>
-          <InputLabel htmlFor="vector-picker">Source type</InputLabel>
-          <Select
-            value={this.state.vector}
-            onChange={this.handleOptionChange}
-            inputProps={{
-              id: 'vector-picker',
-              name: 'isVector',
-            }}
-          >
-            <MenuItem value={true}>Vector</MenuItem>
-            <MenuItem value={false}>Raster</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormGroup row>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={this.state.retina}
-                disabled={this.state.vector}
-                onChange={this.handleOptionChange}
-                name="isRetina"
-              />
-            }
-            label="Retina"
+          <TextField
+            id="source"
+            className={"style-source"}
+            label="Layer source"
+            value={this.state.source}
+            onChange={this.handleUrlChange}
+            margin="normal"
           />
-        </FormGroup>
+        </div>
 
-        <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
-          <DoneIcon/>
-        </Button>
+        <div className={"style-second-row"}>
+          <div className={"style-type"}>
+            <FormControl>
+              <InputLabel htmlFor="vector-picker">Source type</InputLabel>
+              <Select
+                value={this.state.vector}
+                onChange={this.handleOptionChange}
+                inputProps={{
+                  id: 'vector-picker',
+                  name: 'isVector',
+                }}
+              >
+                <MenuItem value={true}>Vector</MenuItem>
+                <MenuItem value={false}>Raster</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.retina}
+                  disabled={this.state.vector}
+                  onChange={this.handleOptionChange}
+                  name="isRetina"
+                />
+              }
+              label="Retina"
+            />
+          </FormGroup>
+        </div>
+
+        <div className={"add-layer-btn"}>
+          <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
+            <DoneIcon/>
+          </Button>
+        </div>
       </form>
     );
   }

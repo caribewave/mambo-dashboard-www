@@ -14,5 +14,49 @@ form {
 }
 
 .addLayer {
+  position: relative;
   background: #dddddd;
+  padding: 16px;
+}
+
+.addLayer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.style-row {
+  display: flex;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+.style-second-row {
+  display: flex;
+  margin: 16px 24px;
+}
+
+.add-layer-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 16px;
+}
+
+.style-name {
+  width: 150px;
+  margin-right: 16px;
+}
+
+.style-name {
+  width: 150px;
+  margin-right: 16px;
+}
+
+.style-type {
+  width: 150px;
+  margin-right: 16px;
+}
+
+.style-source {
+  width: 250px;
 }
