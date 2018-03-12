@@ -127,14 +127,14 @@ class Map extends Component {
   componentWillReceiveProps(newProps) {
     if (newProps.style !== this.props.style) {
       let mapstyle = newProps.style.source;
-      if (!newProps.style.vector) {
+      if (!newProps.style.meta.vector) {
         mapstyle = {
           "version": 8,
           "sources": {
             "raster-tiles": {
               "type": "raster",
               "tiles": [newProps.style.source],
-              "tileSize": newProps.style.retina ? 512 : 256
+              "tileSize": newProps.style.meta.retina ? 512 : 256
             }
           },
           "layers": [{

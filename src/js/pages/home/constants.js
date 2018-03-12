@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const PROPS_TYPE_STYLE = PropTypes.shape({
+export const PROPS_TYPE_STYLE_META = PropTypes.shape({
   name: PropTypes.string.isRequired,
   source: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -8,6 +8,11 @@ export const PROPS_TYPE_STYLE = PropTypes.shape({
   retina: PropTypes.bool,
   vector: PropTypes.bool,
   "default": PropTypes.bool,
+});
+
+export const PROPS_TYPE_STYLE = PropTypes.shape({
+  meta: PROPS_TYPE_STYLE_META,
+  source: PropTypes.string.isRequired
 });
 
 export const PROPS_COORDINATE = PropTypes.shape({

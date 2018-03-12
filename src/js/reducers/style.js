@@ -18,7 +18,7 @@ const profile = (state = {
       Object.keys(action.result).forEach((k) => {
         let s = Object.assign({id: k}, action.result[k]);
         styles.push(s);
-        if (s.default) {
+        if (s.meta.default) {
           defaultStyle = s; 
         }
       });
