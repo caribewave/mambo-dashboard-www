@@ -54,7 +54,7 @@ class Map extends Component {
     line.push(newPosition);
 
     // we will only draw the last 10 point
-    plane.coordinates.slice(1, 10).forEach((point) =>
+    plane.coordinates.slice(0, 10).forEach((point) =>
       line.push(point.value)
     );
 
@@ -77,9 +77,12 @@ class Map extends Component {
 
   computeFeatures = () => {
     let features = [];
-    this.props.planes.forEach((plane) => {
-      features = features.concat(this.computePlaneFeature(plane));
-    });
+
+    if (this.props.planes) {
+      this.props.planes.forEach((plane) => {
+        features = features.concat(this.computePlaneFeature(plane));
+      });
+    }
 
     return features;
   };
