@@ -6,7 +6,7 @@ import MaterialMenu, {MenuItem} from 'material-ui/Menu';
 import SettingsIcon from 'material-ui-icons/Settings';
 import {ListItemText} from 'material-ui/List';
 import {connect} from "react-redux";
-import {openMapStylePopup} from '../../actions/style';
+import {openMapLayersPopup} from '../../actions/style';
 
 
 const options = [
@@ -38,7 +38,7 @@ class Menu extends Component {
   openItem = (option) => {
     console.log("toto");
     console.log(option);
-    this.props.openMapStylePopup(true);
+    this.props.openMapLayersPopup(true);
     this.setState({anchorEl: null});
   };
 
@@ -84,6 +84,6 @@ class Menu extends Component {
 
 const mapStateToProps = (state, ownProps) => ({});
 
-const actions = {openMapStylePopup};
+const actions = {openMapLayersPopup};
 
 export default connect(mapStateToProps, actions)(Menu)

@@ -1,12 +1,12 @@
-import {changeMapStyle, editMapStyle, deleteMapStyle} from '../../../actions/style';
+import {changeMapStyle, editLayer, deleteLayer, uploadMBTiles} from '../../../actions/style';
 import {loadLayers} from '../../../actions/style';
-import {createStyle} from '../../../actions/style';
-import {openMapStylePopup} from '../../../actions/style';
+import {createLayer, showLayer} from '../../../actions/style';
+import {openMapLayersPopup} from '../../../actions/style';
 import Dialog, {DialogTitle} from 'material-ui/Dialog';
 import './StylePicker.scss';
 import React, {Component} from 'react';
 import StylePickerComponent from '../components/StylePickerComponent';
-import AddStyleComponent from '../components/AddStyleComponent';
+import LayerEditionComponent from '../components/AddStyleComponent';
 import {connect} from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
 
@@ -26,7 +26,7 @@ class StylePicker extends Component {
   }
 
   handleClose = () => {
-    this.props.openMapStylePopup(false);
+    this.props.openMapLayersPopup(false);
   };
 
   changeForEdition = (style) => {
@@ -46,15 +46,15 @@ class StylePicker extends Component {
         </DialogTitle>
         <div>
           <StylePickerComponent
-            styles={this.props.styles}
-            selectedStyle={this.props.selectedStyle}
-            onStyleSelected={this.props.changeMapStyle}
-            onStyleEdit={this.changeForEdition}
-            onStyleCreate={this.changeForCreation}
-            onStyleDelete={this.props.deleteMapStyle}
+            layers={this.props.layers}
+            onLayerSelectionChanged={this.props.changeMapStyle}
+            onLayerEdit={this.changeForEdition}
+            onLayerCreate={this.changeForCreation}
+            onLayerDelete={this.props.deleteLayer}
+            onLayerShow={this.props.showLayer}
           />
           {
-            this.state.showForm ? <AddStyleComponent onStyleCreated={this.props.createStyle}/> : null
+            this.state.showForm ? <LayerEditionComponent action={this.state.isEdition ? this.props.editLayer : this.props.createLayer} secondaryAction={this.props.uploadMBTiles} edit={this.state.isEdition} style={this.state.styleEdit}/> : null
           }
         </div>
       </Dialog>
@@ -63,18 +63,20 @@ class StylePicker extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  styles: state.style.styles,
+  layers: state.style.layers,
   open: state.style.popupOpen,
   selectedStyle: state.style.selectedStyle,
 });
 
 const actions = {
   changeMapStyle,
-  editMapStyle,
-  deleteMapStyle,
+  editLayer,
+  deleteLayer,
   loadLayers,
-  createStyle,
-  openMapStylePopup
+  createLayer,
+  openMapLayersPopup, 
+  uploadMBTiles,
+  showLayer
 };
 
 export default connect(mapStateToProps, actions)(StylePicker)

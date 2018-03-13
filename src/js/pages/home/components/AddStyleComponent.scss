@@ -13,26 +13,36 @@ form {
   }
 }
 
-.addLayer {
+.form-add-layer-input-container {
   position: relative;
   background: #dddddd;
   padding: 16px;
 }
 
-.addLayer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
 .style-row {
   display: flex;
-  margin-left: 24px;
-  margin-right: 24px;
+  width: 100%;
+  height: 140px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: baseline;
+  justify-content: space-between;
+  align-self: start;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-.style-second-row {
-  display: flex;
-  margin: 16px 24px;
+
+.layer-add-input {
+  width: 200px;
+}
+
+.layer-upload-btn {
+  padding-top: 20px;
+}
+
+.layer-add-source {
+  width: 350px;
 }
 
 .add-layer-btn {
@@ -40,23 +50,4 @@ form {
   right: 0;
   bottom: 0;
   margin: 16px;
-}
-
-.style-name {
-  width: 150px;
-  margin-right: 16px;
-}
-
-.style-name {
-  width: 150px;
-  margin-right: 16px;
-}
-
-.style-type {
-  width: 150px;
-  margin-right: 16px;
-}
-
-.style-source {
-  width: 250px;
 }

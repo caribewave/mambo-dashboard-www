@@ -3,10 +3,10 @@ import {CALL_API, API_TILE, API_SENSOR} from '../client/api';
 /*------------------------------------------------------------------------------------------
  * Style actions
  *-----------------------------------------------------------------------------------------*/
-export const CHANGE_MAP_STYLE = 'CHANGE_MAP_STYLE';
+export const CHANGE_MAP_LAYERS = 'CHANGE_MAP_LAYERS';
 
 export const changeMapStyle = (style) => ({
-  type: CHANGE_MAP_STYLE,
+  type: CHANGE_MAP_LAYERS,
   style: style
 });
 
@@ -33,13 +33,13 @@ export const loadLayers = () => (dispatch) => {
 /*------------------------------------------------------------------------------------------
  * Create style
  *-----------------------------------------------------------------------------------------*/
-export const CREATE_STYLE_REQUEST = 'CREATE_STYLE_REQUEST';
-export const CREATE_STYLE_SUCCESS = 'CREATE_STYLE_SUCCESS';
-export const CREATE_STYLE_FAILURE = 'CREATE_STYLE_FAILURE';
+export const CREATE_LAYER_REQUEST = 'CREATE_LAYER_REQUEST';
+export const CREATE_LAYER_SUCCESS = 'CREATE_LAYER_SUCCESS';
+export const CREATE_LAYER_FAILURE = 'CREATE_LAYER_FAILURE';
 
-const createStyleAsync = (style) => ({
+const createLayerAsync = (style) => ({
   [CALL_API]: {
-    types: [ CREATE_STYLE_REQUEST, CREATE_STYLE_SUCCESS, CREATE_STYLE_FAILURE ],
+    types: [ CREATE_LAYER_REQUEST, CREATE_LAYER_SUCCESS, CREATE_LAYER_FAILURE ],
     endpoint: `layers`,
     api: API_TILE,
     method: 'POST',
@@ -47,8 +47,8 @@ const createStyleAsync = (style) => ({
   }
 });
 
-export const createStyle = (style) => (dispatch) => {
-  return dispatch(createStyleAsync(style));
+export const createLayer = (style) => (dispatch) => {
+  return dispatch(createLayerAsync(style));
 };
 
 /*------------------------------------------------------------------------------------------
@@ -59,48 +59,96 @@ export const EDIT_STYLE_REQUEST = 'EDIT_STYLE_REQUEST';
 export const EDIT_STYLE_SUCCESS = 'EDIT_STYLE_SUCCESS';
 export const EDIT_STYLE_FAILURE = 'EDIT_STYLE_FAILURE';
 
-const editStyleAsync = (style) => ({
+const editLayerAsync = (layer) => ({
   [CALL_API]: {
     types: [ EDIT_STYLE_REQUEST, EDIT_STYLE_SUCCESS, EDIT_STYLE_FAILURE ],
     endpoint: `layers`,
     api: API_TILE,
     method: 'PUT',
-    body: style
+    body: layer
   }
 });
 
-export const editMapStyle = (style) => (dispatch) => {
-  return dispatch(editStyleAsync(style));
+export const editLayer = (layer) => (dispatch) => {
+  return dispatch(editLayerAsync(layer));
 };
 
 /*------------------------------------------------------------------------------------------
  * Delete style
  *-----------------------------------------------------------------------------------------*/
 
-export const DELETE_STYLE_REQUEST = 'DELETE_STYLE_REQUEST';
-export const DELETE_STYLE_SUCCESS = 'DELETE_STYLE_SUCCESS';
-export const DELETE_STYLE_FAILURE = 'DELETE_STYLE_FAILURE';
+export const DELETE_LAYER_REQUEST = 'DELETE_LAYER_REQUEST';
+export const DELETE_LAYER_SUCCESS = 'DELETE_LAYER_SUCCESS';
+export const DELETE_LAYER_FAILURE = 'DELETE_LAYER_FAILURE';
 
-const deleteStyleAsync = (style) => ({
+const deleteLayerAsync = (styleName) => ({
   [CALL_API]: {
-    types: [ DELETE_STYLE_REQUEST, DELETE_STYLE_SUCCESS, DELETE_STYLE_FAILURE ],
-    endpoint: `layers`,
+    types: [ DELETE_LAYER_REQUEST, DELETE_LAYER_SUCCESS, DELETE_LAYER_FAILURE ],
+    endpoint: `layers/${styleName}`,
     api: API_TILE,
-    method: 'DELETE',
-    body: style
+    method: 'DELETE'
   }
 });
 
-export const deleteMapStyle = (style) => (dispatch) => {
-  return dispatch(deleteStyleAsync(style));
+export const deleteLayer = (layerName) => (dispatch) => {
+  return dispatch(deleteLayerAsync(layerName));
+};
+
+
+/*------------------------------------------------------------------------------------------
+ * Upload MBTiles
+ *-----------------------------------------------------------------------------------------*/
+export const UPLOAD_MBTILES_REQUEST = 'UPLOAD_MBTILES_REQUEST';
+export const UPLOAD_MBTILES_SUCCESS = 'UPLOAD_MBTILES_SUCCESS';
+export const UPLOAD_MBTILES_FAILURE = 'UPLOAD_MBTILES_FAILURE';
+
+const uploadMBTilesAsync = (styleName, file) => ({
+  [CALL_API]: {
+    types: [ UPLOAD_MBTILES_REQUEST, UPLOAD_MBTILES_SUCCESS, UPLOAD_MBTILES_FAILURE ],
+    endpoint: `layers/${styleName}/upload`,
+    api: API_TILE,
+    method: 'POST',
+    headers: {
+      "Content-Type": 'multipart/form-data'
+    },
+    body: file
+  }
+});
+
+export const uploadMBTiles = (styleName, file) => (dispatch) => {
+  let formData = new FormData();
+  formData.append("mbtiles", file);
+  return dispatch(uploadMBTilesAsync(styleName, formData));
+};
+
+
+/*------------------------------------------------------------------------------------------
+ * Show/hide layer
+ *-----------------------------------------------------------------------------------------*/
+
+export const SHOW_LAYER_REQUEST = 'SHOW_LAYER_REQUEST';
+export const SHOW_LAYER_SUCCESS = 'SHOW_LAYER_SUCCESS';
+export const SHOW_LAYER_FAILURE = 'SHOW_LAYER_FAILURE';
+
+const showLayerAsync = (styleName, show) => ({
+  [CALL_API]: {
+    types: [ SHOW_LAYER_REQUEST, SHOW_LAYER_SUCCESS, SHOW_LAYER_FAILURE ],
+    endpoint: `layers/${styleName}/show/${show}`,
+    api: API_TILE,
+    method: 'POST'
+  }
+});
+
+export const showLayer = (layerName, show) => (dispatch) => {
+  return dispatch(showLayerAsync(layerName, show));
 };
 
 /*------------------------------------------------------------------------------------------
  * Navigation
  *-----------------------------------------------------------------------------------------*/
-export const OPEN_MAP_STYLE_POPUP = 'OPEN_MAP_STYLE_POPUP';
+export const OPEN_MAP_LAYERS_POPUP = 'OPEN_MAP_LAYERS_POPUP';
 
-export const openMapStylePopup = (open) => ({
-  type: OPEN_MAP_STYLE_POPUP,
+export const openMapLayersPopup = (open) => ({
+  type: OPEN_MAP_LAYERS_POPUP,
   open: open
 });

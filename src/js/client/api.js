@@ -19,7 +19,7 @@ const callApi = (api, endpoint, method, schema, store, headers, body) => {
     // User provided a specific endpoint (third-party?
     fullUrl = endpoint;
   }
-  console.log(fullUrl);
+  
   // Return Promise
   return axios({
     url: fullUrl,

@@ -8,31 +8,32 @@ import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/edit';
+import Switch from 'material-ui/Switch';
 
 
 class StylePickerComponent extends Component {
 
   static propTypes = {
-    styles: PropTypes.arrayOf(PROPS_TYPE_STYLE),
-    selectedStyle: PROPS_TYPE_STYLE,
-    onStyleSelected: PropTypes.func,
-    onStyleCreate: PropTypes.func,
-    onStyleEdit: PropTypes.func,
-    onStyleDelete: PropTypes.func
+    layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
+    onLayerSelected: PropTypes.func,
+    onLayerCreate: PropTypes.func,
+    onLayerEdit: PropTypes.func,
+    onLayerDelete: PropTypes.func,
+    onLayerShow: PropTypes.func
   };
 
   btnTapped = (style) => {
-    this.props.onStyleSelected(style);
+    this.props.onLayerSelected(style);
   };
 
   render() {
-    const styleElements = this.props.styles.map((style, i) =>
+    const styleElements = this.props.layers.map((style, i) =>
       (
         <Card className="style-card" key={i} onClick={() => {
           this.btnTapped(style);
         }}>
           <CardContent
-            className={"style-card-container " + (this.props.selectedStyle && this.props.selectedStyle.meta.name === style.meta.name ? "style-selected" : "style-unselected")}>
+            className={"style-card-container " + (style.meta.display ? "style-selected" : "style-unselected")}>
             <div className="style-image">
               <div className="image-wrapper">
                 <img src="http://localhost:8081/maps/osm/6/33/22.png"/>
@@ -53,15 +54,20 @@ class StylePickerComponent extends Component {
           </CardContent>
           <CardActions disableActionSpacing>
             <IconButton aria-label="Edit style" onClick={() => {
-              this.props.onStyleEdit(style);
+              this.props.onLayerEdit(style);
             }}>
               <EditIcon/>
             </IconButton>
             <IconButton aria-label="Delete style" onClick={() => {
-              this.props.onStyleDelete(style);
+              this.props.onLayerDelete(style.meta.name);
             }}>
               <DeleteIcon/>
             </IconButton>
+            <Switch
+                checked={style.meta.display}
+                onChange={() => {this.props.onLayerShow(style.meta.name, !style.meta.display)}}
+                color="primary"
+            />
           </CardActions>
         </Card>
       )
@@ -71,7 +77,7 @@ class StylePickerComponent extends Component {
       <div className={"style-grid"}>
         {styleElements}
         <Card className="style-card" key={999} onClick={
-          this.props.onStyleCreate}>
+          this.props.onLayerCreate}>
           <CardContent
             className={"card-add-style"}>
             <Typography variant="headline" component="h2">
