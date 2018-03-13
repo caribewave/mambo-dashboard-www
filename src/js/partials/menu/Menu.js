@@ -6,6 +6,7 @@ import MaterialMenu, {MenuItem} from 'material-ui/Menu';
 import SettingsIcon from 'material-ui-icons/Settings';
 import {ListItemText} from 'material-ui/List';
 import {connect} from "react-redux";
+import {openSensorManagerPopin} from '../../actions/sensor';
 import {openMapLayersPopup} from '../../actions/style';
 
 
@@ -36,10 +37,15 @@ class Menu extends Component {
   };
 
   openItem = (option) => {
-    console.log("toto");
-    console.log(option);
-    this.props.openMapLayersPopup(true);
-    this.setState({anchorEl: null});
+    switch (option.label){
+      case "lbl.map" :
+        this.props.openMapStylePopup(true);
+        this.setState({anchorEl: null});
+        break;
+      case "lbl.sensors" :
+        this.props.openSensorManagerPopin(true);
+        break;
+    }
   };
 
   render() {
@@ -84,6 +90,6 @@ class Menu extends Component {
 
 const mapStateToProps = (state, ownProps) => ({});
 
-const actions = {openMapLayersPopup};
+const actions = {openMapLayersPopup, openSensorManagerPopin};
 
 export default connect(mapStateToProps, actions)(Menu)

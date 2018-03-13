@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {NavLink} from 'react-router';
 import Map from '../components/Map';
 import StylePicker from '../containers/StylePicker';
+import SensorManager from '../containers/SensorManager';
 import PlaneDetail from '../containers/PlaneDetail';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
@@ -34,6 +35,7 @@ class HomePage extends Component {
                onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
         </div>
         <StylePicker/>
+        <SensorManager/>
         {this.props.selectedPlane ? <PlaneDetail/> : null}
       </div>
     );

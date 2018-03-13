@@ -6,7 +6,8 @@ export default {
     "lbl.projects": "Projects",
     "lbl.hobbies": "Hobbies",
     "lbl.map": "Map style",
-    "lbl.sensors": "Senors",
-    "lbl.stylePickerTitle": "Set map style"
+    "lbl.sensors": "Sensors",
+    "lbl.stylePickerTitle": "Set map style",
+    "lbl.sensorManagerTitle": "Manage Sensors"
   }
 }
