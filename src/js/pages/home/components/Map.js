@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import mapboxgl from 'mapbox-gl';
-import {PROPS_PLANES, PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_PLANES, PROPS_POI, PROPS_TYPE_STYLE} from "../constants";
 import './Map.scss';
 import 'mapbox-gl-css';
 
@@ -12,94 +12,162 @@ class Map extends Component {
   static propTypes = {
     style: PROPS_TYPE_STYLE,
     planes: PROPS_PLANES,
+    selectedPlane: PROPS_POI,
     onMapPositionChanged: PropTypes.func,
     onPlaneSelected: PropTypes.func
   };
 
-  computeNewPosition = (plane) => {
-    //if there is only one point we can't predict its position,
-    if (plane.coordinates.length === 1) {
-      return plane.coordinates[0].value;
+  constructor(props) {
+    super(props);
+    this.mapElements = [];
+    this.state = {
+      mapElements: []
     }
+  }
 
-    const now = new Date();
-
-    // point 0 is the newest point
-    const point0 = plane.coordinates[0];
-    const point1 = plane.coordinates[1];
-
-    // new date is made so we can use .minutes
-    const deltaTime = new Date(now - Date.parse(point0.time));
-    const lastDeltaTime = new Date(Date.parse(point1.time) - Date.parse(point0.time));
-
-    // if we don't have more information after 20 minutes we don't try to estimate the plane position
-    if (deltaTime.getHours() > 1 || deltaTime.getMinutes() > 20) {
-      return plane.coordinates[0].value;
-    }
+  //********************         Points        *************************//
 
 
-    const lngSpeed = (point0.value[0] - point1.value[0]) / lastDeltaTime;
-    const latSpeed = (point0.value[1] - point1.value[1]) / lastDeltaTime;
-    const newLng = Number((point0.value[0] + deltaTime * lngSpeed).toFixed(6));
-    const newLat = Number((point0.value[1] + deltaTime * latSpeed).toFixed(6));
+  // a map element is :
+  // "_id":"40732e",
+  // "lastSpeed":373,
+  // "direction":38
+  //"coordinates":[2.449506,49.657412],
+  // "time":"2018-
+  // el
 
-    return [newLng, newLat];
+  mapPlaneFromApi = (plane) => {
+    let poiState = {};
+    poiState.id = plane._id;
+    poiState.speed = plane.lastSpeed;
+    poiState.heading = plane.direction;
+    poiState.lng = plane.coordinates[0].value[0];
+    poiState.lat = plane.coordinates[0].value[1];
+    return poiState;
   };
+
+
+  computeNextCoordinates = (elapsedTime, speedKn, headingDeg, lat, lng) => {
+    // Earth radius in meters
+    const R = 6378137;
+    // Translate speed into meters per second
+    const speedMs = speedKn * 1.852 / 3.600;
+    // Distance flown in meters at current heading since elapsedTime
+    const distanceFlown = speedMs * elapsedTime / 1000;
+    const headingRad = headingDeg * (Math.PI / 180);
+    const dn = distanceFlown * Math.cos(headingRad);
+    const de = distanceFlown * Math.sin(headingRad);
+    // Coordinate offsets in radians
+    const dLat = dn / R / (Math.PI / 180);
+    const dLon = de / (R * Math.cos(lat * (Math.PI / 180))) / (Math.PI / 180);
+    // OffsetPosition, decimal degrees
+    const latO = lat + dLat;
+    const lonO = lng + dLon;
+    return [lonO, latO];
+  };
+
+  mergeMarkers = (map, currentPoiStates, newPoiStates) => {
+    let poiStates = [];
+
+    newPoiStates.forEach((poiState) => {
+      let previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
+      if (previousPoiState) {
+        // The plane was already here. Update its position and content.
+        this.updatePoiState(previousPoiState, poiState);
+        poiStates.push(previousPoiState);
+      } else {
+        // The plane is new. Add marker on map.
+        this.addPoiOnMap(map, poiState);
+        poiStates.push(poiState);
+      }
+    });
+    return poiStates;
+  };
+
+  findPoiState = (data, id) => {
+    for (let i in data) {
+      if (data[i]._id === id) {
+        return data[i];
+      }
+    }
+  };
+
+
+  updatePoiState = (poiState, previousPoiState) => {
+    poiState.id = previousPoiState.id;
+
+    poiState.speed = previousPoiState.speed;
+    poiState.heading = previousPoiState.heading;
+    poiState.lat = previousPoiState.lat;
+    poiState.lng = previousPoiState.lng;
+
+    poiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
+    this.rotateMarker(poiState.el.childNodes[0], poiState.heading);
+    poiState.reset = true;
+  };
+
+  rotateMarker = (el, heading) => {
+    el.style['-ms-transform'] = 'rotate(' + heading + 'deg)';
+    el.style['-webkit-transform'] = 'rotate(' + heading + 'deg)';
+    el.style['transform'] = 'rotate(' + heading + 'deg)';
+  };
+
+  addPoiOnMap = (map, poiState) => {
+    poiState.el = this.getMarkerOnMap(poiState);
+    poiState.marker = new mapboxgl.Marker(poiState.el, {offset: [-23, -25]})
+      .setLngLat([poiState.lng, poiState.lat])
+      .addTo(map);
+
+    // Start the animation.
+    this.animateMarker(0, poiState);
+  };
+
+  animateMarker = (timestamp, poiState) => {
+    poiState.marker.setLngLat(this.computeNextCoordinates(timestamp, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
+    // Request the next frame of the animation.
+    if (poiState.reset) {
+      poiState.reset = false;
+      this.animateMarker(0, poiState);
+    } else {
+      setTimeout(
+        requestAnimationFrame((ts) => this.animateMarker(ts, poiState)), 500);
+    }
+  };
+
+  getMarkerOnMap = (data) => {
+    let el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(\'images/plane.png\')';
+    el.style.width = '46px';
+    el.style.height = '50px';
+    this.rotateMarker(el, data.heading);
+
+    el.addEventListener('click', () => {
+      this.props.onPlaneSelected(data.id)
+    });
+    let parent = document.createElement('div');
+    parent.appendChild(el);
+    return parent;
+  };
+
+  //********************         Lines        *************************//
 
   computePlaneFeature = (plane) => {
     let line = [];
+    if (plane) {
+      // we will only draw the last 10 point
+      plane.coordinates.slice(0, 10).forEach((point) =>
+        line.push(point.value)
+      );
+    }
 
-    let newPosition = this.computeNewPosition(plane);
-
-    line.push(newPosition);
-
-    // we will only draw the last 10 point
-    plane.coordinates.slice(0, 10).forEach((point) =>
-      line.push(point.value)
-    );
-
-    return [{
-      "type": "Feature",
-      "properties": {"name": "Null Island"},
-      "geometry": {
-        "type": "Point",
-        "coordinates": newPosition,
-        properties: {plane: plane._id}
-      }
-    }, {
+    return {
       type: "Feature",
       geometry: {
         type: "LineString",
         coordinates: line
       }
-    }]
-  };
-
-  computeFeatures = () => {
-    let features = [];
-
-    if (this.props.planes) {
-      this.props.planes.forEach((plane) => {
-        features = features.concat(this.computePlaneFeature(plane));
-      });
     }
-
-    return features;
-  };
-
-  animateMarker = () => {
-    // Update the data to a new position based on the animation timestamp.
-    let planeSource = this.map.getSource('plane_source_id');
-    if (planeSource) {
-      const features = this.computeFeatures();
-      planeSource.setData({
-          "type": "FeatureCollection",
-          "features": features
-        }
-      );
-    }
-    // Request the next frame of the animation.
-    requestAnimationFrame(this.animateMarker);
   };
 
   sendMapCoordinates = () => {
@@ -115,17 +183,7 @@ class Map extends Component {
       type: "geojson",
       data: {
         "type": "FeatureCollection",
-        "features": []
-      }
-    });
-
-    this.map.addLayer({
-      id: "plane_layer_id",
-      source: "plane_source_id",
-      type: "circle",
-      paint: {
-        "circle-radius": 5,
-        "circle-color": "#007cbf"
+        "features": this.computePlaneFeature(this.props.selected)
       }
     });
 
@@ -134,7 +192,7 @@ class Map extends Component {
       source: "plane_source_id",
       type: "line",
       paint: {
-        "line-color": '#ed6498',
+        "line-color": "#007cbf",
         "line-width": 5,
         "line-opacity": .8
       },
@@ -148,12 +206,8 @@ class Map extends Component {
     this.animateMarker();
   };
 
-  mapClick = (event) => {
-    const selectedLayers = this.map.queryRenderedFeatures(event.point, {layers: ['plane_layer_id']});
-    if (selectedLayers[0] && selectedLayers[0].properties) {
-      this.props.onPlaneSelected(JSON.parse(selectedLayers[0].properties.plane))
-    }
-  };
+
+  //******************** component life cycle *************************//
 
   componentDidMount() {
     this.map = new mapboxgl.Map({
@@ -164,12 +218,14 @@ class Map extends Component {
 
     this.map.on('dragend', this.sendMapCoordinates);
     this.map.on('load', this.loadMap);
-    this.map.on('click', this.mapClick);
 
     this.sendMapCoordinates();
   }
 
   componentWillReceiveProps(newProps) {
+
+    // Style
+
     if (newProps.style !== this.props.style) {
       let mapstyle = newProps.style.source;
       if (!newProps.style.meta.vector) {
@@ -193,6 +249,18 @@ class Map extends Component {
       }
 
       this.map.setStyle(mapstyle);
+    }
+
+    // Planes (points)
+
+    if (newProps.planes !== this.props.planes) {
+      const planes = [];
+
+      newProps.planes.forEach((plane) => {
+        planes.push(this.mapPlaneFromApi(plane));
+      });
+
+      this.setState({mapElements: this.mergeMarkers(this.map, this.props.mapElements, planes)});
     }
   }
 

@@ -33,7 +33,7 @@ const callLoadPlaneDetailAsync = (planeId) => ({
   // we send bebox (w,s,e,n)
   [CALL_API]: {
     types: [LOAD_PLANE_DETAIL_REQUEST, LOAD_PLANE_DETAIL_SUCCESS, LOAD_PLANE_DETAIL_FAILURE],
-    endpoint: `planes/loc?bbox=(` + planeId,
+    endpoint: 'planes/' + planeId,
     api: API_SENSOR,
     method: 'GET',
   }
@@ -42,13 +42,3 @@ const callLoadPlaneDetailAsync = (planeId) => ({
 export const loadPlaneDetail = (planeId) => (dispatch) => {
   return dispatch(callLoadPlaneDetailAsync(planeId));
 };
-
-/*------------------------------------------------------------------------------------------
- * Navigation
- *-----------------------------------------------------------------------------------------*/
-export const PLANE_SELECTED = 'PLANE_SELECTED';
-
-export const selectPlane = (plane) => ({
-  type: PLANE_SELECTED,
-  plane: plane
-});

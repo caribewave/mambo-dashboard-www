@@ -6,7 +6,7 @@ import PlaneDetail from '../containers/PlaneDetail';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import './HomePage.scss';
-import {loadPlanesAsync, selectPlane} from "../../../actions/mapData";
+import {loadPlaneDetail, loadPlanesAsync} from "../../../actions/mapData";
 import {contain, enlarge} from './utils/boxUtils'
 
 class HomePage extends Component {
@@ -22,15 +22,15 @@ class HomePage extends Component {
     }
   };
 
-  onPlaneSelected = (plane) => {
-    this.props.selectPlane(plane);
+  onPlaneSelected = (planeId) => {
+    this.props.loadPlaneDetail(planeId);
   };
 
   render() {
     return (
       <div>
         <div id="map-container">
-          <Map style={this.props.selectedStyle} planes={this.props.planes}
+          <Map style={this.props.selectedStyle} planes={this.props.planes} selectedPlane={this.props.selectedPlane}
                onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
         </div>
         <StylePicker/>
@@ -45,10 +45,10 @@ const mapStateToProps = (state, ownProps) => {
     selectedStyle: state.style.selectedStyle,
     planes: state.mapData.planes,
     selectedPlane: state.mapData.selectedPlane,
-    loadedBox: state.mapData.loadedBox
+    loadedBox: state.mapData.loadedBox,
   });
 };
 
-const actions = {loadPlanesAsync, selectPlane};
+const actions = {loadPlanesAsync, loadPlaneDetail};
 
 export default withRouter(connect(mapStateToProps, actions)(HomePage))

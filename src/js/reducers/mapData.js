@@ -18,11 +18,8 @@ const profile = (state = {}, action) => {
         loadedBox: loadedBox
       });
 
-    case ActionTypes.PLANE_SELECTED :
-      return merge({}, state, {selectedPlane: action.plane});
-
     case ActionTypes.LOAD_PLANE_DETAIL_SUCCESS :
-      return merge({}, state, {[selectedPlane.metadata]: action.result});
+      return merge({}, state, {selectedPlane: action.result});
   }
 
   return state;

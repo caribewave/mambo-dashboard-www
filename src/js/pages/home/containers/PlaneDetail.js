@@ -9,10 +9,6 @@ import SpeedChartComponent from '../components/SpeedChartComponent';
 
 class PlaneDetail extends Component {
 
-  componentDidMount() {
-    this.props.loadPlaneDetail(this.props.selectedPlane._id);
-  }
-
   onPlaneDeselect = () => {
     this.props.selectPlane(null);
   };
@@ -46,6 +42,6 @@ const mapStateToProps = (state, ownProps) => ({
   selectedPlane: state.mapData.selectedPlane
 });
 
-const actions = {selectPlane, loadPlaneDetail};
+const actions = {selectPlane};
 
 export default connect(mapStateToProps, actions)(PlaneDetail)
