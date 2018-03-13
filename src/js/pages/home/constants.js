@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export const PROPS_TYPE_STYLE_META = PropTypes.shape({
   name: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired,
+  source: PropTypes.string,
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   retina: PropTypes.bool,

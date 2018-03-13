@@ -10,7 +10,7 @@ import 'mapbox-gl-css';
 class Map extends Component {
 
   static propTypes = {
-    style: PROPS_TYPE_STYLE,
+    layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
     planes: PROPS_PLANES,
     selectedPlane: PropTypes.arrayOf(PROPS_POI),
     onMapPositionChanged: PropTypes.func,
@@ -178,6 +178,9 @@ class Map extends Component {
   };
 
   loadMap = () => {
+    this.setState({mapLoaded: true});
+    this.updateLayers(this.props.layers);
+    
     // Add a source and layer displaying a point which will be animated in a circle.
     this.map.addSource('plane_source_id', {
       type: "geojson",
@@ -213,38 +216,58 @@ class Map extends Component {
       zoom: 5
     });
 
+    this.map.setStyle({
+      "version": 8,
+      "sources": {},
+      "layers": []
+    });
     this.map.on('dragend', this.sendMapCoordinates);
     this.map.on('load', this.loadMap);
 
     this.sendMapCoordinates();
+    
   }
-
-  componentWillReceiveProps(newProps) {
-
-    // Style
-    if (newProps.style !== this.props.style) {
-      let mapstyle = newProps.style.source;
-      if (!newProps.style.meta.vector) {
-        mapstyle = {
-          "version": 8,
-          "sources": {
-            "raster-tiles": {
-              "type": "raster",
-              "tiles": [newProps.style.source],
-              "tileSize": newProps.style.meta.retina ? 512 : 256
-            }
-          },
-          "layers": [{
-            "id": newProps.style.meta.name,
+  
+  updateLayers = (layers) => {
+    for (let i in layers) {
+      let l = layers[i];
+      if (this.map.getLayer(l.meta.name)) {
+        this.map.removeLayer(l.meta.name);
+        this.map.removeSource(l.meta.name);  
+      }
+      if (l.meta.display) {
+        
+        if (l.meta.vector) {
+          // map.addSource()
+          // TODO
+        } else {
+          console.log(l);
+          this.map.addSource(l.meta.name, {
             "type": "raster",
-            "source": "raster-tiles",
+            "tiles": [l.source],
+            "tileSize": l.meta.retina ? 512 : 256
+          });
+          this.map.addLayer({
+            "id": l.meta.name,
+            "type": "raster",
+            "source": l.meta.name,
             "minzoom": 0,
             "maxzoom": 21
-          }]
+          });
         }
       }
+    }
+  };
 
-      this.map.setStyle(mapstyle);
+  componentWillReceiveProps(newProps) {
+    
+    if (this.state.mapLoaded && (this.props.layers !== newProps.layers)) {
+      console.log("Old layers:")
+      console.log(this.props.layers);
+      console.log("New layers:")
+      console.log(newProps.layers);
+      // New styles available
+      this.updateLayers(newProps.layers);
     }
 
     // Planes (points)

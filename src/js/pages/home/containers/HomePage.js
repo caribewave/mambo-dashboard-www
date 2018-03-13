@@ -30,7 +30,7 @@ class HomePage extends Component {
     return (
       <div>
         <div id="map-container">
-          <Map style={this.props.selectedStyle} planes={this.props.planes} selectedPlane={this.props.selectedPlane}
+          <Map layers={this.props.layers} planes={this.props.planes} selectedPlane={this.props.selectedPlane}
                onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
         </div>
         <StylePicker/>
@@ -42,7 +42,7 @@ class HomePage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return ({
-    selectedStyle: state.style.selectedStyle,
+    layers: state.style.layers,
     planes: state.mapData.planes,
     selectedPlane: state.mapData.selectedPlane,
     loadedBox: state.mapData.loadedBox,

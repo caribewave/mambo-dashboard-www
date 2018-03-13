@@ -15,7 +15,6 @@ class StylePickerComponent extends Component {
 
   static propTypes = {
     layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
-    onLayerSelected: PropTypes.func,
     onLayerCreate: PropTypes.func,
     onLayerEdit: PropTypes.func,
     onLayerDelete: PropTypes.func,
@@ -23,7 +22,7 @@ class StylePickerComponent extends Component {
   };
 
   btnTapped = (style) => {
-    this.props.onLayerSelected(style);
+    //FIXME this.props.onLayerSelected(style);
   };
 
   render() {
@@ -45,10 +44,7 @@ class StylePickerComponent extends Component {
                 {style.meta.label}
               </Typography>
               <Typography component="span">
-                Source : {"" + style.meta.source}<br/>
-                Type : {"" + style.meta.type}<br/>
-                Proxy : {"" + style.meta.proxy}<br/>
-                Vector : {"" + style.meta.vector}
+                Type : {"" + style.meta.type}
               </Typography>
             </div>
           </CardContent>
