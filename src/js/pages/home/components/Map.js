@@ -18,7 +18,7 @@ class Map extends Component {
 
   computeNewPosition = (plane) => {
     //if there is only one point we can't predict its position,
-    if (!plane.coordinates[1]) {
+    if (plane.coordinates.length === 1) {
       return plane.coordinates[0].value;
     }
 
@@ -28,72 +28,72 @@ class Map extends Component {
     const point0 = plane.coordinates[0];
     const point1 = plane.coordinates[1];
 
-    const deltaTime = now - Date.parse(point0.time);
-    const lastDeltaTime = Date.parse(point1.time) - Date.parse(point0.time);
+    // new date is made so we can use .minutes
+    const deltaTime = new Date(now - Date.parse(point0.time));
+    const lastDeltaTime = new Date(Date.parse(point1.time) - Date.parse(point0.time));
+
+    // if we don't have more information after 20 minutes we don't try to estimate the plane position
+    if (deltaTime.getHours() > 1 || deltaTime.getMinutes() > 20) {
+      return plane.coordinates[0].value;
+    }
+
 
     const lngSpeed = (point0.value[0] - point1.value[0]) / lastDeltaTime;
     const latSpeed = (point0.value[1] - point1.value[1]) / lastDeltaTime;
-    const newLng = point0.value[0] + deltaTime * lngSpeed;
-    const newLat = point0.value[1] + deltaTime * latSpeed;
+    const newLng = Number((point0.value[0] + deltaTime * lngSpeed).toFixed(6));
+    const newLat = Number((point0.value[1] + deltaTime * latSpeed).toFixed(6));
 
     return [newLng, newLat];
   };
 
-
-  computeSinglePlane = (plane) => {
-    let newPosition = this.computeNewPosition(plane);
-
+  computePlaneFeature = (plane) => {
     let line = [];
 
-    const planito = plane.coordinates.slice(1, 10);
-    planito.forEach((point) =>
-      line.push(...point.value)
+    let newPosition = this.computeNewPosition(plane);
+
+    line.push(newPosition);
+
+    // we will only draw the last 10 point
+    plane.coordinates.slice(1, 10).forEach((point) =>
+      line.push(point.value)
     );
 
-    line.unshift(newPosition);
-    console.log(newPosition);
-
-
-    let point = {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: newPosition
-      },
-      properties: {plane: plane._id}
-    };
-
-    let way = {
+    return [{
+      "type": "Feature",
+      "properties": {"name": "Null Island"},
+      "geometry": {
+        "type": "Point",
+        "coordinates": newPosition,
+        properties: {plane: plane._id}
+      }
+    }, {
       type: "Feature",
       geometry: {
         type: "LineString",
         coordinates: line
-      },
-      properties: {plane: plane}
-    };
-
-    return [point, way];
+      }
+    }]
   };
 
-  computeEstimatedPosition = () => {
-    let planeData = [];
-    if (this.props.planes) {
-      this.props.planes.forEach((plane) =>
-        planeData.push(...this.computeSinglePlane(plane)));
-    }
+  computeFeatures = () => {
+    let features = [];
+    this.props.planes.forEach((plane) => {
+      features = features.concat(this.computePlaneFeature(plane));
+    });
 
-    return {
-      type: "FeatureCollection",
-      features: (this.props.planes ? planeData : []
-      )
-    }
+    return features;
   };
 
   animateMarker = () => {
     // Update the data to a new position based on the animation timestamp.
     let planeSource = this.map.getSource('plane_source_id');
     if (planeSource) {
-      planeSource.setData(this.computeEstimatedPosition());
+      const features = this.computeFeatures();
+      planeSource.setData({
+          "type": "FeatureCollection",
+          "features": features
+        }
+      );
     }
     // Request the next frame of the animation.
     requestAnimationFrame(this.animateMarker);
@@ -110,7 +110,10 @@ class Map extends Component {
     // Add a source and layer displaying a point which will be animated in a circle.
     this.map.addSource('plane_source_id', {
       type: "geojson",
-      data: this.computeEstimatedPosition(0)
+      data: {
+        "type": "FeatureCollection",
+        "features": []
+      }
     });
 
     this.map.addLayer({
@@ -187,14 +190,6 @@ class Map extends Component {
       }
 
       this.map.setStyle(mapstyle);
-    }
-  }
-
-  componentWillUpdate() {
-    if (this.props.planes && this.map && this.map.getSource('plane_source_id')) {
-      this.map.getSource('plane_source_id').setData(
-        this.computeEstimatedPosition(0)
-      );
     }
   }
 
