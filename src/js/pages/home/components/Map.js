@@ -12,7 +12,7 @@ class Map extends Component {
   static propTypes = {
     style: PROPS_TYPE_STYLE,
     planes: PROPS_PLANES,
-    selectedPlane: PROPS_POI,
+    selectedPlane: PropTypes.arrayOf(PROPS_POI),
     onMapPositionChanged: PropTypes.func,
     onPlaneSelected: PropTypes.func
   };
@@ -68,7 +68,6 @@ class Map extends Component {
 
   mergeMarkers = (map, currentPoiStates, newPoiStates) => {
     let poiStates = [];
-
     newPoiStates.forEach((poiState) => {
       let previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
       if (previousPoiState) {
@@ -152,22 +151,23 @@ class Map extends Component {
 
   //********************         Lines        *************************//
 
-  computePlaneFeature = (plane) => {
+  computePlaneFeature = (planePoints) => {
     let line = [];
-    if (plane) {
+    if (planePoints) {
       // we will only draw the last 10 point
-      plane.coordinates.slice(0, 10).forEach((point) =>
-        line.push(point.value)
+      planePoints.forEach((point) =>
+        line.push(point.location.coordinates)
       );
     }
 
-    return {
+    console.log(line);
+    return [{
       type: "Feature",
       geometry: {
         type: "LineString",
         coordinates: line
       }
-    }
+    }]
   };
 
   sendMapCoordinates = () => {
@@ -183,7 +183,7 @@ class Map extends Component {
       type: "geojson",
       data: {
         "type": "FeatureCollection",
-        "features": this.computePlaneFeature(this.props.selected)
+        "features": this.computePlaneFeature(this.props.selectedPlane)
       }
     });
 
@@ -201,9 +201,6 @@ class Map extends Component {
         'line-join': 'round'
       }
     });
-
-    // Start the animation.
-    this.animateMarker();
   };
 
 
@@ -225,7 +222,6 @@ class Map extends Component {
   componentWillReceiveProps(newProps) {
 
     // Style
-
     if (newProps.style !== this.props.style) {
       let mapstyle = newProps.style.source;
       if (!newProps.style.meta.vector) {
@@ -262,6 +258,18 @@ class Map extends Component {
 
       this.setState({mapElements: this.mergeMarkers(this.map, this.props.mapElements, planes)});
     }
+
+    if (newProps.selectedPlane !== this.props.selectedPlane) {
+      let planeSource = this.map.getSource('plane_source_id');
+      if (planeSource) {
+        planeSource.setData({
+            "type": "FeatureCollection",
+            "features": this.computePlaneFeature(newProps.selectedPlane)
+          }
+        );
+      }
+    }
+
   }
 
   render() {
