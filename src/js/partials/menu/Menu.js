@@ -39,7 +39,7 @@ class Menu extends Component {
   openItem = (option) => {
     switch (option.label){
       case "lbl.map" :
-        this.props.openMapStylePopup(true);
+        this.props.openMapLayersPopup(true);
         this.setState({anchorEl: null});
         break;
       case "lbl.sensors" :

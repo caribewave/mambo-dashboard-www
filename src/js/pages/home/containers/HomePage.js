@@ -19,7 +19,7 @@ class HomePage extends Component {
     const currentBoundingBox = newPosition.bounds;
     //if not all the current map is contained in the trigger box we reload data
     if (!contain(this.props.loadedBox, currentBoundingBox)) {
-      this.props.loadPlanesAsync(enlarge(currentBoundingBox, 2));
+      // this.props.loadPlanesAsync(enlarge(currentBoundingBox, 2));
     }
   };
 

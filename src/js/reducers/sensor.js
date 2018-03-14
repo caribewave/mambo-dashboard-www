@@ -6,12 +6,22 @@ const profile = (state = {
   sensors : []
 }, action) => {
   const {type} = action;
+  let sensors = [];
 
   switch (type) {
     case ActionTypes.OPEN_SENSOR_MANAGER_POPIN:
       return merge({}, state, {popupOpen: action.open});
     case  ActionTypes.LOAD_ALL_SENSORS_SUCCESS:
       return merge({}, state, {sensors : action.result});
+    case ActionTypes.ACTIVATE_SENSOR_SUCCESS:
+      sensors = [...state.sensors];
+
+      for(let i in sensors) {
+        if(sensors[i].label === action.result.label){
+          sensors[i].activated = action.result.activated;
+        }
+      }
+      return merge({}, state, {sensors : sensors})
   }
 
   return state;

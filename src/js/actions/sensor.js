@@ -11,7 +11,7 @@ export const openSensorManagerPopin = (open) => ({
   open: open
 });
 
-/*------------------------------------------------------------------------------------------
+ /*------------------------------------------------------------------------------------------
  * Find All Sensors
  *-----------------------------------------------------------------------------------------*/
 
@@ -21,7 +21,6 @@ export const LOAD_ALL_SENSORS_FAILURE = "LOAD_ALL_SENSORS_FAILURE";
 
 
 const callLoadAllSensors = () => ({
-  // we send bebox (w,s,e,n)
   [CALL_API]: {
     types: [LOAD_ALL_SENSORS_REQUEST, LOAD_ALL_SENSORS_SUCCESS, LOAD_ALL_SENSORS_FAILURE],
     endpoint: `sensor/all`,
@@ -32,4 +31,26 @@ const callLoadAllSensors = () => ({
 
 export const loadAllSensors = () => (dispatch) => {
   return dispatch(callLoadAllSensors());
+};
+
+/*------------------------------------------------------------------------------------------
+ * Activate Sensor
+ *-----------------------------------------------------------------------------------------*/
+
+export const ACTIVATE_SENSOR_REQUEST = "ACTIVATE_SENSOR_REQUEST";
+export const ACTIVATE_SENSOR_SUCCESS = "ACTIVATE_SENSOR_SUCCESS";
+export const ACTIVATE_SENSOR_FAILURE = "ACTIVATE_SENSOR_FAILURE";
+
+
+const callActivateSensor = (label, activate) => ({
+  [CALL_API]: {
+    types: [ACTIVATE_SENSOR_REQUEST, ACTIVATE_SENSOR_SUCCESS, ACTIVATE_SENSOR_FAILURE],
+    endpoint: `sensor/${label}/activate/${activate}`,
+    api: API_SENSOR,
+    method: 'PUT',
+  }
+});
+
+export const activateSensor = (label, activate) => (dispatch) => {
+  return dispatch(callActivateSensor(label, activate));
 };
