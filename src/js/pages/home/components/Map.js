@@ -19,7 +19,6 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.mapElements = [];
     this.state = {
       mapElements: []
     }
@@ -84,10 +83,12 @@ class Map extends Component {
   };
 
   findPoiState = (data, id) => {
-    for (let i in data) {
-      if (data[i]._id === id) {
-        return data[i];
-      }
+    if (data) {
+      data.forEach((d) => {
+        if (d.id === id) {
+          return d;
+        }
+      });
     }
   };
 
@@ -158,7 +159,7 @@ class Map extends Component {
     return parent;
   };
 
-  //********************         Lines        *************************//
+//********************         Lines        *************************//
 
   computePlaneFeature = (planePoints) => {
     let line = [];
@@ -216,7 +217,7 @@ class Map extends Component {
   };
 
 
-  //******************** component life cycle *************************//
+//******************** component life cycle *************************//
 
   componentDidMount() {
     this.map = new mapboxgl.Map({
@@ -288,7 +289,7 @@ class Map extends Component {
         planes.push(this.mapPlaneFromApi(plane));
       });
 
-      this.setState({mapElements: this.mergeMarkers(this.map, this.props.mapElements, planes)});
+      this.setState({mapElements: this.mergeMarkers(this.map, this.state.mapElements, planes)});
     }
 
     if (newProps.selectedPlane !== this.props.selectedPlane) {
