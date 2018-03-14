@@ -11,12 +11,12 @@ import {MenuItem} from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 import Switch from 'material-ui/Switch';
 
-class StyleEditionComponent extends Component {
+class AddSensorComponent extends Component {
   constructor(props) {
     super(props);
 
     if (this.props.edit) {
-      this.state = Object.assign({"originalName": this.props.style.meta.name}, this.props.style.meta);
+      this.state = Object.assign({"originalName": this.props.sensor.label}, this.props.sensor);
     } else {
       this.state = {
         label: "",
@@ -106,4 +106,4 @@ class StyleEditionComponent extends Component {
   }
 }
 
-export default injectIntl(StyleEditionComponent);
+export default injectIntl(AddSensorComponent);

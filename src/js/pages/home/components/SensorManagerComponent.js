@@ -23,7 +23,9 @@ class SensorManagerComponent extends Component {
             </div>
           </CardContent>
           <CardActions disableActionSpacing>
-            <IconButton aria-label="Edit style">
+            <IconButton aria-label="Edit style" onClick={() => {
+              this.props.changeForEdit(sensor);
+            }}>
               <EditIcon/>
             </IconButton>
             <IconButton aria-label="Delete sensor" onClick={() => {

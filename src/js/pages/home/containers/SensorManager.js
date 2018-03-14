@@ -7,11 +7,11 @@ import {FormattedMessage} from 'react-intl';
 import AddSensorComponent from '../components/AddSensorComponent';
 import {
   activateSensor,
+  createSensor,
   deleteSensor,
-  loadAllSensors,
-  openSensorManagerPopin,
   editSensor,
-  createSensor
+  loadAllSensors,
+  openSensorManagerPopin
 } from "../../../actions/sensor";
 
 class SensorManager extends Component {
@@ -46,13 +46,11 @@ class SensorManager extends Component {
 
   };
 
-  createSensor = () => {
 
+  changeForEdit = (sensor) => {
+    this.setState({isEdition: true, sensorEdit: sensor, showForm: true});
   };
 
-  editSensor = () =>{
-
-  };
 
   render() {
     return (
@@ -68,9 +66,12 @@ class SensorManager extends Component {
                 onSensorActivate={this.onSensorActivate}
                 onSensorDelete={this.onSensorDelete}
                 changeForCreate={this.changeForCreate}
+                changeForEdit={this.changeForEdit}
             />
             {
-              this.state.showForm ? <AddSensorComponent action={this.state.isEdition ? this.props.editSensor : this.props.createSensor}  edit={this.state.isEdition} sensor={this.state.sensor}/> : null
+              this.state.showForm ? <AddSensorComponent
+                  action={this.state.isEdition ? this.props.editSensor : this.props.createSensor}
+                  edit={this.state.isEdition} sensor={this.state.sensorEdit}/> : null
             }
           </div>
         </Dialog>
