@@ -156,9 +156,13 @@ class Map extends Component {
   getMarkerOnMap = (data) => {
     let el = document.createElement('div');
     el.className = 'marker';
-    el.style.backgroundImage = 'url(\'images/plane.png\')';
-    el.style.width = '46px';
-    el.style.height = '50px';
+
+    let isSelected = this.props.selectedPlane && this.props.selectedPlane[0] && this.props.selectedPlane[0].hex === data.id;
+
+    el.style.backgroundImage = isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+    el.style.width = '48px';
+    el.style.height = '48px';
+    el.id = data.id;
 
     let tooltip = document.createElement('span');
     tooltip.className = 'tooltiptext';
@@ -189,7 +193,6 @@ class Map extends Component {
       );
     }
 
-    console.log(line);
     return [{
       type: "Feature",
       geometry: {
@@ -308,6 +311,8 @@ class Map extends Component {
       this.setState({mapElements: this.mergeMarkers(this.map, this.state.mapElements, planes)});
     }
 
+    // selected plane changes
+
     if (newProps.selectedPlane !== this.props.selectedPlane) {
       let planeSource = this.map.getSource('plane_source_id');
       if (planeSource) {
@@ -317,8 +322,29 @@ class Map extends Component {
           }
         );
       }
-    }
 
+      this.unselectMarkerUI();
+      this.selectMarkerUI(newProps.selectedPlane);
+    }
+  }
+
+  selectMarkerUI(selectedPlane) {
+    // select the new icon
+    if (selectedPlane) {
+      let elementById = document.getElementById(selectedPlane[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_accentColors.svg\')';
+      }
+    }
+  }
+
+  unselectMarkerUI() {// change the old marker image
+    if (this.props.selectedPlane) {
+      let elementById = document.getElementById(this.props.selectedPlane[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+      }
+    }
   }
 
   render() {
