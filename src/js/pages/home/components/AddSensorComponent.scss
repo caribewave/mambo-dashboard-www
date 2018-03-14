@@ -1,0 +1,54 @@
+@import "../../../../stylesheets/abstracts/_mixins";
+@import "../../../../stylesheets/abstracts/_variables";
+
+form {
+  margin: 20px;
+}
+
+.sensor-type-container {
+  display: flex;
+  flex-direction: row;
+  * {
+    padding: 5px;
+  }
+}
+
+.form-add-sensor-input-container {
+  position: relative;
+  background: #dddddd;
+  padding: 16px;
+}
+
+.style-row {
+  display: flex;
+  width: 100%;
+  height: 140px;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: baseline;
+  justify-content: space-between;
+  align-self: start;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sensor-add-input {
+  width: 200px;
+}
+
+.sensor-add-source {
+  width: 350px;
+}
+
+.add-sensor-btn {
+  text-align: center;
+  margin: 16px;
+}
+
+.add-sensor-submit-btn {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 16px;
+}
