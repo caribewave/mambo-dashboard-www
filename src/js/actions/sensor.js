@@ -76,3 +76,49 @@ const callDeleteSensor = (label) => ({
 export const deleteSensor = (label) => (dispatch) => {
   return dispatch(callDeleteSensor(label));
 };
+
+/*------------------------------------------------------------------------------------------
+ * Create Sensor
+ *-----------------------------------------------------------------------------------------*/
+
+export const CREATE_SENSOR_REQUEST = "CREATE_SENSOR_REQUEST";
+export const CREATE_SENSOR_SUCCESS = "CREATE_SENSOR_SUCCESS";
+export const CREATE_SENSOR_FAILURE = "CREATE_SENSOR_FAILURE";
+
+
+const callCreateSensor = (sensor) => ({
+  [CALL_API]: {
+    types: [CREATE_SENSOR_REQUEST, CREATE_SENSOR_SUCCESS, CREATE_SENSOR_FAILURE],
+    endpoint: `sensor`,
+    api: API_SENSOR,
+    method: 'POST',
+    body: sensor
+  }
+});
+
+export const createSensor = (sensor) => (dispatch) => {
+  return dispatch(callCreateSensor(sensor));
+};
+
+/*------------------------------------------------------------------------------------------
+ * Edit Sensor
+ *-----------------------------------------------------------------------------------------*/
+
+export const EDIT_SENSOR_REQUEST = "EDIT_SENSOR_REQUEST";
+export const EDIT_SENSOR_SUCCESS = "EDIT_SENSOR_SUCCESS";
+export const EDIT_SENSOR_FAILURE = "EDIT_SENSOR_FAILURE";
+
+
+const callEditSensor = (sensor) => ({
+  [CALL_API]: {
+    types: [EDIT_SENSOR_REQUEST, EDIT_SENSOR_SUCCESS, EDIT_SENSOR_FAILURE],
+    endpoint: `sensor/${sensor.label}/edit`,
+    api: API_SENSOR,
+    method: 'PUT',
+    body: sensor
+  }
+});
+
+export const editSensor = (sensor) => (dispatch) => {
+  return dispatch(callEditSensor(sensor));
+};

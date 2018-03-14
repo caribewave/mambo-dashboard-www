@@ -4,21 +4,30 @@ import React, {Component} from 'react';
 import SensorManagerComponent from '../components/SensorManagerComponent';
 import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
+import AddSensorComponent from '../components/AddSensorComponent';
 import {
   activateSensor,
   deleteSensor,
   loadAllSensors,
-  openSensorManagerPopin
+  openSensorManagerPopin,
+  editSensor,
+  createSensor
 } from "../../../actions/sensor";
 
 class SensorManager extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isEdition: false,
+      sensorEdit: null,
+      showForm: false
+    };
   }
 
   handleClose = () => {
     this.props.openSensorManagerPopin(false);
+    this.setState({isEdition: false, sensorEdit: null, showForm: false});
   };
 
   componentDidMount() {
@@ -28,8 +37,21 @@ class SensorManager extends Component {
     this.props.activateSensor(label, activated);
   };
 
-  onDelete = (label) => {
+  onSensorDelete = (label) => {
     this.props.deleteSensor(label);
+  };
+
+  changeForCreate = () => {
+    this.setState({isEdition: false, sensorEdit: null, showForm: true});
+
+  };
+
+  createSensor = () => {
+
+  };
+
+  editSensor = () =>{
+
   };
 
   render() {
@@ -44,8 +66,12 @@ class SensorManager extends Component {
             <SensorManagerComponent
                 sensors={this.props.sensors}
                 onSensorActivate={this.onSensorActivate}
-                onDelete = {this.onDelete}
+                onSensorDelete={this.onSensorDelete}
+                changeForCreate={this.changeForCreate}
             />
+            {
+              this.state.showForm ? <AddSensorComponent action={this.state.isEdition ? this.props.editSensor : this.props.createSensor}  edit={this.state.isEdition} sensor={this.state.sensor}/> : null
+            }
           </div>
         </Dialog>
     )
@@ -61,7 +87,9 @@ const actions = {
   openSensorManagerPopin,
   loadAllSensors,
   activateSensor,
-  deleteSensor
+  deleteSensor,
+  editSensor,
+  createSensor
 };
 
 export default connect(mapStateToProps, actions)(SensorManager)

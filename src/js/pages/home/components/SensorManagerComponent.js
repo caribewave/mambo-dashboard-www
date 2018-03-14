@@ -27,7 +27,7 @@ class SensorManagerComponent extends Component {
               <EditIcon/>
             </IconButton>
             <IconButton aria-label="Delete sensor" onClick={() => {
-              this.props.onDelete(sensor.label)
+              this.props.onSensorDelete(sensor.label)
             }}>
               <DeleteIcon/>
             </IconButton>
@@ -44,6 +44,15 @@ class SensorManagerComponent extends Component {
     return (
         <div className={"style-grid"}>
           {sensorElements}
+          <Card className="style-card" key={999} onClick={
+            this.props.changeForCreate}>
+            <CardContent
+                className={"card-add-style"}>
+              <Typography variant="headline" component="h2">
+                Ajouter un sensor
+              </Typography>
+            </CardContent>
+          </Card>
         </div>);
   };
 }
