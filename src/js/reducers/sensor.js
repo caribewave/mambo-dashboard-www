@@ -38,7 +38,6 @@ const profile = (state = {
           sensors[i] = action.result.sensor;
         }
       }
-      console.log(sensors);
       return merge({}, state, {sensors: sensors});
   }
 
