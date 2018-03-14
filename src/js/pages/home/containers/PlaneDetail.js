@@ -29,8 +29,8 @@ class PlaneDetail extends Component {
               </div>
               Avion : {this.props.selectedPlane[0].hex}<br/><br/>
               Altitude : {this.props.selectedPlane[0].altitude}<br/>
-              category: {this.props.selectedPlane[0].altitude}<br/>
-              hex : {this.props.selectedPlane[0].altitude}<br/>
+              category: {this.props.selectedPlane[0].category}<br/>
+              hex : {this.props.selectedPlane[0].hex}<br/>
               Position :<br/>
                   Latitude  : {this.props.selectedPlane[0].location.coordinates[0]}<br/>
                   Longitude : {this.props.selectedPlane[0].location.coordinates[1]}<br/>
