@@ -7,7 +7,7 @@ import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import DeleteIcon from 'material-ui-icons/Delete';
-import EditIcon from 'material-ui-icons/edit';
+import EditIcon from 'material-ui-icons/Edit';
 import Switch from 'material-ui/Switch';
 
 class LayerComponent extends Component {
