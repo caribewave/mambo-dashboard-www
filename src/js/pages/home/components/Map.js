@@ -42,6 +42,7 @@ class Map extends Component {
     poiState.heading = plane.direction;
     poiState.lng = plane.coordinates[0].value[0];
     poiState.lat = plane.coordinates[0].value[1];
+    poiState.lastUpdateTime = plane.coordinates[0].time;
     return poiState;
   };
 
@@ -117,6 +118,7 @@ class Map extends Component {
     poiState.heading = previousPoiState.heading;
     poiState.lat = previousPoiState.lat;
     poiState.lng = previousPoiState.lng;
+    poiState.lastUpdateTime = previousPoiState.lastUpdateTime;
 
     poiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
     this.rotateMarker(poiState.el.childNodes[0], poiState.heading);
@@ -139,7 +141,11 @@ class Map extends Component {
   animateMarkers = (timestamp) => {
     if (this.state.mapElements) {
       this.state.mapElements.forEach((poiState) => {
-        poiState.marker.setLngLat(this.computeNextCoordinates(timestamp, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
+        let lastUpdatedDate = Date.parse(poiState.lastUpdateTime);
+        const elapsedTime = (new Date()).getTime() - lastUpdatedDate;
+        if ((elapsedTime / 1000) / 60 < 15) {
+          poiState.marker.setLngLat(this.computeNextCoordinates(elapsedTime, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
+        }
       })
     }
 
@@ -235,15 +241,11 @@ class Map extends Component {
 
 //******************** component life cycle *************************//
 
-  componentWillUpdate() {
-    console.log("willUpdate");
-  }
-
   componentDidMount() {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
-      center: [2, 45],
-      zoom: 5
+      center: [-60, 10],
+      zoom: 6
     });
 
     this.map.setStyle({
