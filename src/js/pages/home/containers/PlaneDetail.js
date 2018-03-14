@@ -2,7 +2,7 @@ import Card, {CardContent} from 'material-ui/Card';
 import React, {Component} from 'react';
 import './PlaneDetail.scss';
 import {connect} from 'react-redux';
-import {selectPlane, loadPlaneDetail} from "../../../actions/mapData";
+import {openMapLayersPopup} from "../../../actions/mapData";
 import IconButton from 'material-ui/IconButton';
 import ClearIcon from 'material-ui-icons/Clear';
 import SpeedChartComponent from '../components/SpeedChartComponent';
@@ -10,7 +10,7 @@ import SpeedChartComponent from '../components/SpeedChartComponent';
 class PlaneDetail extends Component {
 
   onPlaneDeselect = () => {
-    this.props.selectPlane(null);
+    this.props.openMapLayersPopup();
   };
 
   render() {
@@ -42,6 +42,6 @@ const mapStateToProps = (state, ownProps) => ({
   selectedPlane: state.mapData.selectedPlane
 });
 
-const actions = {selectPlane};
+const actions = {openMapLayersPopup};
 
 export default connect(mapStateToProps, actions)(PlaneDetail)

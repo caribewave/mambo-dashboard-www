@@ -16,6 +16,9 @@ const profile = (state = {}, action) => {
 
     case ActionTypes.LOAD_PLANE_DETAIL_SUCCESS :
       return {...state, selectedPlane: action.result};
+
+    case ActionTypes.UNSELECT_PLANE :
+      return {...state, selectedPlane: null};
   }
 
   return state;

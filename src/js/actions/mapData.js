@@ -42,3 +42,9 @@ const callLoadPlaneDetailAsync = (planeId) => ({
 export const loadPlaneDetail = (planeId) => (dispatch) => {
   return dispatch(callLoadPlaneDetailAsync(planeId));
 };
+
+export const UNSELECT_PLANE = 'UNSELECT_PLANE';
+
+export const openMapLayersPopup = () => ({
+  type: UNSELECT_PLANE,
+});
