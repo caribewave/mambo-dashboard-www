@@ -12,14 +12,10 @@ const profile = (state = {}, action) => {
       const ne = new mapboxgl.LngLat(action.result.bboxRequested[1][1], action.result.bboxRequested[1][0]);
 
       let loadedBox = new mapboxgl.LngLatBounds(sw, ne);
-
-      return merge({}, state, {
-        planes: action.result.points,
-        loadedBox: loadedBox
-      });
+      return {...state, planes: action.result.points, loadedBox: loadedBox};
 
     case ActionTypes.LOAD_PLANE_DETAIL_SUCCESS :
-      return merge({}, state, {selectedPlane: action.result});
+      return {...state, selectedPlane: action.result};
   }
 
   return state;

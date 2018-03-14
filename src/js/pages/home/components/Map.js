@@ -113,7 +113,7 @@ class Map extends Component {
 
   addPoiOnMap = (map, poiState) => {
     poiState.el = this.getMarkerOnMap(poiState);
-    poiState.marker = new mapboxgl.Marker(poiState.el, {offset: [-23, -25]})
+    poiState.marker = new mapboxgl.Marker(poiState.el)
       .setLngLat([poiState.lng, poiState.lat])
       .addTo(map);
 
@@ -139,13 +139,22 @@ class Map extends Component {
     el.style.backgroundImage = 'url(\'images/plane.png\')';
     el.style.width = '46px';
     el.style.height = '50px';
+
+    let tooltip = document.createElement('span');
+    tooltip.className = 'tooltiptext';
+    tooltip.appendChild(document.createTextNode("Plane " + data.id));
+
+
     this.rotateMarker(el, data.heading);
 
     el.addEventListener('click', () => {
       this.props.onPlaneSelected(data.id)
     });
+
     let parent = document.createElement('div');
+    parent.className = "tooltip";
     parent.appendChild(el);
+    parent.appendChild(tooltip);
     return parent;
   };
 
@@ -180,7 +189,7 @@ class Map extends Component {
   loadMap = () => {
     this.setState({mapLoaded: true});
     this.updateLayers(this.props.layers);
-    
+
     // Add a source and layer displaying a point which will be animated in a circle.
     this.map.addSource('plane_source_id', {
       type: "geojson",
@@ -225,18 +234,18 @@ class Map extends Component {
     this.map.on('load', this.loadMap);
 
     this.sendMapCoordinates();
-    
+
   }
-  
+
   updateLayers = (layers) => {
     for (let i in layers) {
       let l = layers[i];
       if (this.map.getLayer(l.meta.name)) {
         this.map.removeLayer(l.meta.name);
-        this.map.removeSource(l.meta.name);  
+        this.map.removeSource(l.meta.name);
       }
-      if (l.meta.display) {
-        
+      if (l.meta.display) {
+
         if (l.meta.vector) {
           // map.addSource()
           // TODO
@@ -260,7 +269,7 @@ class Map extends Component {
   };
 
   componentWillReceiveProps(newProps) {
-    
+
     if (this.state.mapLoaded && (this.props.layers !== newProps.layers)) {
       console.log("Old layers:")
       console.log(this.props.layers);
