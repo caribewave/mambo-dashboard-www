@@ -8,10 +8,11 @@ const profile = (state = {}, action) => {
   const {type} = action;
   switch (type) {
     case ActionTypes.LOAD_PLANES_SUCCESS :
-      const sw = new mapboxgl.LngLat(action.result.bboxRequested[0][1], action.result.bboxRequested[0][0]);
-      const ne = new mapboxgl.LngLat(action.result.bboxRequested[1][1], action.result.bboxRequested[1][0]);
+      const sw = new mapboxgl.LngLat(action.result.bboxRequested[0][0], action.result.bboxRequested[0][1]);
+      const ne = new mapboxgl.LngLat(action.result.bboxRequested[1][0], action.result.bboxRequested[1][1]);
 
       let loadedBox = new mapboxgl.LngLatBounds(sw, ne);
+
       return {...state, planes: action.result.points, loadedBox: loadedBox};
 
     case ActionTypes.LOAD_PLANE_DETAIL_SUCCESS :

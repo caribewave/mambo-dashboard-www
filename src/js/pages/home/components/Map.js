@@ -67,6 +67,7 @@ class Map extends Component {
 
   mergeMarkers = (map, currentPoiStates, newPoiStates) => {
     let poiStates = [];
+
     newPoiStates.forEach((poiState) => {
       let previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
       if (previousPoiState) {
@@ -79,6 +80,9 @@ class Map extends Component {
         poiStates.push(poiState);
       }
     });
+
+    this.removeMarker(newPoiStates, currentPoiStates);
+
     return poiStates;
   };
 
@@ -90,6 +94,19 @@ class Map extends Component {
         }
       });
     }
+  };
+
+  removeMarker = (newPoiStates, currentPoiStates) => {
+    Array.prototype.diff = function (a) {
+      return this.filter(function (i) {
+        return a.indexOf(i) < 0;
+      });
+    };
+
+    let toRemove = currentPoiStates.diff(newPoiStates);
+    toRemove.forEach((poiState) => {
+      poiState.marker.remove();
+    });
   };
 
 
@@ -117,21 +134,17 @@ class Map extends Component {
     poiState.marker = new mapboxgl.Marker(poiState.el)
       .setLngLat([poiState.lng, poiState.lat])
       .addTo(map);
-
-    // Start the animation.
-    this.animateMarker(0, poiState);
   };
 
-  animateMarker = (timestamp, poiState) => {
-    poiState.marker.setLngLat(this.computeNextCoordinates(timestamp, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
-    // Request the next frame of the animation.
-    if (poiState.reset) {
-      poiState.reset = false;
-      this.animateMarker(0, poiState);
-    } else {
-      setTimeout(
-        requestAnimationFrame((ts) => this.animateMarker(ts, poiState)), 500);
+  animateMarkers = (timestamp) => {
+    if (this.state.mapElements) {
+      this.state.mapElements.forEach((poiState) => {
+        poiState.marker.setLngLat(this.computeNextCoordinates(timestamp, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
+      })
     }
+
+    setTimeout(
+      requestAnimationFrame((ts) => this.animateMarkers(ts)), 1000);
   };
 
   getMarkerOnMap = (data) => {
@@ -214,10 +227,17 @@ class Map extends Component {
         'line-join': 'round'
       }
     });
+
+    // Start the animation.
+    this.animateMarkers(0);
   };
 
 
 //******************** component life cycle *************************//
+
+  componentWillUpdate() {
+    console.log("willUpdate");
+  }
 
   componentDidMount() {
     this.map = new mapboxgl.Map({
