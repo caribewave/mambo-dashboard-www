@@ -15,7 +15,7 @@ class PlaneDetail extends Component {
 
   render() {
     return (
-      this.props.selectedPlane
+      this.props.selectedPlane && this.props.selectedPlane[0]
         ?
         <div className="plane-detail-panel">
           <Card className="plane-detail-container">
@@ -27,7 +27,21 @@ class PlaneDetail extends Component {
                   }/>
                 </IconButton>
               </div>
-              detail POI : {this.props.selectedPlane && this.props.selectedPlane._id}
+              Avion : {this.props.selectedPlane[0].hex}<br/><br/>
+              Altitude : {this.props.selectedPlane[0].altitude}<br/>
+              category: {this.props.selectedPlane[0].altitude}<br/>
+              hex : {this.props.selectedPlane[0].altitude}<br/>
+              Position :<br/>
+                  Latitude  : {this.props.selectedPlane[0].location.coordinates[0]}<br/>
+                  Longitude : {this.props.selectedPlane[0].location.coordinates[1]}<br/>
+              Messages  : {this.props.selectedPlane[0].messages}<br/>
+              Seen : {this.props.selectedPlane[0].seen}<br/>
+              Seen_pos : {this.props.selectedPlane[0].seen_pos}<br/>
+              Speed : {this.props.selectedPlane[0].speed}<br/>
+              Squawk : {this.props.selectedPlane[0].squawk}<br/>
+              Update : <br/>
+              {this.props.selectedPlane[0].updated_at}<br/>
+              Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
               <SpeedChartComponent/>
             </CardContent>
           </Card>
