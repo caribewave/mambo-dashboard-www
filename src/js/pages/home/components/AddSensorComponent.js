@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
-import './AddStyleComponent.scss';
+import './AddSensorComponent.scss';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import DoneIcon from 'material-ui-icons/Done';
@@ -17,6 +17,7 @@ class AddSensorComponent extends Component {
 
     if (this.props.edit) {
       this.state = Object.assign({"originalName": this.props.sensor.label}, this.props.sensor);
+      this.state.editLabel = this.props.sensor.label;
     } else {
       this.state = {
         label: "",
@@ -39,20 +40,24 @@ class AddSensorComponent extends Component {
       activated: this.state.activated
     };
 
-    this.props.action(sensor);
+    if (this.props.edit) {
+      this.props.action(this.props.sensor.label, sensor);
+    } else {
+      this.props.action(sensor);
+    }
     event.preventDefault();
   };
 
   render() {
     return (
-        <form className={"form-add-layer"}>
+        <form className={"form-add-sensor"}>
           <Typography variant="headline" component="h2">
-            Create a layer
+            Create a Sensor
           </Typography>
-          <div className={"form-add-layer-input-container"}>
+          <div className={"form-add-sensor-input-container"}>
             <div className={"style-row"}>
               <FormControl
-                  className={"layer-add-input"}>
+                  className={"sensor-add-input"}>
                 <TextField
                     required
                     onChange={this.handleChange}
@@ -63,7 +68,7 @@ class AddSensorComponent extends Component {
                 />
               </FormControl>
               <FormControl
-                  className={"layer-add-input"}>
+                  className={"sensor-add-input"}>
                 <TextField
                     required
                     onChange={this.handleChange}
@@ -74,7 +79,7 @@ class AddSensorComponent extends Component {
                 />
               </FormControl>
               <FormControl
-                  className={"layer-add-input"}>
+                  className={"sensor-add-input"}>
                 <InputLabel htmlFor="type"> Type</InputLabel>
                 <Select
                     value={this.state.type}
@@ -85,17 +90,17 @@ class AddSensorComponent extends Component {
                 </Select>
               </FormControl>
               <FormControl
-                  className={"layer-add-input"}>
+                  className={"sensor-add-input"}>
                 <Switch
                     checked={this.state.activated}
                     onChange={() => {
-                      this.setState({activated : !this.state.activated});
+                      this.setState({activated: !this.state.activated});
                     }}
                     color="primary"
                 />
               </FormControl>
             </div>
-            <div className={"add-layer-btn"}>
+            <div className={"add-sensor-btn"}>
               <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
                 <DoneIcon/>
               </Button>

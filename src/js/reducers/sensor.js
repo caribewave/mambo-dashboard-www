@@ -29,8 +29,17 @@ const profile = (state = {
           sensors.splice(i, 1);
         }
       }
-
       return {...state, sensors: sensors};
+    case ActionTypes.EDIT_SENSOR_SUCCESS:
+      sensors = [...state.sensors];
+
+      for (let i in sensors) {
+        if (sensors[i].label === action.result.editLabel) {
+          sensors[i] = action.result.sensor;
+        }
+      }
+      console.log(sensors);
+      return merge({}, state, {sensors: sensors});
   }
 
   return state;

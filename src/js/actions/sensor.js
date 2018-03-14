@@ -11,7 +11,7 @@ export const openSensorManagerPopin = (open) => ({
   open: open
 });
 
- /*------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------
  * Find All Sensors
  *-----------------------------------------------------------------------------------------*/
 
@@ -109,16 +109,16 @@ export const EDIT_SENSOR_SUCCESS = "EDIT_SENSOR_SUCCESS";
 export const EDIT_SENSOR_FAILURE = "EDIT_SENSOR_FAILURE";
 
 
-const callEditSensor = (sensor) => ({
+const callEditSensor = (label, sensor) => ({
   [CALL_API]: {
     types: [EDIT_SENSOR_REQUEST, EDIT_SENSOR_SUCCESS, EDIT_SENSOR_FAILURE],
-    endpoint: `sensor/${sensor.label}/edit`,
+    endpoint: `sensor/${label}`,
     api: API_SENSOR,
     method: 'PUT',
     body: sensor
   }
 });
 
-export const editSensor = (sensor) => (dispatch) => {
-  return dispatch(callEditSensor(sensor));
+export const editSensor = (label, sensor) => (dispatch) => {
+  return dispatch(callEditSensor(label, sensor));
 };
