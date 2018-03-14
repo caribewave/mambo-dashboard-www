@@ -32,20 +32,22 @@ const profile = (state = {
     case ActionTypes.CREATE_LAYER_FAILURE:
       return merge({}, state, {loading: false});
     case ActionTypes.SHOW_LAYER_SUCCESS:
-      layers = [...state.layers];
-      for (let i in layers) {
+      layers = [];
+      layers.push(...state.layers);
+      state.layers.forEach((i) => {
         if (layers[i].meta.name === action.result.meta.name) {
           layers[i].meta.display = action.result.meta.display;
         }
-      }
+      });
       return {...state, layers: layers};
     case ActionTypes.DELETE_LAYER_SUCCESS:
       layers = [];
-      for (let i in state.layers) {
+      state.layers.forEach((i) => {
+        console.log(i);
         if (state.layers[i].meta.name != action.result.name) {
           layers.push(state.layers[i]);
         }
-      }
+      });
       return {...state, layers: layers};
   }
 

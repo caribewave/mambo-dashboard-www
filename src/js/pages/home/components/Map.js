@@ -261,8 +261,7 @@ class Map extends Component {
   }
 
   updateLayers = (layers) => {
-    for (let i in layers) {
-      let l = layers[i];
+    layers.forEach((l) => {
       if (this.map.getLayer(l.meta.name)) {
         this.map.removeLayer(l.meta.name);
         this.map.removeSource(l.meta.name);
@@ -287,7 +286,7 @@ class Map extends Component {
           });
         }
       }
-    }
+    });
   };
 
   componentWillReceiveProps(newProps) {
