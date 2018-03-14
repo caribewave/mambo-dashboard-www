@@ -215,7 +215,7 @@ class StyleEditionComponent extends Component {
               {(this.state.type === "proxy") && this.renderProxyType()}
               {(this.state.type === "mbtiles") && this.renderMBTilesType()}
             </div>
-            <div className={"add-layer-btn"}>
+            <div className={"add-layer-submit-btn"}>
               <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
                 <DoneIcon/>
               </Button>

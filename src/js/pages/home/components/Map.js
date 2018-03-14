@@ -251,7 +251,6 @@ class Map extends Component {
           // map.addSource()
           // TODO
         } else {
-          console.log(l);
           this.map.addSource(l.meta.name, {
             "type": "raster",
             "tiles": [l.source],
@@ -272,10 +271,6 @@ class Map extends Component {
   componentWillReceiveProps(newProps) {
 
     if (this.state.mapLoaded && (this.props.layers !== newProps.layers)) {
-      console.log("Old layers:")
-      console.log(this.props.layers);
-      console.log("New layers:")
-      console.log(newProps.layers);
       // New styles available
       this.updateLayers(newProps.layers);
     }

@@ -3,13 +3,11 @@ import {injectIntl} from 'react-intl';
 import {PROPS_TYPE_STYLE} from "../constants";
 import PropTypes from 'prop-types';
 import './StylePickerComponent.scss';
-import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
+import Card, {CardContent} from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import DeleteIcon from 'material-ui-icons/Delete';
-import EditIcon from 'material-ui-icons/edit';
-import Switch from 'material-ui/Switch';
-
+import Button from 'material-ui/Button';
+import AddIcon from 'material-ui-icons/Add';
+import LayerComponent from './LayerComponent';
 
 class StylePickerComponent extends Component {
 
@@ -27,61 +25,33 @@ class StylePickerComponent extends Component {
 
   render() {
     const styleElements = this.props.layers.map((style, i) =>
-      (
-        <Card className="style-card" key={i} onClick={() => {
-          this.btnTapped(style);
-        }}>
-          <CardContent
-            className={"style-card-container " + (style.meta.display ? "style-selected" : "style-unselected")}>
-            <div className="style-image">
-              <div className="image-wrapper">
-                <img src="http://localhost:8081/maps/osm/6/33/22.png"/>
-              </div>
-              <div className="image-unselected-overlay"/>
-            </div>
-            <div className="style-data">
-              <Typography variant="headline" component="h3">
-                {style.meta.label}
-              </Typography>
-              <Typography component="span">
-                Type : {"" + style.meta.type}
-              </Typography>
-            </div>
-          </CardContent>
-          <CardActions disableActionSpacing>
-            <IconButton aria-label="Edit style" onClick={() => {
-              this.props.onLayerEdit(style);
-            }}>
-              <EditIcon/>
-            </IconButton>
-            <IconButton aria-label="Delete style" onClick={() => {
-              this.props.onLayerDelete(style.meta.name);
-            }}>
-              <DeleteIcon/>
-            </IconButton>
-            <Switch
-                checked={style.meta.display}
-                onChange={() => {this.props.onLayerShow(style.meta.name, !style.meta.display)}}
-                color="primary"
+        (
+            <LayerComponent
+                style={style}
+                key={i}
+                onLayerEdit={this.props.onLayerEdit}
+                onLayerCreate={this.props.onLayerCreate}
+                onLayerDelete={this.props.onLayerDelete}
+                onLayerShow={this.props.onLayerShow}
             />
-          </CardActions>
-        </Card>
-      )
+        )
     );
 
     return (
-      <div className={"style-grid"}>
-        {styleElements}
-        <Card className="style-card" key={999} onClick={
-          this.props.onLayerCreate}>
-          <CardContent
-            className={"card-add-style"}>
-            <Typography variant="headline" component="h2">
-              Ajouter un style
-            </Typography>
-          </CardContent>
-        </Card>
-      </div>);
+        <div className={"style-grid"}>
+          {styleElements}
+          <Card className="style-card" key={999} onClick={
+            this.props.onLayerCreate}>
+            <CardContent
+                className={"card-add-style"}>
+              <div className={"add-layer-btn"}>
+                <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
+                  <AddIcon/>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>);
   };
 }
 

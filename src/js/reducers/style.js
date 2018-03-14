@@ -38,7 +38,15 @@ const profile = (state = {
           layers[i].meta.display = action.result.meta.display;
         }
       }
-      return merge({}, state, {layers: layers});
+      return {...state, layers: layers};
+    case ActionTypes.DELETE_LAYER_SUCCESS:
+      layers = [];
+      for (let i in state.layers) {
+        if (state.layers[i].meta.name != action.result.name) {
+          layers.push(state.layers[i]);
+        }
+      }
+      return {...state, layers: layers};
   }
 
   return state;
