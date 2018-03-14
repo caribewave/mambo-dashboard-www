@@ -4,7 +4,12 @@ import React, {Component} from 'react';
 import SensorManagerComponent from '../components/SensorManagerComponent';
 import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
-import {activateSensor, loadAllSensors, openSensorManagerPopin} from "../../../actions/sensor";
+import {
+  activateSensor,
+  deleteSensor,
+  loadAllSensors,
+  openSensorManagerPopin
+} from "../../../actions/sensor";
 
 class SensorManager extends Component {
 
@@ -23,6 +28,10 @@ class SensorManager extends Component {
     this.props.activateSensor(label, activated);
   };
 
+  onDelete = (label) => {
+    this.props.deleteSensor(label);
+  };
+
   render() {
     return (
         <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title"
@@ -35,6 +44,7 @@ class SensorManager extends Component {
             <SensorManagerComponent
                 sensors={this.props.sensors}
                 onSensorActivate={this.onSensorActivate}
+                onDelete = {this.onDelete}
             />
           </div>
         </Dialog>
@@ -50,7 +60,8 @@ const mapStateToProps = (state, ownProps) => ({
 const actions = {
   openSensorManagerPopin,
   loadAllSensors,
-  activateSensor
+  activateSensor,
+  deleteSensor
 };
 
 export default connect(mapStateToProps, actions)(SensorManager)

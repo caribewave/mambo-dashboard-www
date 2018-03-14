@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
 import './StylePickerComponent.scss';
-import {Card, CardContent, CardActions, IconButton, Typography, Switch} from 'material-ui';
+import {Card, CardActions, CardContent, IconButton, Switch, Typography} from 'material-ui';
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/edit';
 
@@ -26,12 +26,16 @@ class SensorManagerComponent extends Component {
             <IconButton aria-label="Edit style">
               <EditIcon/>
             </IconButton>
-            <IconButton aria-label="Delete sensor">
+            <IconButton aria-label="Delete sensor" onClick={() => {
+              this.props.onDelete(sensor.label)
+            }}>
               <DeleteIcon/>
             </IconButton>
             <Switch
                 checked={sensor.activated}
-                onChange={() => {this.props.onSensorActivate(sensor.label, !sensor.activated)}}
+                onChange={() => {
+                  this.props.onSensorActivate(sensor.label, !sensor.activated)
+                }}
                 color="primary"
             />
           </CardActions>

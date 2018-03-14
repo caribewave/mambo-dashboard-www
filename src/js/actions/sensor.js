@@ -54,3 +54,25 @@ const callActivateSensor = (label, activate) => ({
 export const activateSensor = (label, activate) => (dispatch) => {
   return dispatch(callActivateSensor(label, activate));
 };
+
+/*------------------------------------------------------------------------------------------
+ * Delete Sensor
+ *-----------------------------------------------------------------------------------------*/
+
+export const DELETE_SENSOR_REQUEST = "DELETE_SENSOR_REQUEST";
+export const DELETE_SENSOR_SUCCESS = "DELETE_SENSOR_SUCCESS";
+export const DELETE_SENSOR_FAILURE = "DELETE_SENSOR_FAILURE";
+
+
+const callDeleteSensor = (label) => ({
+  [CALL_API]: {
+    types: [DELETE_SENSOR_REQUEST, DELETE_SENSOR_SUCCESS, DELETE_SENSOR_FAILURE],
+    endpoint: `sensor/${label}`,
+    api: API_SENSOR,
+    method: 'DELETE',
+  }
+});
+
+export const deleteSensor = (label) => (dispatch) => {
+  return dispatch(callDeleteSensor(label));
+};
