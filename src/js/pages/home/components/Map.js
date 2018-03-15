@@ -24,7 +24,7 @@ class Map extends Component {
     }
   }
 
-  //********************         Points        *************************//
+  //********************         Mapper        *************************//
 
 
   // a map element is :
@@ -46,29 +46,12 @@ class Map extends Component {
     return poiState;
   };
 
+  //********************      Points Life Cycle     *************************//
 
-  computeNextCoordinates = (elapsedTime, speedKn, headingDeg, lat, lng) => {
-    // Earth radius in meters
-    const R = 6378137;
-    // Translate speed into meters per second
-    const speedMs = speedKn * 1.852 / 3.600;
-    // Distance flown in meters at current heading since elapsedTime
-    const distanceFlown = speedMs * elapsedTime / 1000;
-    const headingRad = headingDeg * (Math.PI / 180);
-    const dn = distanceFlown * Math.cos(headingRad);
-    const de = distanceFlown * Math.sin(headingRad);
-    // Coordinate offsets in radians
-    const dLat = dn / R / (Math.PI / 180);
-    const dLon = de / (R * Math.cos(lat * (Math.PI / 180))) / (Math.PI / 180);
-    // OffsetPosition, decimal degrees
-    const latO = lat + dLat;
-    const lonO = lng + dLon;
-    return [lonO, latO];
-  };
-
+  // Poi has changed, we are gonna create the missing points, update the existing ones and delete the old ones.
   mergeMarkers = (map, currentPoiStates, newPoiStates) => {
+    // this variable will contain all the updated and new data to display on the map
     let poiStates = [];
-
     newPoiStates.forEach((poiState) => {
       const previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
       if (previousPoiState) {
@@ -82,6 +65,7 @@ class Map extends Component {
       }
     });
 
+    //all points not return by the api will be remove from the map
     this.removeMarker(currentPoiStates, poiStates);
 
     return poiStates;
@@ -107,22 +91,33 @@ class Map extends Component {
     };
 
     let toRemove = oldPoiStates.diff(newPoiStates);
-    toRemove.forEach((poiState) => {
-      poiState.marker.remove();
-    });
+    this.removeFromMark(toRemove);
   };
 
-
-  updatePoiState = (previousPoiState , poiState) => {
+  updatePoiState = (previousPoiState, poiState) => {
     previousPoiState.speed = poiState.speed;
     previousPoiState.heading = poiState.heading;
     previousPoiState.lat = poiState.lat;
     previousPoiState.lng = poiState.lng;
     previousPoiState.lastUpdateTime = poiState.lastUpdateTime;
-
     previousPoiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
     this.rotateMarker(previousPoiState.el.childNodes[0], poiState.heading);
   };
+
+//********************     UI Map call     *************************//
+
+  addPoiOnMap = (map, poiState) => {
+    poiState.el = this.createMarkerOnMap(poiState);
+    poiState.marker = new mapboxgl.Marker(poiState.el)
+      .setLngLat([poiState.lng, poiState.lat])
+      .addTo(map);
+  };
+
+  removeFromMark(toRemove) {
+    toRemove.forEach((poiState) => {
+      poiState.marker.remove();
+    });
+  }
 
   rotateMarker = (el, heading) => {
     el.style['-ms-transform'] = 'rotate(' + heading + 'deg)';
@@ -130,12 +125,58 @@ class Map extends Component {
     el.style['transform'] = 'rotate(' + heading + 'deg)';
   };
 
-  addPoiOnMap = (map, poiState) => {
-    poiState.el = this.getMarkerOnMap(poiState);
-    poiState.marker = new mapboxgl.Marker(poiState.el)
-      .setLngLat([poiState.lng, poiState.lat])
-      .addTo(map);
+  createMarkerOnMap = (data) => {
+    let el = document.createElement('div');
+    el.className = 'marker';
+
+    let isSelected = this.props.selectedPlane && this.props.selectedPlane.data[0] && this.props.selectedPlane.data[0].hex === data.id;
+
+    el.style.backgroundImage = isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+    el.style.width = '48px';
+    el.style.height = '48px';
+    el.id = data.id;
+
+    this.rotateMarker(el, data.heading);
+
+    el.addEventListener('click', () => {
+      this.props.onPlaneSelected(data.id)
+    });
+
+    let parent = document.createElement('div');
+    parent.className = "tooltip";
+    parent.appendChild(el);
+    parent.appendChild(this.createToolTip(data));
+    return parent;
   };
+
+
+  createToolTip(data) {
+    let tooltip = document.createElement('span');
+    tooltip.className = 'tooltiptext';
+    tooltip.appendChild(document.createTextNode("Plane " + data.id));
+    return tooltip;
+  }
+
+  selectMarkerOnMap(selectedPlane) {
+    // select the new icon
+    if (selectedPlane) {
+      let elementById = document.getElementById(selectedPlane.data[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_accentColors.svg\')';
+      }
+    }
+  }
+
+  unselectMarkerOnMap() {// change the old marker image
+    if (this.props.selectedPlane) {
+      let elementById = document.getElementById(this.props.selectedPlane.data[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+      }
+    }
+  }
+
+//********************     Animate     *************************//
 
   animateMarkers = (timestamp) => {
     if (this.state.mapElements) {
@@ -150,34 +191,6 @@ class Map extends Component {
 
     setTimeout(
       requestAnimationFrame((ts) => this.animateMarkers(ts)), 1000);
-  };
-
-  getMarkerOnMap = (data) => {
-    let el = document.createElement('div');
-    el.className = 'marker';
-
-    let isSelected = this.props.selectedPlane && this.props.selectedPlane.data[0] && this.props.selectedPlane.data[0].hex === data.id;
-
-    el.style.backgroundImage = isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
-    el.style.width = '48px';
-    el.style.height = '48px';
-    el.id = data.id;
-
-    let tooltip = document.createElement('span');
-    tooltip.className = 'tooltiptext';
-    tooltip.appendChild(document.createTextNode("Plane " + data.id));
-
-    this.rotateMarker(el, data.heading);
-
-    el.addEventListener('click', () => {
-      this.props.onPlaneSelected(data.id)
-    });
-
-    let parent = document.createElement('div');
-    parent.className = "tooltip";
-    parent.appendChild(el);
-    parent.appendChild(tooltip);
-    return parent;
   };
 
 //********************         Lines        *************************//
@@ -239,27 +252,7 @@ class Map extends Component {
     this.animateMarkers(0);
   };
 
-
-//******************** component life cycle *************************//
-
-  componentDidMount() {
-    this.map = new mapboxgl.Map({
-      container: this.mapContainer,
-      center: [-62, 15],
-      zoom: 6
-    });
-
-    this.map.setStyle({
-      "version": 8,
-      "sources": {},
-      "layers": []
-    });
-    this.map.on('dragend', this.sendMapCoordinates);
-    this.map.on('load', this.loadMap);
-
-    this.sendMapCoordinates();
-
-  }
+  //******************** Layers *************************//
 
   updateLayers = (layers) => {
     layers.forEach((l) => {
@@ -290,7 +283,30 @@ class Map extends Component {
     });
   };
 
+
+  //******************** component life cycle *************************//
+
+  componentDidMount() {
+    this.map = new mapboxgl.Map({
+      container: this.mapContainer,
+      center: [-62, 15],
+      zoom: 6
+    });
+
+    this.map.setStyle({
+      "version": 8,
+      "sources": {},
+      "layers": []
+    });
+
+    this.map.on('dragend', this.sendMapCoordinates);
+    this.map.on('load', this.loadMap);
+    this.sendMapCoordinates();
+  }
+
+
   componentWillReceiveProps(newProps) {
+    // Layers
 
     if (this.state.mapLoaded && (this.props.layers !== newProps.layers)) {
       // New styles available
@@ -309,7 +325,7 @@ class Map extends Component {
       this.setState({mapElements: this.mergeMarkers(this.map, this.state.mapElements, planes)});
     }
 
-    // selected plane changes
+    // Selected plane changes
 
     if (newProps.selectedPlane !== this.props.selectedPlane) {
       let planeSource = this.map.getSource('plane_source_id');
@@ -320,28 +336,8 @@ class Map extends Component {
           }
         );
       }
-
-      this.unselectMarkerUI();
-      this.selectMarkerUI(newProps.selectedPlane);
-    }
-  }
-
-  selectMarkerUI(selectedPlane) {
-    // select the new icon
-    if (selectedPlane) {
-      let elementById = document.getElementById(selectedPlane.data[0].hex);
-      if (elementById) {
-        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_accentColors.svg\')';
-      }
-    }
-  }
-
-  unselectMarkerUI() {// change the old marker image
-    if (this.props.selectedPlane) {
-      let elementById = document.getElementById(this.props.selectedPlane.data[0].hex);
-      if (elementById) {
-        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_primaryColors.svg\')';
-      }
+      this.unselectMarkerOnMap();
+      this.selectMarkerOnMap(newProps.selectedPlane);
     }
   }
 

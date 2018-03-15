@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import './HomePage.scss';
 import {loadPlaneDetail, loadPlanesAsync} from "../../../actions/mapData";
-import {contain, enlarge} from './utils/boxUtils'
+import {contain, enlarge} from '../utils/MapUtils'
 
 class HomePage extends Component {
 
@@ -16,20 +16,12 @@ class HomePage extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.timer = setInterval(this.timerRefresh, 5000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
 
   onMapPositionChanged = (newPosition) => {
     const currentBoundingBox = newPosition.bounds;
-    console.log("move");
+
     //if not all the current map is contained in the trigger box we reload data
     if (!contain(this.props.loadedBox, currentBoundingBox)) {
-      console.log("refresh not contained");
       this.props.loadPlanesAsync(enlarge(currentBoundingBox, 2));
     }
   };
@@ -37,6 +29,24 @@ class HomePage extends Component {
   onPlaneSelected = (planeId) => {
     this.props.loadPlaneDetail(planeId);
   };
+
+  refreshMapData = () => {
+    // every 5 seconds we refresh the POIs on the map and the selected Marker
+    // the selected marker is refresh so the last speed, altitude and position are updated
+    this.props.loadPlanesAsync(this.props.loadedBox);
+    if (this.props.selectedPlane) {
+      console.log("selected plane");
+      this.props.loadPlaneDetail(this.props.selectedPlane.data[0].hex);
+    }
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(this.refreshMapData, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
   render() {
     return (
@@ -51,15 +61,6 @@ class HomePage extends Component {
       </div>
     );
   }
-
-  timerRefresh = () => {
-    this.props.loadPlanesAsync(this.props.loadedBox);
-    if (this.props.selectedPlane) {
-      console.log("selected plane");
-      this.props.loadPlaneDetail(this.props.selectedPlane.data[0].hex);
-    }
-  };
-
 }
 
 const mapStateToProps = (state, ownProps) => {

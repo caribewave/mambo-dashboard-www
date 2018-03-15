@@ -55,3 +55,23 @@ export function enlarge(box, factor) {
   const ne = new mapboxgl.LngLat(lngNE, latNE);
   return new mapboxgl.LngLatBounds(sw, ne);
 }
+
+
+export function computeNextCoordinates (elapsedTime, speedKn, headingDeg, lat, lng)  {
+  // Earth radius in meters
+  const R = 6378137;
+  // Translate speed into meters per second
+  const speedMs = speedKn * 1.852 / 3.600;
+  // Distance flown in meters at current heading since elapsedTime
+  const distanceFlown = speedMs * elapsedTime / 1000;
+  const headingRad = headingDeg * (Math.PI / 180);
+  const dn = distanceFlown * Math.cos(headingRad);
+  const de = distanceFlown * Math.sin(headingRad);
+  // Coordinate offsets in radians
+  const dLat = dn / R / (Math.PI / 180);
+  const dLon = de / (R * Math.cos(lat * (Math.PI / 180))) / (Math.PI / 180);
+  // OffsetPosition, decimal degrees
+  const latO = lat + dLat;
+  const lonO = lng + dLon;
+  return [lonO, latO];
+};
