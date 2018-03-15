@@ -2,6 +2,7 @@ import Card, {CardContent} from 'material-ui/Card';
 import React, {Component} from 'react';
 import './PlaneDetail.scss';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import {openMapLayersPopup} from "../../../actions/mapData";
 import IconButton from 'material-ui/IconButton';
 import ClearIcon from 'material-ui-icons/Clear';
@@ -41,6 +42,7 @@ class PlaneDetail extends Component {
               regid : {this.props.aircraftInfo.regid}<br/>
               mdl : {this.props.aircraftInfo.mdl}<br/>
               type : {this.props.aircraftInfo.type}<br/>
+              last update : {moment(this.props.selectedPlane[0].updated_at).fromNow()}<br/>
 
               Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
               <SpeedChartComponent selectedPlane={this.props.selectedPlane}/>
