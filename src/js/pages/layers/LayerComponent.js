@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
-import {PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_TYPE_STYLE} from "../home/constants";
 import PropTypes from 'prop-types';
-import './StylePickerComponent.scss';
+import './LayerSettingsComponent.scss';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';

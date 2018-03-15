@@ -3,15 +3,14 @@ import merge from 'lodash.merge';
 
 const profile = (state = {
   layers: [],
-  selectedStyle: null,
-  popupOpen: false
+  layerToEdit: null,
+  popupOpen: false,
+  editPopupOpen: false,
+  editMode: 'create',
 }, action) => {
   const {type} = action;
   let layers = [];
   switch (type) {
-    case ActionTypes.CHANGE_MAP_LAYERS :
-      return merge({}, state, {selectedStyle: null}, {selectedStyle: action.style});
-
     case ActionTypes.LOAD_LAYERS_SUCCESS:
       let defaultStyle = null;
       Object.keys(action.result).forEach((k) => {
@@ -21,16 +20,35 @@ const profile = (state = {
           defaultStyle = s; 
         }
       });
-      return merge({}, state, {layers: layers, selectedStyle: defaultStyle});
-
-    case ActionTypes.OPEN_MAP_LAYERS_POPUP:
-      return merge({}, state, {popupOpen: false}, {popupOpen: action.open});
+      return merge({}, state, {layers: layers});
+    case ActionTypes.OPEN_LAYERS_POPUP:
+      return merge({}, state, {popupOpen: action.open});
+    // Layer creation / edition popup
+    case ActionTypes.OPEN_LAYERS_EDITION_POPUP:
+      return merge({}, state, {editPopupOpen: action.open, layerToEdit: action.layer, editMode: action.layer ? 'edit' : 'create'});
+    // Create layer
     case ActionTypes.CREATE_LAYER_REQUEST:
-      return merge({}, state, {loading: true});
+      return merge({}, state, {loading: true, layerEditionError: null});
     case ActionTypes.CREATE_LAYER_SUCCESS:
       return merge({}, state, {loading: false, layers: [...state.layers, action.result]});
     case ActionTypes.CREATE_LAYER_FAILURE:
-      return merge({}, state, {loading: false});
+      return merge({}, state, {loading: false, layerEditionError: action.error});
+    // Update layer
+    case ActionTypes.EDIT_LAYER_REQUEST:
+      return merge({}, state, {loading: true, layerEditionError: null});
+    case ActionTypes.EDIT_LAYER_SUCCESS:
+      layers = [];
+      state.layers.forEach((l) => {
+        if (l.meta.name != action.result.meta.name) {
+          layers.push(l);
+        } else {
+          layers.push(action.result);
+        }
+      });
+      return merge({}, state, {loading: false, layers: layers});
+    case ActionTypes.EDIT_LAYER_FAILURE:
+      return merge({}, state, {loading: false, layerEditionError: action.error});
+    // Show layer success
     case ActionTypes.SHOW_LAYER_SUCCESS:
       layers = [];
       layers.push(...state.layers);
@@ -40,15 +58,17 @@ const profile = (state = {
         }
       });
       return {...state, layers: layers};
+    // Delete layer
+    case ActionTypes.DELETE_LAYER_REQUEST:
+      return merge({}, state, {loading: true});
     case ActionTypes.DELETE_LAYER_SUCCESS:
       layers = [];
-      state.layers.forEach((i) => {
-        console.log(i);
-        if (state.layers[i].meta.name != action.result.name) {
-          layers.push(state.layers[i]);
+      state.layers.forEach((l) => {
+        if (l.meta.name != action.result.name) {
+          layers.push(l);
         }
       });
-      return {...state, layers: layers};
+      return merge({...state, layers: layers}, {loading: false});
   }
 
   return state;

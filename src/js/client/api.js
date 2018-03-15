@@ -106,7 +106,7 @@ export default store => next => action => {
     console.log('Error: ', err);
     return next(actionWith({
       type: failureType,
-      error: {message: err.statusText, data: err.data, status: err.status}
+      error: err.response.data ? {message: err.response.data.message, data: err.response.data.data, status: err.response.data.status} : {}
     }));
   });
 }

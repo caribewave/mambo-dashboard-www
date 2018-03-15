@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {injectIntl} from 'react-intl';
-import {PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_TYPE_STYLE} from "../home/constants";
 import PropTypes from 'prop-types';
-import './StylePickerComponent.scss';
+import './LayerSettingsComponent.scss';
 import Card, {CardContent} from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import LayerComponent from './LayerComponent';
 
-class StylePickerComponent extends Component {
+class LayerSettingsComponent extends Component {
 
   static propTypes = {
     layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
@@ -55,4 +55,4 @@ class StylePickerComponent extends Component {
   };
 }
 
-export default injectIntl(StylePickerComponent);
+export default injectIntl(LayerSettingsComponent);

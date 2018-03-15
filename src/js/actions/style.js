@@ -5,7 +5,7 @@ import {CALL_API, API_TILE, API_SENSOR} from '../client/api';
  *-----------------------------------------------------------------------------------------*/
 export const CHANGE_MAP_LAYERS = 'CHANGE_MAP_LAYERS';
 
-export const changeMapStyle = (style) => ({
+export const changeMapLayers = (style) => ({
   type: CHANGE_MAP_LAYERS,
   style: style
 });
@@ -55,13 +55,13 @@ export const createLayer = (style) => (dispatch) => {
  * Edit style
  *-----------------------------------------------------------------------------------------*/
 
-export const EDIT_STYLE_REQUEST = 'EDIT_STYLE_REQUEST';
-export const EDIT_STYLE_SUCCESS = 'EDIT_STYLE_SUCCESS';
-export const EDIT_STYLE_FAILURE = 'EDIT_STYLE_FAILURE';
+export const EDIT_LAYER_REQUEST = 'EDIT_LAYER_REQUEST';
+export const EDIT_LAYER_SUCCESS = 'EDIT_LAYER_SUCCESS';
+export const EDIT_LAYER_FAILURE = 'EDIT_LAYER_FAILURE';
 
 const editLayerAsync = (layer) => ({
   [CALL_API]: {
-    types: [ EDIT_STYLE_REQUEST, EDIT_STYLE_SUCCESS, EDIT_STYLE_FAILURE ],
+    types: [ EDIT_LAYER_REQUEST, EDIT_LAYER_SUCCESS, EDIT_LAYER_FAILURE ],
     endpoint: `layers`,
     api: API_TILE,
     method: 'PUT',
@@ -146,9 +146,21 @@ export const showLayer = (layerName, show) => (dispatch) => {
 /*------------------------------------------------------------------------------------------
  * Navigation
  *-----------------------------------------------------------------------------------------*/
-export const OPEN_MAP_LAYERS_POPUP = 'OPEN_MAP_LAYERS_POPUP';
+export const OPEN_LAYERS_POPUP = 'OPEN_LAYERS_POPUP';
 
 export const openMapLayersPopup = (open) => ({
-  type: OPEN_MAP_LAYERS_POPUP,
+  type: OPEN_LAYERS_POPUP,
   open: open
+});
+
+
+/*------------------------------------------------------------------------------------------
+ * Navigation
+ *-----------------------------------------------------------------------------------------*/
+export const OPEN_LAYERS_EDITION_POPUP = 'OPEN_LAYERS_EDITION_POPUP';
+
+export const openLayersEditionPopup = (open, layer) => ({
+  type: OPEN_LAYERS_EDITION_POPUP,
+  open: open,
+  layer: layer
 });

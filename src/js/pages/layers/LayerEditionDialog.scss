@@ -1,0 +1,25 @@
+@import "../../../stylesheets/abstracts/_variables";
+@import "../../../stylesheets/abstracts/_media";
+
+.layer-edition-dialog {
+  
+  .layer-edition-dialog__progress {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+
+  .layer-edition-dialog__error {
+    position: absolute;
+    right: 60px;
+    top: 32px;
+    color: $text-color-error;
+  }
+  
+  .layer-edition-dialog__hidden {
+    display: none;
+  }
+  
+  
+}
+

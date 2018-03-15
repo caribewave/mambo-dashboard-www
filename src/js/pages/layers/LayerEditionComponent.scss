@@ -1,0 +1,50 @@
+@import "../../../stylesheets/abstracts/_mixins";
+@import "../../../stylesheets/abstracts/_variables";
+
+
+.layer-edition-component {
+  
+  form {
+    margin: 20px;
+  }
+  
+  .layer-edition-component__input-container {
+    width: 500px;
+    position: relative;
+    background: #dddddd;
+    padding: 16px;
+  }
+
+  .layer-edition-component__style-row {
+    display: flex;
+    width: 100%;
+    height: 140px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    align-content: baseline;
+    justify-content: space-between;
+    align-self: start;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .layer-edition-component__input {
+    width: 200px;
+  }
+
+  .layer-edition-component__upload-btn {
+    padding-top: 20px;
+  }
+
+  .layer-edition-component__source {
+    width: 350px;
+  }
+  
+  .layer-edition-component__submit-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 16px;
+  }
+}

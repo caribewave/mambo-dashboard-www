@@ -1,0 +1,17 @@
+@import "../../../stylesheets/abstracts/_variables";
+@import "../../../stylesheets/abstracts/_media";
+
+.layer-settings-dialog {
+
+  .layer-settings-dialog__progress {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+  .layer-settings-dialog__hidden {
+    display: none;
+  }
+  .add-style-btn {
+    background: $primary-color;
+  }  
+}

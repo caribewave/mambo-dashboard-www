@@ -1,5 +1,5 @@
 import Dialog, {DialogTitle} from 'material-ui/Dialog';
-import './StylePicker.scss';
+import './SensorManager.scss';
 import React, {Component} from 'react';
 import SensorManagerComponent from '../components/SensorManagerComponent';
 import {connect} from 'react-redux';

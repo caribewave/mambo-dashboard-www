@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
-import './AddStyleComponent.scss';
+import './LayerEditionComponent.scss';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import DoneIcon from 'material-ui-icons/Done';
@@ -13,14 +13,18 @@ import Select from 'material-ui/Select';
 import {MenuItem} from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 
-class StyleEditionComponent extends Component {
+class LayerEditionComponent extends Component {
   constructor(props) {
     super(props);
+    this.state = this.computeDefaultForm(this.props);
+  }
 
-    if (this.props.edit) {
-      this.state = Object.assign({"originalName": this.props.style.meta.name}, this.props.style.meta);
+  computeDefaultForm(props) {
+    let defaultForm;
+    if (props.edit && props.layer) {
+      defaultForm = Object.assign({"originalName": props.layer.meta.name}, props.layer.meta);
     } else {
-      this.state = {
+      defaultForm = {
         label: "My Layer",
         name: "my-layer",
         type: "proxy",
@@ -29,35 +33,47 @@ class StyleEditionComponent extends Component {
         vector: false
       };
     }
+    return defaultForm;
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.layer !== this.props.layer) {
+      this.setState(this.computeDefaultForm(newProps));
+    }
   }
 
   static propTypes = {
     action: PropTypes.func.isRequired,
     secondaryAction: PropTypes.func.isRequired,
     edit: PropTypes.bool.isRequired,
-    style: PropTypes.object
+    layer: PropTypes.object,
+    closeAction: PropTypes.func.isRequired
   };
 
   handleSubmit = (event) => {
-    let style = {
+    let layer = {
       meta: {
         "name": this.state.name.normalize('NFD').replace(/[\u0300-\u036f\s]/g, ""),
-        "label": this.state.name,
+        "label": this.state.label,
         "type": this.state.type,
         "source": this.state.type === "proxy" ? this.state.source : null,
         "retina": this.state.retina,
         "vector": this.state.vector
       }
     };
-    this.props.action(style).then(() => {
-      this.props.secondaryAction(style.meta.name, this.state.mbtiles);
+    this.props.action(layer).then((result) => {
+      if (layer.meta.type === "mbtiles") {
+        this.props.secondaryAction(layer.meta.name, this.state.mbtiles).then((result) => {
+          this.props.closeAction();
+        });  
+      } else {
+        this.props.closeAction();
+      }
     });
     event.preventDefault();
   };
-  
+
   handleChange = (event) => {
-    console.log('Hello');
-    console.log(event.target);
     switch (event.target.name) {
       case "name":
       case "label":
@@ -106,7 +122,7 @@ class StyleEditionComponent extends Component {
       </FormControl>,
       <div
           key="upload"
-          className={"layer-upload-btn"}>
+          className={"layer-edition-component__upload-btn"}>
         <Button variant="raised"
                 color="default"
                 onClick={this.openFileDialog}
@@ -117,12 +133,12 @@ class StyleEditionComponent extends Component {
               id="mbtiles-upload-button"
               name="mbtiles"
               onChange={e => this.setState({mbtiles: e.target.files[0]})}
-              style={{ display: 'none' }}
+              style={{display: 'none'}}
               type="file"
           />
-        </Button>  
+        </Button>
       </div>
-      
+
     ];
   };
 
@@ -130,7 +146,7 @@ class StyleEditionComponent extends Component {
     return [
       <FormControl
           key="source"
-          className={"layer-add-source"}>
+          className={"layer-edition-component__source"}>
         <TextField
             name="source"
             label="Layer source"
@@ -140,7 +156,7 @@ class StyleEditionComponent extends Component {
       </FormControl>,
       <FormControl
           key="vector"
-          className={"layer-add-input"}>
+          className={"layer-edition-component__input"}>
         <InputLabel htmlFor="is-vector">Source type</InputLabel>
         <Select
             value={"" + this.state.vector}
@@ -163,7 +179,7 @@ class StyleEditionComponent extends Component {
                 id="is-retina"
                 name="retina"
             />}
-          className={"layer-add-input"}
+          className={"layer-edition-component__input"}
           label="Retina"
       />
     ]
@@ -171,61 +187,60 @@ class StyleEditionComponent extends Component {
 
   render() {
     return (
-        <form className={"form-add-layer"}>
-          <Typography variant="headline" component="h2">
-            Create a layer
-          </Typography>
-          <div className={"form-add-layer-input-container"}>
-            <div className={"style-row"}>
-              <FormControl
-                  className={"layer-add-input"}>
-                <TextField
-                    name="label"
-                    label="Label"
-                    value={this.state.label}
-                    onChange={this.handleChange}
-                    margin="normal"
-                />
-              </FormControl>
-              <FormControl
-                  className={"layer-add-input"}>
-                <TextField
-                    name="name"
-                    label="Name"
-                    disabled={this.props.edit}
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                    margin="normal"
-                />
-              </FormControl>
-              <FormControl
-                  className={"layer-add-input"}>
-                <InputLabel htmlFor="source-type">Source type</InputLabel>
-                <Select
-                    value={this.state.type}
-                    onChange={this.handleChange}
-                    inputProps={{
-                      id: 'source-type',
-                      name: 'type',
-                    }}>
-                  <MenuItem value="proxy">Tile Proxy</MenuItem>
-                  <MenuItem value="mbtiles">Local MBTiles file</MenuItem>
-                </Select>
-              </FormControl>
+        <div className="layer-edition-component">
+          <form>
+            <div className={"layer-edition-component__input-container"}>
+              <div className={"layer-edition-component__style-row"}>
+                <FormControl
+                    className={"layer-edition-component__input"}>
+                  <TextField
+                      name="label"
+                      label="Label"
+                      value={this.state.label}
+                      onChange={this.handleChange}
+                      margin="normal"
+                  />
+                </FormControl>
+                <FormControl
+                    className={"layer-edition-component__input"}>
+                  <TextField
+                      name="name"
+                      label="Name"
+                      disabled={this.props.edit}
+                      value={this.state.name}
+                      onChange={this.handleChange}
+                      margin="normal"
+                  />
+                </FormControl>
+                <FormControl
+                    className={"layer-edition-component__input"}>
+                  <InputLabel htmlFor="source-type">Source type</InputLabel>
+                  <Select
+                      value={this.state.type}
+                      onChange={this.handleChange}
+                      inputProps={{
+                        id: 'source-type',
+                        name: 'type',
+                      }}>
+                    <MenuItem value="proxy">Tile Proxy</MenuItem>
+                    <MenuItem value="mbtiles">Local MBTiles file</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className={"layer-edition-component__style-row"}>
+                {(this.state.type === "proxy") && this.renderProxyType()}
+                {(this.state.type === "mbtiles") && this.renderMBTilesType()}
+              </div>
+              <div className={"layer-edition-component__submit-btn"}>
+                <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
+                  <DoneIcon/>
+                </Button>
+              </div>
             </div>
-            <div className={"style-row"}>
-              {(this.state.type === "proxy") && this.renderProxyType()}
-              {(this.state.type === "mbtiles") && this.renderMBTilesType()}
-            </div>
-            <div className={"add-layer-submit-btn"}>
-              <Button aria-label="Add" color="primary" variant="fab" onClick={this.handleSubmit}>
-                <DoneIcon/>
-              </Button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
     );
   }
 }
 
-export default injectIntl(StyleEditionComponent);
+export default injectIntl(LayerEditionComponent);

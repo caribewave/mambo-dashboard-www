@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router';
 import Map from '../components/Map';
-import StylePicker from '../containers/StylePicker';
+import LayerSettingsDialog from '../../layers/LayerSettingsDialog';
 import SensorManager from '../containers/SensorManager';
 import PlaneDetail from '../containers/PlaneDetail';
 import {connect} from 'react-redux';
@@ -45,7 +45,7 @@ class HomePage extends Component {
           <Map layers={this.props.layers} planes={this.props.planes} selectedPlane={this.props.selectedPlane}
                onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
         </div>
-        <StylePicker/>
+        <LayerSettingsDialog/>
         <SensorManager/>
         {this.props.selectedPlane ? <PlaneDetail/> : null}
       </div>

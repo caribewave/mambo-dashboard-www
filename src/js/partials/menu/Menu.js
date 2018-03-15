@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Menu.scss';
-import {FormattedMessage, injectIntl} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import IconButton from 'material-ui/IconButton';
 import MaterialMenu, {MenuItem} from 'material-ui/Menu';
 import SettingsIcon from 'material-ui-icons/Settings';
@@ -37,7 +37,7 @@ class Menu extends Component {
   };
 
   openItem = (option) => {
-    switch (option.label){
+    switch (option.label) {
       case "lbl.map" :
         this.props.openMapLayersPopup(true);
         this.setState({anchorEl: null});
@@ -52,48 +52,48 @@ class Menu extends Component {
     const {anchorEl} = this.state;
 
     return (
-      <div className="menu-wrapper">
-        <div className="logo">
-          <img src="images/logo.svg"/>
-          <Typography variant="headline" component="span" className="name">
-            Mambo
-          </Typography>
-          <Typography variant="subheading" component="span" className="subtitle">
-            Tactical Dashboard
-          </Typography>
-        </div>
-        
-        <div className="menu-btn">
-        <IconButton
-          id="menu-btn"
-          aria-label="More"
-          aria-owns={anchorEl ? 'long-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
-          <SettingsIcon/>
-        </IconButton>
+        <div className="menu-wrapper">
+          <div className="logo">
+            <img src="images/logo.svg"/>
+            <Typography variant="headline" component="span" className="name">
+              Mambo
+            </Typography>
+            <Typography variant="subheading" component="span" className="subtitle">
+              Tactical Dashboard
+            </Typography>
+          </div>
 
-        <MaterialMenu
-          id="long-menu"
-          anchorEl={this.state.anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: 200,
-            },
-          }}
-        >
-          {options.map((option, i) => (
-            <MenuItem key={i} onClick={() => this.openItem(option)}>
-              <ListItemText primary={<FormattedMessage id={option.label}/>}/>
-            </MenuItem>
-          ))}
-        </MaterialMenu>
+          <div className="menu-btn">
+            <IconButton
+                id="menu-btn"
+                aria-label="More"
+                aria-owns={anchorEl ? 'long-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}
+            >
+              <SettingsIcon/>
+            </IconButton>
+
+            <MaterialMenu
+                id="long-menu"
+                anchorEl={this.state.anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: 200,
+                  },
+                }}
+            >
+              {options.map((option, i) => (
+                  <MenuItem key={i} onClick={() => this.openItem(option)}>
+                    <ListItemText primary={<FormattedMessage id={option.label}/>}/>
+                  </MenuItem>
+              ))}
+            </MaterialMenu>
+          </div>
         </div>
-      </div>
     );
   }
 }
