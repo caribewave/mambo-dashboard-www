@@ -29,6 +29,7 @@ class PlaneDetail extends Component {
                 </IconButton>
               </div>
               Avion : {this.props.selectedPlane[0].hex}<br/><br/>
+              Flight : {this.props.selectedPlane[0].flight}<br/>
               Altitude : {this.props.selectedPlane[0].altitude}<br/>
               category: {this.props.selectedPlane[0].category}<br/>
               hex : {this.props.selectedPlane[0].hex}<br/>

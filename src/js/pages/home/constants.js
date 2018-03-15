@@ -33,7 +33,9 @@ export const PROPS_POI = PropTypes.shape({
   heading: PropTypes.number,
   updated_at: PropTypes.string,
   lastSpeed: PropTypes.number,
-  direction: PropTypes.number
+  direction: PropTypes.number,
+  flight: PropTypes.string,
+  squack : PropTypes.string
 });
 
 export const PROPS_PLANES = PropTypes.arrayOf(PROPS_POI);
