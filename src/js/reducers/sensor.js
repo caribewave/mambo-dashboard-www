@@ -39,6 +39,11 @@ const profile = (state = {
         }
       }
       return merge({}, state, {sensors: sensors});
+    case ActionTypes.CREATE_SENSOR_SUCCESS :
+      sensors = [...state.sensors];
+
+      sensors.push(action.result);
+      return merge({}, state, {sensors: sensors});
   }
 
   return state;
