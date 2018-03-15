@@ -8,7 +8,7 @@ import {ListItemText} from 'material-ui/List';
 import {connect} from "react-redux";
 import {openSensorManagerPopin} from '../../actions/sensor';
 import {openMapLayersPopup} from '../../actions/style';
-
+import Typography from 'material-ui/Typography';
 
 const options = [
   {label: "lbl.map"},
@@ -54,7 +54,13 @@ class Menu extends Component {
     return (
       <div className="menu-wrapper">
         <div className="logo">
-          <img src="images/logo.svg"/>  
+          <img src="images/logo.svg"/>
+          <Typography variant="headline" component="span" className="name">
+            Mambo
+          </Typography>
+          <Typography variant="subheading" component="span" className="subtitle">
+            Tactical Dashboard
+          </Typography>
         </div>
         
         <div className="menu-btn">

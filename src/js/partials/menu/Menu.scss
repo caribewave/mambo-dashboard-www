@@ -8,9 +8,26 @@
 }
 
 .logo {
-  position: absolute;
-  left: 0;
-  width: 54px;
+  position: relative;
+  img {
+    position: absolute;
+    left: 0;
+    width: 54px;
+    height: 54px;
+    display: inline;
+  }
+  .name {
+    position: absolute;
+    left: 56px;
+    top: 10px;
+    color: $text-color-primary-light;
+  }
+  .subtitle {
+    position: absolute;
+    left: 56px;
+    top: 30px;
+    color: $text-color-secondary-light;
+  }
   height: 54px;
 }
 
