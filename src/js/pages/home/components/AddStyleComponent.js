@@ -56,8 +56,6 @@ class StyleEditionComponent extends Component {
   };
   
   handleChange = (event) => {
-    console.log('Hello');
-    console.log(event.target);
     switch (event.target.name) {
       case "name":
       case "label":

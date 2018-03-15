@@ -7,6 +7,13 @@
   }
 }
 
+.logo {
+  position: absolute;
+  left: 0;
+  width: 54px;
+  height: 54px;
+}
+
 .menu-wrapper {
   position: relative;
   height: $header-height;
@@ -15,5 +22,6 @@
 
 .menu-btn {
   position: absolute;
+  top: 4px;
   right: 0;
 }

@@ -53,6 +53,10 @@ class Menu extends Component {
 
     return (
       <div className="menu-wrapper">
+        <div className="logo">
+          <img src="images/logo.svg"/>  
+        </div>
+        
         <div className="menu-btn">
         <IconButton
           id="menu-btn"
