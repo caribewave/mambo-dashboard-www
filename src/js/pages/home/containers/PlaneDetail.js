@@ -31,18 +31,19 @@ class PlaneDetail extends Component {
               Altitude : {this.props.selectedPlane[0].altitude}<br/>
               category: {this.props.selectedPlane[0].category}<br/>
               hex : {this.props.selectedPlane[0].hex}<br/>
-              Position :<br/>
-                  Latitude  : {this.props.selectedPlane[0].location.coordinates[0]}<br/>
-                  Longitude : {this.props.selectedPlane[0].location.coordinates[1]}<br/>
-              Messages  : {this.props.selectedPlane[0].messages}<br/>
+              Latitude : {this.props.selectedPlane[0].location.coordinates[0]}<br/>
+              Longitude : {this.props.selectedPlane[0].location.coordinates[1]}<br/>
+              Messages : {this.props.selectedPlane[0].messages}<br/>
               Seen : {this.props.selectedPlane[0].seen}<br/>
               Seen_pos : {this.props.selectedPlane[0].seen_pos}<br/>
               Speed : {this.props.selectedPlane[0].speed}<br/>
               Squawk : {this.props.selectedPlane[0].squawk}<br/>
-              Update : <br/>
-              {this.props.selectedPlane[0].updated_at}<br/>
+              regid : {this.props.aircraftInfo.regid}<br/>
+              mdl : {this.props.aircraftInfo.mdl}<br/>
+              type : {this.props.aircraftInfo.type}<br/>
+
               Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
-              <SpeedChartComponent/>
+              <SpeedChartComponent selectedPlane={this.props.selectedPlane}/>
             </CardContent>
           </Card>
         </div>
@@ -53,7 +54,8 @@ class PlaneDetail extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  selectedPlane: state.mapData.selectedPlane
+  selectedPlane: state.mapData.selectedPlane.data,
+  aircraftInfo: state.mapData.selectedPlane.aircraftInfo
 });
 
 const actions = {openMapLayersPopup};

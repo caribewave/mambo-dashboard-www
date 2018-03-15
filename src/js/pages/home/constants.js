@@ -37,3 +37,14 @@ export const PROPS_POI = PropTypes.shape({
 });
 
 export const PROPS_PLANES = PropTypes.arrayOf(PROPS_POI);
+
+export const ARCRAFT_INFO = PropTypes.shape({
+  icao: PropTypes.string,
+  regid: PropTypes.string,
+  mdl: PropTypes.string,
+  type: PropTypes.string
+});
+
+export const PROPS_PLANE_DETAIL = PropTypes.shape({ data : PropTypes.arrayOf(PROPS_POI),
+  aircraftInfo: ARCRAFT_INFO
+});
