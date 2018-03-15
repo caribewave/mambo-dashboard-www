@@ -34,9 +34,9 @@ const profile = (state = {
     case ActionTypes.SHOW_LAYER_SUCCESS:
       layers = [];
       layers.push(...state.layers);
-      state.layers.forEach((i) => {
-        if (layers[i].meta.name === action.result.meta.name) {
-          layers[i].meta.display = action.result.meta.display;
+      state.layers.forEach((layer) => {
+        if (layer.meta.name === action.result.meta.name) {
+          layer.meta.display = action.result.meta.display;
         }
       });
       return {...state, layers: layers};
