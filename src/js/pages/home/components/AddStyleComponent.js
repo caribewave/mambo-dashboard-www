@@ -56,11 +56,13 @@ class StyleEditionComponent extends Component {
   };
   
   handleChange = (event) => {
+    console.log('Hello');
+    console.log(event.target);
     switch (event.target.name) {
       case "name":
       case "label":
       case "type":
-        this.setState({type: event.target.value});
+        this.setState({[event.target.name]: event.target.value});
         break;
       case "source":
         this.setState({
@@ -122,7 +124,7 @@ class StyleEditionComponent extends Component {
       </div>
       
     ];
-  }
+  };
 
   renderProxyType() {
     return [

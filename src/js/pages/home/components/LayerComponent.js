@@ -25,7 +25,7 @@ class LayerComponent extends Component {
                   className={"style-card-container " + (this.props.style.meta.display ? "style-selected" : "style-unselected")}>
                 <div className="style-image">
                   <div className="image-wrapper">
-                    <img src="http://localhost:8081/maps/osm/6/33/22.png"/>
+                    <img src={"images/" + (this.props.style.meta.type === 'proxy' ? 'proxy.jpg' : 'database.jpg')}/>
                   </div>
                   <div className="image-unselected-overlay"/>
                 </div>
