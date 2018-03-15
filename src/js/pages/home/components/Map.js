@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import mapboxgl from 'mapbox-gl';
-import {PROPS_PLANES, PROPS_POI, PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_PLANES, PROPS_PLANE_DETAIL, PROPS_TYPE_STYLE} from "../constants";
 import './Map.scss';
 import 'mapbox-gl-css';
 
@@ -12,7 +12,7 @@ class Map extends Component {
   static propTypes = {
     layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
     planes: PROPS_PLANES,
-    selectedPlane: PropTypes.arrayOf(PROPS_POI),
+    selectedPlane: PROPS_PLANE_DETAIL,
     onMapPositionChanged: PropTypes.func,
     onPlaneSelected: PropTypes.func
   };
@@ -157,7 +157,7 @@ class Map extends Component {
     let el = document.createElement('div');
     el.className = 'marker';
 
-    let isSelected = this.props.selectedPlane && this.props.selectedPlane[0] && this.props.selectedPlane[0].hex === data.id;
+    let isSelected = this.props.selectedPlane && this.props.selectedPlane.data[0] && this.props.selectedPlane.data[0].hex === data.id;
 
     el.style.backgroundImage = isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
     el.style.width = '48px';
@@ -184,11 +184,11 @@ class Map extends Component {
 
 //********************         Lines        *************************//
 
-  computePlaneFeature = (planePoints) => {
+  computePlaneFeature = (plane) => {
     let line = [];
-    if (planePoints) {
+    if (plane && plane.data) {
       // we will only draw the last 10 point
-      planePoints.forEach((point) =>
+      plane.data.forEach((point) =>
         line.push(point.location.coordinates)
       );
     }
@@ -331,7 +331,7 @@ class Map extends Component {
   selectMarkerUI(selectedPlane) {
     // select the new icon
     if (selectedPlane) {
-      let elementById = document.getElementById(selectedPlane[0].hex);
+      let elementById = document.getElementById(selectedPlane.data[0].hex);
       if (elementById) {
         elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_accentColors.svg\')';
       }
@@ -340,7 +340,7 @@ class Map extends Component {
 
   unselectMarkerUI() {// change the old marker image
     if (this.props.selectedPlane) {
-      let elementById = document.getElementById(this.props.selectedPlane[0].hex);
+      let elementById = document.getElementById(this.props.selectedPlane.data[0].hex);
       if (elementById) {
         elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_primaryColors.svg\')';
       }

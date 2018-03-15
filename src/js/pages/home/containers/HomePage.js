@@ -56,8 +56,7 @@ class HomePage extends Component {
     this.props.loadPlanesAsync(this.props.loadedBox);
     if (this.props.selectedPlane) {
       console.log("selected plane");
-      console.log(this.props.selectedPlane[0].hex);
-      this.props.loadPlaneDetail(this.props.selectedPlane[0].hex);
+      this.props.loadPlaneDetail(this.props.selectedPlane.data[0].hex);
     }
   };
 
