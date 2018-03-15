@@ -31,7 +31,7 @@ export const PROPS_POI = PropTypes.shape({
   altitude: PropTypes.number,
   hex: PropTypes.string,
   heading: PropTypes.number,
-  time: PropTypes.instanceOf(Date),
+  updated_at: PropTypes.string,
   lastSpeed: PropTypes.number,
   direction: PropTypes.number
 });
