@@ -70,7 +70,7 @@ class Map extends Component {
     let poiStates = [];
 
     newPoiStates.forEach((poiState) => {
-      let previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
+      const previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
       if (previousPoiState) {
         // The plane was already here. Update its position and content.
         this.updatePoiState(previousPoiState, poiState);
@@ -82,47 +82,46 @@ class Map extends Component {
       }
     });
 
-    this.removeMarker(newPoiStates, currentPoiStates);
+    this.removeMarker(currentPoiStates, poiStates);
 
     return poiStates;
   };
 
   findPoiState = (data, id) => {
+    let found = null;
     if (data) {
       data.forEach((d) => {
         if (d.id === id) {
-          return d;
+          found = d;
         }
       });
     }
+    return found;
   };
 
-  removeMarker = (newPoiStates, currentPoiStates) => {
+  removeMarker = (oldPoiStates, newPoiStates) => {
     Array.prototype.diff = function (a) {
       return this.filter(function (i) {
         return a.indexOf(i) < 0;
       });
     };
 
-    let toRemove = currentPoiStates.diff(newPoiStates);
+    let toRemove = oldPoiStates.diff(newPoiStates);
     toRemove.forEach((poiState) => {
       poiState.marker.remove();
     });
   };
 
 
-  updatePoiState = (poiState, previousPoiState) => {
-    poiState.id = previousPoiState.id;
+  updatePoiState = (previousPoiState , poiState) => {
+    previousPoiState.speed = poiState.speed;
+    previousPoiState.heading = poiState.heading;
+    previousPoiState.lat = poiState.lat;
+    previousPoiState.lng = poiState.lng;
+    previousPoiState.lastUpdateTime = poiState.lastUpdateTime;
 
-    poiState.speed = previousPoiState.speed;
-    poiState.heading = previousPoiState.heading;
-    poiState.lat = previousPoiState.lat;
-    poiState.lng = previousPoiState.lng;
-    poiState.lastUpdateTime = previousPoiState.lastUpdateTime;
-
-    poiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
-    this.rotateMarker(poiState.el.childNodes[0], poiState.heading);
-    poiState.reset = true;
+    previousPoiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
+    this.rotateMarker(previousPoiState.el.childNodes[0], poiState.heading);
   };
 
   rotateMarker = (el, heading) => {
@@ -167,7 +166,6 @@ class Map extends Component {
     let tooltip = document.createElement('span');
     tooltip.className = 'tooltiptext';
     tooltip.appendChild(document.createTextNode("Plane " + data.id));
-
 
     this.rotateMarker(el, data.heading);
 
