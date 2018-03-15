@@ -42,7 +42,7 @@ class PlaneDetail extends Component {
               Update : <br/>
               {this.props.selectedPlane[0].updated_at}<br/>
               Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
-              <SpeedChartComponent/>
+              <SpeedChartComponent selectedPlane={this.props.selectedPlane}/>
             </CardContent>
           </Card>
         </div>
