@@ -2,27 +2,6 @@
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
 
-$primary-color: #42a5f5 !default;
-$primary-dark-color: #0077c2 !default;
-$primary-light-color: #80d6ff !default;
-
-$secondary-color: #0d47a1 !default;
-$secondary-dark-color: #002171 !default;
-$secondary-light-color: #5472d3 !default;
-
-$accent-color: #d32f2f !default;
-$accent-dark-color: #9a0007 !default;
-$accent-light-color: #ff6659 !default;
-
-$white: #ffffff;
-$light-grey: #dddddd;
-
-$text-color-primary: rgba(0,0,0,0.87);
-$text-color-secondary: #333;
-
-$header-height: 56px;
-$body-remaining-height: calc(100vh - 56px);
-
 
 // SIZES
 $text-size-xl: 1.8em;
@@ -32,3 +11,67 @@ $text-size-sm: 1.1em;
 $text-size-xs: 1em;
 
 $max-width: 1180px; // Max size for .container class block
+
+$primary-color: #0d47a1 !default;
+$primary-dark-color: #002171 !default;
+$primary-light-color: #5472d3 !default;
+
+$secondary-color: #ffd180 !default;
+$secondary-dark-color: #caa052 !default;
+$secondary-light-color: #ffffb1 !default;
+
+$white: #ffffff;
+$light-grey: #dddddd;
+
+$text-color-primary: rgba(0,0,0,0.87);
+$text-color-secondary: #333;
+$text-color-primary-light: rgba(255,255,255,0.87);
+$text-color-secondary-light: rgba(255,255,255,0.54);
+$text-color-disabled: rgba(200,200,200,0.87);
+$text-color-hint: rgba(100,200,100,0.87);
+$text-color-error: rgba(200,100,100,0.87);
+
+// SIZES
+$text-size-xxl: 1.8em;
+$text-size-xl: 1.5em;
+$text-size-l: 1.3em;
+$text-size-md: 1.1em;
+$text-size-sm: 1em;
+$text-size-xs: 0.7em;
+
+$header-height: 56px;
+$body-remaining-height: calc(100vh - 56px);
+
+$big-button-standard-height: 56px;
+$button-standard-height: 48px;
+$small-button-standard-height: 40px;
+
+$max-width: 1180px; // Max size for .container class block
+
+
+
+// Export to js
+:export {
+  colorPrimary: $primary-color;
+  colorPrimaryDark: $primary-dark-color;
+  colorPrimaryLight: $primary-light-color;
+  colorSecondary: $secondary-color;
+  colorSecondaryDark: $secondary-dark-color;
+  colorSecondaryLight: $secondary-light-color;
+
+  textColorPrimary: $text-color-primary;
+  textColorPrimaryLight: $text-color-primary-light;
+  textColorSecondary: $text-color-secondary;
+  textColorSecondaryLight: $text-color-secondary-light;
+
+  textColorDisabled: $text-color-disabled;
+  textColorHint: $text-color-hint;
+  textColorError: $text-color-error;
+
+  textSizeXS: $text-size-xs;
+  textSizeSM: $text-size-sm;
+  textSizeMD: $text-size-md;
+  textSizeL: $text-size-l;
+  textSizeXL: $text-size-xl;
+  textSizeXXL: $text-size-xxl;
+}

@@ -6,6 +6,7 @@ import {ConnectedRouter} from 'react-router-redux';
 import {IntlProvider} from 'react-intl-redux';
 import {createMuiTheme, MuiThemeProvider} from 'material-ui/styles';
 import DevTools from './index/dev/DevTools';
+import style from '../../stylesheets/abstracts/_variables.scss';
 
 // Page Components
 import Routes from '../routes';
@@ -13,22 +14,69 @@ import Index from './index/Index';
 // History
 import history from "../store/history";
 
-
 const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#757ce8',
-            main: '#3f50b5',
-            dark: '#002884',
-            contrastText: '#fff',
-        },
-        secondary: {
-            light: '#ff7961',
-            main: '#f44336',
-            dark: '#ba000d',
-            contrastText: '#000',
-        },
+  palette: {
+    primary: {
+      light: style.colorPrimaryLight,
+      main: style.colorPrimary,
+      dark: style.colorPrimaryDark,
+      contrastText: style.textColorPrimary,
     },
+    secondary: {
+      light: style.colorSecondaryLight,
+      main: style.colorSecondary,
+      dark: style.colorSecondaryDark,
+      contrastText: style.textColorSecondary,
+    },
+    text: {
+      primary: style.textColorPrimary,
+      secondary: style.textColorSecondary,
+      disabled: style.textColorDisabled,
+      hint: style.textColorHint,
+      error: style.textColorError
+    }
+  },
+  typography: {
+    // Others if we want:
+    // https://material-ui-next.com/customization/default-theme/
+    headline: {
+      fontSize: style.textSizeXL,
+      fontWeight: 400,
+      fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+      lineHeight: "1.35417em",
+      color: style.textColorPrimary
+    },
+    title: {
+      fontSize: style.textSizeL,
+      fontWeight: 500,
+      fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+      lineHeight: "1.16667em",
+      color: style.textColorPrimary
+    },
+    subheading: {
+      fontSize: style.textSizeMD,
+      fontWeight: 400,
+      fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+      lineHeight: "1.5em",
+      color: style.textColorSecondary
+
+    },
+    body2: {
+      fontSize: style.textSizeSM,
+      fontWeight: 500,
+      fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+      lineHeight: "1.7em",
+      color: style.textColorPrimary
+
+    },
+    body1: {
+      fontSize: style.textSizeSM,
+      fontWeight: 400,
+      fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+      lineHeight: "1.4em",
+      color: style.textColorPrimary
+    },
+  },
 });
 
 class Root extends Component {
