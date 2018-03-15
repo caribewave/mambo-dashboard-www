@@ -39,11 +39,15 @@ class PlaneDetail extends Component {
               Seen_pos : {this.props.selectedPlane[0].seen_pos}<br/>
               Speed : {this.props.selectedPlane[0].speed}<br/>
               Squawk : {this.props.selectedPlane[0].squawk}<br/>
+
+              {this.props.aircraftInfo ?
+                <span>
               regid : {this.props.aircraftInfo.regid}<br/>
               mdl : {this.props.aircraftInfo.mdl}<br/>
               type : {this.props.aircraftInfo.type}<br/>
               last update : {moment(this.props.selectedPlane[0].updated_at).fromNow()}<br/>
-
+              </span>
+                : null}
               Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
               <SpeedChartComponent selectedPlane={this.props.selectedPlane}/>
             </CardContent>
