@@ -7,7 +7,7 @@ import PlaneDetail from '../containers/PlaneDetail';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import './HomePage.scss';
-import {loadPlaneDetail, loadPlanesAsync} from "../../../actions/mapData";
+import {loadPlaneDetail, loadFeaturesAsync} from "../../../actions/mapData";
 import {contain, enlarge} from './utils/boxUtils'
 
 class HomePage extends Component {
@@ -26,37 +26,44 @@ class HomePage extends Component {
 
   onMapPositionChanged = (newPosition) => {
     const currentBoundingBox = newPosition.bounds;
-    console.log("move");
     //if not all the current map is contained in the trigger box we reload data
     if (!contain(this.props.loadedBox, currentBoundingBox)) {
-      console.log("refresh not contained");
-      this.props.loadPlanesAsync(enlarge(currentBoundingBox, 2));
+      this.props.loadFeaturesAsync(enlarge(currentBoundingBox, 2));
     }
   };
 
-  onPlaneSelected = (planeId) => {
-    this.props.loadPlaneDetail(planeId);
+  onGeomSelected = (planeId, geomStyle) => {
+    switch (geomStyle) {
+      case "plane" :
+        this.props.loadPlaneDetail(planeId);
+        break;
+
+      case "boat" :
+        //todo load boat detail
+        console.log("on boatclcik");
+        break;
+    }
   };
 
   render() {
     return (
       <div>
         <div id="map-container">
-          <Map layers={this.props.layers} planes={this.props.planes} selectedPlane={this.props.selectedPlane}
-               onMapPositionChanged={this.onMapPositionChanged} onPlaneSelected={this.onPlaneSelected}/>
+          <Map layers={this.props.layers} features={this.props.features} selectedGeom={this.props.selectedGeom}
+               onMapPositionChanged={this.onMapPositionChanged} onGeomSelected={this.onGeomSelected}/>
         </div>
         <LayerSettingsDialog/>
         <SensorManager/>
-        {this.props.selectedPlane ? <PlaneDetail/> : null}
+        {this.props.selectedGeom ? <PlaneDetail/> : null}
       </div>
     );
   }
 
   timerRefresh = () => {
-    this.props.loadPlanesAsync(this.props.loadedBox);
-    if (this.props.selectedPlane) {
+    this.props.loadFeaturesAsync(this.props.loadedBox);
+    if (this.props.selectedGeom) {
       console.log("selected plane");
-      this.props.loadPlaneDetail(this.props.selectedPlane.data[0].hex);
+      this.props.loadPlaneDetail(this.props.selectedGeom.data[0].hex);
     }
   };
 
@@ -65,12 +72,12 @@ class HomePage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return ({
     layers: state.style.layers,
-    planes: state.mapData.planes,
-    selectedPlane: state.mapData.selectedPlane,
+    features: state.mapData.features,
+    selectedGeom: state.mapData.selectedGeom,
     loadedBox: state.mapData.loadedBox,
   });
 };
 
-const actions = {loadPlanesAsync, loadPlaneDetail};
+const actions = {loadFeaturesAsync: loadFeaturesAsync, loadPlaneDetail};
 
 export default withRouter(connect(mapStateToProps, actions)(HomePage))

@@ -3,7 +3,7 @@ import {injectIntl} from 'react-intl';
 import './SppedChartComponent.scss';
 import {Brush, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-import {PROPS_POI, PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_PLANE, PROPS_TYPE_STYLE} from "../constants";
 import PropTypes from 'prop-types';
 import moment from "moment";
 
@@ -35,7 +35,7 @@ class CustomTooltip extends Component {
 
 class SpeedChartComponent extends Component {
   static propTypes = {
-    selectedPlane: PropTypes.arrayOf(PROPS_POI),
+    planePoints: PropTypes.arrayOf(PROPS_PLANE),
   };
 
   constructor(props) {
@@ -56,7 +56,7 @@ class SpeedChartComponent extends Component {
       return <div>items: {tooltipProps.payload.length}</div>
     }
 
-    this.props.selectedPlane.forEach((point) => {
+    this.props.planePoints.forEach((point) => {
       let date = new Date(Date.parse(point.updated_at));
       data.unshift({
         time: date.getTime(),

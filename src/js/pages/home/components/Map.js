@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl} from 'react-intl';
 import mapboxgl from 'mapbox-gl';
-import {PROPS_PLANES, PROPS_PLANE_DETAIL, PROPS_TYPE_STYLE} from "../constants";
+import {PROPS_FEATURES, PROPS_TYPE_STYLE, PROPS_SELECTED_GEOM} from "../constants";
 import './Map.scss';
 import 'mapbox-gl-css';
 
@@ -11,20 +11,21 @@ class Map extends Component {
 
   static propTypes = {
     layers: PropTypes.arrayOf(PROPS_TYPE_STYLE),
-    planes: PROPS_PLANES,
-    selectedPlane: PROPS_PLANE_DETAIL,
+    features: PROPS_FEATURES,
+    selectedGeom: PROPS_SELECTED_GEOM,
     onMapPositionChanged: PropTypes.func,
-    onPlaneSelected: PropTypes.func
+    onGeomSelected: PropTypes.func
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      mapElements: []
+      features: []
     }
   }
 
-  //********************         Points        *************************//
+
+  //********************         Mapper        *************************//
 
 
   // a map element is :
@@ -35,9 +36,18 @@ class Map extends Component {
   // "time":"2018-
   // el
 
+  mapPlanesFromApi = (planesDto) => {
+    const planes = [];
+    planesDto.forEach((planeDto) => {
+      planes.push(this.mapPlaneFromApi(planeDto));
+    });
+    return planes;
+  };
+
   mapPlaneFromApi = (plane) => {
     let poiState = {};
     poiState.id = plane._id;
+    poiState.type = "plane";
     poiState.speed = plane.lastSpeed;
     poiState.heading = plane.direction;
     poiState.lng = plane.coordinates[0].value[0];
@@ -45,6 +55,50 @@ class Map extends Component {
     poiState.lastUpdateTime = plane.coordinates[0].time;
     return poiState;
   };
+
+  mapBoatsFromApi = (boatsDto) => {
+    const boats = [];
+    boatsDto.forEach((boatDto) => {
+      boats.push(this.mapBoatFromApi(boatDto));
+    });
+    return boats;
+  };
+
+  mapBoatFromApi = (boat) => {
+    let poiState = {};
+    poiState.id = boat._id;
+    poiState.type = "boat";
+    poiState.speed = boat.lastSpeed;
+    poiState.heading = boat.direction;
+    poiState.lng = boat.location.coordinates[0] + 0.01;
+    poiState.lat = boat.location.coordinates[1]+ 0.01;
+    poiState.lastUpdateTime = boat.time;
+    console.log("boats");
+    return poiState;
+  };
+
+
+  getIcon = (geomState) => {
+    let isSelected = this.props.selectedGeom
+      && this.props.selectedGeom.type === geomState.type
+      && this.props.selectedGeom.data[0] && this.props.selectedGeom.data[0].id === geomState.id;
+
+    return this.getIcon(geomState.type, isSelected);
+  };
+
+  getIcon = (type, isSelected) => {
+
+    switch (type) {
+      case "plane":
+        return isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+
+      case "boat":
+        //todo find a svg for the selected plane
+        return isSelected ? 'url(\'images/icon_boat_generic.svg\')' : 'url(\'images/icon_boat_generic.svg\')';
+    }
+  };
+
+  //********************         Points        *************************//
 
 
   computeNextCoordinates = (elapsedTime, speedKn, headingDeg, lat, lng) => {
@@ -66,62 +120,73 @@ class Map extends Component {
     return [lonO, latO];
   };
 
-  mergeMarkers = (map, currentPoiStates, newPoiStates) => {
-    let poiStates = [];
+  mergeFeatures = (map, currentFeatures, distantFeatures) => {
+    let updatedFeatures = [];
 
-    newPoiStates.forEach((poiState) => {
-      const previousPoiState = this.findPoiState(currentPoiStates, poiState.id);
-      if (previousPoiState) {
-        // The plane was already here. Update its position and content.
-        this.updatePoiState(previousPoiState, poiState);
-        poiStates.push(previousPoiState);
-      } else {
-        // The plane is new. Add marker on map.
-        this.addPoiOnMap(map, poiState);
-        poiStates.push(poiState);
-      }
+    //we loop on feature for now just planes and boats
+    distantFeatures.forEach((feature) => {
+      const updatedGeoms = [];
+      //we loop on every geometry like a plane, a boat
+      feature.geoms.forEach((geom) => {
+        const previousGeomState = this.findGeomState(currentFeatures, geom.id, feature.type);
+        if (previousGeomState) {
+          // The geometry (ex: a plane) was already here. Update its position and content.
+          this.updateGeomState(previousGeomState, geom);
+          updatedGeoms.push(previousGeomState);
+        } else {
+          // The geometry is new. Add it on map.
+          this.addPoiOnMap(map, geom);
+          updatedGeoms.push(geom);
+        }
+      });
+
+      updatedFeatures.push({type: feature.tyoe, geoms: updatedGeoms});
+
+      this.removeOldGeoms(feature.geoms, updatedGeoms);
     });
 
-    this.removeMarker(currentPoiStates, poiStates);
-
-    return poiStates;
+    return updatedFeatures;
   };
 
-  findPoiState = (data, id) => {
+  findGeomState = (features, id, type) => {
     let found = null;
-    if (data) {
-      data.forEach((d) => {
-        if (d.id === id) {
-          found = d;
+    if (features) {
+      features.forEach((feature) => {
+        if (feature.type === type) {
+          feature.geoms.forEach((geom) => {
+            if (geom.id === id) {
+              found = d;
+            }
+          });
         }
       });
     }
     return found;
   };
 
-  removeMarker = (oldPoiStates, newPoiStates) => {
+  removeOldGeoms = (oldGeomStates, updatedGeomState) => {
     Array.prototype.diff = function (a) {
       return this.filter(function (i) {
         return a.indexOf(i) < 0;
       });
     };
 
-    let toRemove = oldPoiStates.diff(newPoiStates);
+    let toRemove = oldGeomStates.diff(updatedGeomState);
     toRemove.forEach((poiState) => {
       poiState.marker.remove();
     });
   };
 
 
-  updatePoiState = (previousPoiState , poiState) => {
-    previousPoiState.speed = poiState.speed;
-    previousPoiState.heading = poiState.heading;
-    previousPoiState.lat = poiState.lat;
-    previousPoiState.lng = poiState.lng;
-    previousPoiState.lastUpdateTime = poiState.lastUpdateTime;
+  updateGeomState = (previousGeomState, geomState) => {
+    previousGeomState.speed = geomState.speed;
+    previousGeomState.heading = geomState.heading;
+    previousGeomState.lat = geomState.lat;
+    previousGeomState.lng = geomState.lng;
+    previousGeomState.lastUpdateTime = geomState.lastUpdateTime;
 
-    previousPoiState.marker.setLngLat(new mapboxgl.LngLat(poiState.lng, poiState.lat));
-    this.rotateMarker(previousPoiState.el.childNodes[0], poiState.heading);
+    previousGeomState.marker.setLngLat(new mapboxgl.LngLat(geomState.lng, geomState.lat));
+    this.rotateMarker(previousGeomState.el.childNodes[0], geomState.heading);
   };
 
   rotateMarker = (el, heading) => {
@@ -138,39 +203,43 @@ class Map extends Component {
   };
 
   animateMarkers = (timestamp) => {
-    if (this.state.mapElements) {
-      this.state.mapElements.forEach((poiState) => {
-        let lastUpdatedDate = Date.parse(poiState.lastUpdateTime);
-        const elapsedTime = (new Date()).getTime() - lastUpdatedDate;
-        if ((elapsedTime / 1000) / 60 < 15) {
-          poiState.marker.setLngLat(this.computeNextCoordinates(elapsedTime, poiState.speed, poiState.heading, poiState.lat, poiState.lng));
+
+    if (this.state.features) {
+      this.state.features.forEach((feature) => {
+        if (feature.geoms) {
+          feature.geoms.forEach((geomState) => {
+            let lastUpdatedDate = Date.parse(geomState.lastUpdateTime);
+            const elapsedTime = (new Date()).getTime() - lastUpdatedDate;
+            if ((elapsedTime / 1000) / 60 < 15) {
+              geomState.marker.setLngLat(this.computeNextCoordinates(elapsedTime, geomState.speed, geomState.heading, geomState.lat, geomState.lng));
+            }
+          });
         }
-      })
+      });
     }
 
     setTimeout(
       requestAnimationFrame((ts) => this.animateMarkers(ts)), 1000);
   };
 
-  getMarkerOnMap = (data) => {
+  getMarkerOnMap = (geomState) => {
     let el = document.createElement('div');
     el.className = 'marker';
-
-    let isSelected = this.props.selectedPlane && this.props.selectedPlane.data[0] && this.props.selectedPlane.data[0].hex === data.id;
-
-    el.style.backgroundImage = isSelected ? 'url(\'images/icon_plane_generic_accentColors.svg\')' : 'url(\'images/icon_plane_generic_primaryColors.svg\')';
+    el.style.backgroundImage = this.getIcon(geomState.type);
     el.style.width = '48px';
     el.style.height = '48px';
-    el.id = data.id;
+    el.id = geomState.id;
 
     let tooltip = document.createElement('span');
     tooltip.className = 'tooltiptext';
-    tooltip.appendChild(document.createTextNode("Plane " + data.id));
 
-    this.rotateMarker(el, data.heading);
+    //todo improve the message in the toolbox dependig if boat or plane
+    tooltip.appendChild(document.createTextNode(geomState.id));
+
+    this.rotateMarker(el, geomState.heading);
 
     el.addEventListener('click', () => {
-      this.props.onPlaneSelected(data.id)
+      this.props.onGeomSelected(geomState.id, geomState.type)
     });
 
     let parent = document.createElement('div');
@@ -185,7 +254,6 @@ class Map extends Component {
   computePlaneFeature = (plane) => {
     let line = [];
     if (plane && plane.data) {
-      // we will only draw the last 10 point
       plane.data.forEach((point) =>
         line.push(point.location.coordinates)
       );
@@ -212,17 +280,17 @@ class Map extends Component {
     this.updateLayers(this.props.layers);
 
     // Add a source and layer displaying a point which will be animated in a circle.
-    this.map.addSource('plane_source_id', {
+    this.map.addSource('line_source_id', {
       type: "geojson",
       data: {
         "type": "FeatureCollection",
-        "features": this.computePlaneFeature(this.props.selectedPlane)
+        "features": this.computePlaneFeature(this.props.selectedGeom)
       }
     });
 
     this.map.addLayer({
-      id: "plane_way_layer_id",
-      source: "plane_source_id",
+      id: "line_way_layer_id",
+      source: "line_source_id",
       type: "line",
       paint: {
         "line-color": "#007cbf",
@@ -235,9 +303,32 @@ class Map extends Component {
       }
     });
 
+
     // Start the animation.
     this.animateMarkers(0);
   };
+
+//********************      Markers       *************************//
+
+
+  selectMarkerUI(selectedPlane) {
+    // select the new icon
+    if (selectedPlane) {
+      let elementById = document.getElementById(selectedPlane.data[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = this.getIcon("plane", true);
+      }
+    }
+  }
+
+  unselectMarkerUI() {// change the old marker image
+    if (this.props.selectedGeom) {
+      let elementById = document.getElementById(this.props.selectedGeom.data[0].hex);
+      if (elementById) {
+        elementById.style.backgroundImage = this.getIcon("plane", false);
+      }
+    }
+  }
 
 
 //******************** component life cycle *************************//
@@ -299,49 +390,46 @@ class Map extends Component {
 
     // Planes (points)
 
-    if (newProps.planes !== this.props.planes) {
-      const planes = [];
+    if (newProps.features !== this.props.features) {
+      const distantFeatures = [];
 
-      newProps.planes.forEach((plane) => {
-        planes.push(this.mapPlaneFromApi(plane));
+      // we map all the distant data
+      newProps.features.forEach((feature) => {
+        if(feature.geoms) {
+          switch (feature.type) {
+            case "planes" :
+              distantFeatures.push({
+                type: "planes",
+                geoms: this.mapPlanesFromApi(feature.geoms)
+              });
+              break;
+            case "boats" :
+              distantFeatures.push({
+                type: "boats",
+                geoms: this.mapBoatsFromApi(feature.geoms)
+              });
+              break;
+          }
+        }
       });
 
-      this.setState({mapElements: this.mergeMarkers(this.map, this.state.mapElements, planes)});
+      // we manually update the content of the all elements draw on the map and put it back in the state.
+      this.setState({features: this.mergeFeatures(this.map, this.state.features, distantFeatures)});
     }
 
     // selected plane changes
-
-    if (newProps.selectedPlane !== this.props.selectedPlane) {
-      let planeSource = this.map.getSource('plane_source_id');
+    if (newProps.selectedGeom !== this.props.selectedGeom) {
+      let planeSource = this.map.getSource('line_source_id');
       if (planeSource) {
         planeSource.setData({
             "type": "FeatureCollection",
-            "features": this.computePlaneFeature(newProps.selectedPlane)
+            "features": this.computePlaneFeature(newProps.selectedGeom)
           }
         );
       }
 
       this.unselectMarkerUI();
-      this.selectMarkerUI(newProps.selectedPlane);
-    }
-  }
-
-  selectMarkerUI(selectedPlane) {
-    // select the new icon
-    if (selectedPlane) {
-      let elementById = document.getElementById(selectedPlane.data[0].hex);
-      if (elementById) {
-        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_accentColors.svg\')';
-      }
-    }
-  }
-
-  unselectMarkerUI() {// change the old marker image
-    if (this.props.selectedPlane) {
-      let elementById = document.getElementById(this.props.selectedPlane.data[0].hex);
-      if (elementById) {
-        elementById.style.backgroundImage = 'url(\'images/icon_plane_generic_primaryColors.svg\')';
-      }
+      this.selectMarkerUI(newProps.selectedGeom);
     }
   }
 

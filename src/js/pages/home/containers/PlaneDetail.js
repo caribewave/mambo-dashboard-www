@@ -16,7 +16,7 @@ class PlaneDetail extends Component {
 
   render() {
     return (
-      this.props.selectedPlane && this.props.selectedPlane[0]
+      this.props.selectedGeom && this.props.selectedGeom[0]
         ?
         <div className="plane-detail-panel">
           <Card className="plane-detail-container">
@@ -28,29 +28,29 @@ class PlaneDetail extends Component {
                   }/>
                 </IconButton>
               </div>
-              Avion : {this.props.selectedPlane[0].hex}<br/><br/>
-              Flight : {this.props.selectedPlane[0].flight}<br/>
-              Altitude : {this.props.selectedPlane[0].altitude}<br/>
-              category: {this.props.selectedPlane[0].category}<br/>
-              hex : {this.props.selectedPlane[0].hex}<br/>
-              Latitude : {this.props.selectedPlane[0].location.coordinates[0]}<br/>
-              Longitude : {this.props.selectedPlane[0].location.coordinates[1]}<br/>
-              Messages : {this.props.selectedPlane[0].messages}<br/>
-              Seen : {this.props.selectedPlane[0].seen}<br/>
-              Seen_pos : {this.props.selectedPlane[0].seen_pos}<br/>
-              Speed : {this.props.selectedPlane[0].speed}<br/>
-              Squawk : {this.props.selectedPlane[0].squawk}<br/>
+              Avion : {this.props.selectedGeom[0].hex}<br/><br/>
+              Flight : {this.props.selectedGeom[0].flight}<br/>
+              Altitude : {this.props.selectedGeom[0].altitude}<br/>
+              category: {this.props.selectedGeom[0].category}<br/>
+              hex : {this.props.selectedGeom[0].hex}<br/>
+              Latitude : {this.props.selectedGeom[0].location.coordinates[0]}<br/>
+              Longitude : {this.props.selectedGeom[0].location.coordinates[1]}<br/>
+              Messages : {this.props.selectedGeom[0].messages}<br/>
+              Seen : {this.props.selectedGeom[0].seen}<br/>
+              Seen_pos : {this.props.selectedGeom[0].seen_pos}<br/>
+              Speed : {this.props.selectedGeom[0].speed}<br/>
+              Squawk : {this.props.selectedGeom[0].squawk}<br/>
 
               {this.props.aircraftInfo ?
                 <span>
               regid : {this.props.aircraftInfo.regid}<br/>
               mdl : {this.props.aircraftInfo.mdl}<br/>
               type : {this.props.aircraftInfo.type}<br/>
-              last update : {moment(this.props.selectedPlane[0].updated_at).fromNow()}<br/>
+              last update : {moment(this.props.selectedGeom[0].updated_at).fromNow()}<br/>
               </span>
                 : null}
-              Vert_rate : {this.props.selectedPlane[0].vert_rate}<br/>
-              <SpeedChartComponent selectedPlane={this.props.selectedPlane}/>
+              Vert_rate : {this.props.selectedGeom[0].vert_rate}<br/>
+              <SpeedChartComponent planePoints={this.props.selectedGeom}/>
             </CardContent>
           </Card>
         </div>
@@ -61,8 +61,8 @@ class PlaneDetail extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  selectedPlane: state.mapData.selectedPlane.data,
-  aircraftInfo: state.mapData.selectedPlane.aircraftInfo
+  selectedGeom: state.mapData.selectedGeom.data,
+  aircraftInfo: state.mapData.selectedGeom.aircraftInfo
 });
 
 const actions = {openMapLayersPopup};

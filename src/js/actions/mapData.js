@@ -3,23 +3,24 @@ import {CALL_API, API_SENSOR} from '../client/api';
 /*------------------------------------------------------------------------------------------
  * Plane POSITIONS
  *-----------------------------------------------------------------------------------------*/
-export const LOAD_PLANES_REQUEST = 'LOAD_PLANES_REQUEST';
-export const LOAD_PLANES_SUCCESS = 'LOAD_PLANES_SUCCESS';
-export const LOAD_PLANES_FAILURE = 'LOAD_PLANES_FAILURE';
+export const LOAD_FEATURE_REQUEST = 'LOAD_FEATURES_REQUEST';
+export const LOAD_FEATURE_SUCCESS = 'LOAD_FEATURE_SUCCESS';
+export const LOAD_FEATURE_FAILURE = 'LOAD_FEATURE_FAILURE';
 
-const callLoadPlanesAsync = (box) => ({
+const callLoadPoisAsync = (box, features) => ({
   // we send bebox (w,s,e,n)
   [CALL_API]: {
-    types: [LOAD_PLANES_REQUEST, LOAD_PLANES_SUCCESS, LOAD_PLANES_FAILURE],
-    endpoint: `planes/loc?bbox=(` + box.getWest() + "," + box.getSouth() + "," + box.getEast() + "," + box.getNorth() + ")",
+    types: [LOAD_FEATURE_REQUEST, LOAD_FEATURE_SUCCESS, LOAD_FEATURE_FAILURE],
+    endpoint: `pois?bbox=(` + box.getWest() + "," + box.getSouth() + "," + box.getEast() + "," + box.getNorth() + ")&source=" + features,
     api: API_SENSOR,
     method: 'GET',
     body: box
   }
 });
 
-export const loadPlanesAsync = (box) => (dispatch) => {
-  return dispatch(callLoadPlanesAsync(box));
+export const loadFeaturesAsync = (box) => (dispatch) => {
+  const features = encodeURIComponent(JSON.stringify(["plane", "boat", "sensor"]));
+  return dispatch(callLoadPoisAsync(box, features));
 };
 
 /*------------------------------------------------------------------------------------------
